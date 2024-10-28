@@ -36,7 +36,6 @@ int Raptor::findRoute(const Query &query) {
   for (const auto& [id, stop]: stops_) {
     min_arrival_time[id] = std::vector<int>(2, INF);
   }
-
   min_arrival_time[query.source_id][0] = timeToSeconds(query.departure_time);
   marked_stops.insert(query.source_id);
 
@@ -46,9 +45,11 @@ int Raptor::findRoute(const Query &query) {
     std::queue<int> route_queue;
 
     // For each marked stop p
-    for (const auto &stop_id: marked_stops) {
+    auto stop_id = marked_stops.begin();
+    while (stop_id != marked_stops.end()) {
+
       // For each route r serving p
-      for (const auto &route: getRoutesServingStop(stop_id)) {
+      for (const auto &route: getRoutesServingStop(*stop_id)) {
 
         // TODO:
         // if (r, p') E Q for some stop p'
@@ -60,11 +61,12 @@ int Raptor::findRoute(const Query &query) {
         route_queue.push(route);
       }
       // Unmark p
-      marked_stops.erase(stop_id);
-    }
+      stop_id = marked_stops.erase(stop_id); // Next valid stop
+     }
 
     // Traverse each route
     while (!route_queue.empty()) {
+      
       auto route = route_queue.front();
       route_queue.pop();
       int current_trip;
@@ -114,6 +116,7 @@ int Raptor::findRoute(const Query &query) {
 
 std::vector<int> Raptor::getRoutesServingStop(const int &stop_id) {
   std::vector<int> routes;
+  routes.clear();
 
   return routes;
 }

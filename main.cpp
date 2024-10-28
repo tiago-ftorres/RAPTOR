@@ -2,15 +2,23 @@
 #include "Raptor.h"
 #include "Parse.h"
 
-int main() {
-  // TODO: input directory
-  std::cout << "Hello, World!" << std::endl;
-  auto agencies = readAgencies("./dataset/Porto/gtfs/agency.csv");
-  auto calendars = readCalendars("./dataset/Porto/gtfs/calendar.csv");
-  auto routes = readRoutes("./dataset/Porto/gtfs/routes.csv");
-  auto stops = readStops("./dataset/Porto/gtfs/stops.csv");
-  auto trips = readTrips("./dataset/Porto/gtfs/trips.csv");
-  auto stop_times = readStopTimes("./dataset/Porto/gtfs/stop_times.csv");
+int main(int argc, char *argv[]) {
+
+  std::string inputDirectory;
+
+  if (argc >= 2) {
+    inputDirectory = argv[1];
+  } else {
+    std::cout << "GTFS Input Directory: ";
+    std::getline(std::cin, inputDirectory);
+  }
+
+  auto agencies = readAgencies(inputDirectory + "/agency.csv");
+  auto calendars = readCalendars(inputDirectory + "/calendar.csv");
+  auto routes = readRoutes(inputDirectory + "/routes.csv");
+  auto stops = readStops(inputDirectory + "/stops.csv");
+  auto trips = readTrips(inputDirectory + "/trips.csv");
+  auto stop_times = readStopTimes(inputDirectory + "/stop_times.csv");
 
   std::cout << "Agencies number: " << agencies.size() << std::endl;
   std::cout << "Calendars number: " << calendars.size() << std::endl;

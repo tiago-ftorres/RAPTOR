@@ -1,5 +1,18 @@
-### RAPTOR 
+# RAPTOR - Round-Based Public Transit Routing Algorithm
 
-For compiling: ``` g++ -o raptor main.cpp raptor.cpp parse.cpp -std=c++17 ```
+To compile the project, use the following command:
 
-For running: ``` ./raptor ```
+``` g++ -o RAPTOR main.cpp Raptor.cpp Parse.cpp Utils.cpp -std=c++17 ```
+
+You can run the program by executing the following command in the terminal:
+
+ ``` ./RAPTOR ./dataset/Porto/GTFS/```
+
+ - You can specify the path to the GTFS directory directly in the command line. 
+ - If no path is provided, the program will prompt you to enter the directory path.
+
+
+This repository is developed as part of my internship at OPT (Optimizações and Planeamento de Transporte). 
+
+### References
+- Delling, Daniel, Thomas Pajor, Renato F. Werneck, “Round-based Public Transit Routing.” Microsoft Research (2012). https://www.microsoft.com/en-us/research/wp-content/uploads/2012/01/raptor_alenex.pdf
