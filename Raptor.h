@@ -22,23 +22,19 @@ public:
          const std::unordered_map<int, Trip>& trips,
          const std::vector<StopTime>& stop_times);
 
-  // Returns earliest arrival time at destination stop
-  int findRoute(const Query& query);
+  // Returns all Pareto-optimal journeys
+  std::vector<std::vector<JourneyStep>> findRoute(const Query& query);
+  std::vector<std::vector<JourneyStep>> reconstructJourneys(const Query &query, int k);
 
 private:
   void initializeData();
-
-  // TODO
-  std::vector<int> getRoutesServingStop(const int& stop_id);
-  std::vector<StopTime> getStopTimesForRoute(const int& route_id);
-  int getArrivalTimeForTrip(const int& trip_id, const int& stop_id);
-  int getDepartureTimeForTrip(const int& trip_id, const int& stop_id);
-  int getNextTrip(const int& route_id, const int& stop_id);
 
   std::unordered_map<int, Stop> stops_;
   std::unordered_map<int, Route> routes_;
   std::unordered_map<int, Trip> trips_;
   std::vector<StopTime> stop_times_;
+  std::unordered_map<int, std::vector<StopInfo>> min_arrival_time;
+
 };
 
 #endif //RAPTOR_RAPTOR_H
