@@ -12,7 +12,7 @@ You can run the program by executing the following command in the terminal:
  - If no path is provided, the program will prompt you to enter the directory path.
 
 
-This repository is developed as part of my internship at OPT (Optimizações and Planeamento de Transporte). 
+This repository is developed as part of my internship at OPT (Optimizações e Planeamento de Transporte). 
 
 ### References
 - Delling, Daniel, Thomas Pajor, Renato F. Werneck, “Round-based Public Transit Routing.” Microsoft Research (2012). https://www.microsoft.com/en-us/research/wp-content/uploads/2012/01/raptor_alenex.pdf
