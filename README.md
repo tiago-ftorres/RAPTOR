@@ -2,11 +2,11 @@
 
 To compile the project, use the following command:
 
-``` g++ -o RAPTOR main.cpp Raptor.cpp Parse.cpp Utils.cpp -std=c++17 ```
+``` g++ -o RAPTOR main.cpp Application.cpp Raptor.cpp Parse.cpp Utils.cpp -std=c++17 ```
 
 You can run the program by executing the following command in the terminal:
 
- ``` ./RAPTOR ./dataset/Porto/GTFS/```
+ ``` ./RAPTOR ./dataset/Porto/small/GTFS/```
 
  - You can specify the path to the GTFS directory directly in the command line. 
  - If no path is provided, the program will prompt you to enter the directory path.

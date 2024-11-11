@@ -79,7 +79,7 @@ void Raptor::initializeData() {
 
 }
 
-std::vector<std::vector<JourneyStep>> Raptor::findRoute(const Query &query) {
+std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
   std::unordered_set<int> marked_stops;
 
   // Initialization of the algorithm
@@ -210,11 +210,11 @@ std::vector<std::vector<JourneyStep>> Raptor::findRoute(const Query &query) {
       break;
     }
 
-    printMinArrivalTimes();
+    showMinArrivalTimes();
     k++;
   }
 
-  printMinArrivalTimes();
+  showMinArrivalTimes();
 
   std::vector<std::vector<JourneyStep>> journeys = reconstructJourneys(query);
   return journeys;
@@ -277,7 +277,7 @@ std::vector<std::vector<JourneyStep>> Raptor::reconstructJourneys(const Query &q
   return journeys;
 }
 
-void Raptor::printMinArrivalTimes() {
+void Raptor::showMinArrivalTimes() {
   std::cout << std::endl << "    Minimal arrival times:" << std::endl << std::endl;
 
   // Print the header row

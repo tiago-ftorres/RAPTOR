@@ -23,13 +23,13 @@ public:
          const std::unordered_map<std::pair<int, int>, StopTime, pair_hash>& stop_times);
 
   // Returns all Pareto-optimal journeys
-  std::vector<std::vector<JourneyStep>> findRoute(const Query& query);
+  std::vector<std::vector<JourneyStep>> findJourneys(const Query& query);
 
   // Reconstruct all journeys
   std::vector<std::vector<JourneyStep>> reconstructJourneys(const Query &query);
 
   // Prints minimal arrival times for each stop, at each round
-  void printMinArrivalTimes();
+  void showMinArrivalTimes();
 
 private:
   void initializeData();

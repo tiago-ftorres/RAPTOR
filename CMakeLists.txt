@@ -13,4 +13,6 @@ add_executable(raptor
         Raptor.cpp
         Utils.h
         Utils.cpp
-        Raptor.h)
+        Raptor.h
+        Application.h
+        Application.cpp)

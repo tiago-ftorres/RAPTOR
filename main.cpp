@@ -1,7 +1,7 @@
 #include <iostream>
-#include <iomanip>
 #include "Raptor.h"
 #include "Parse.h"
+#include "Application.h"
 
 int main(int argc, char *argv[]) {
 
@@ -29,33 +29,9 @@ int main(int argc, char *argv[]) {
   std::cout << "Stop Times number: " << stop_times.size() << std::endl;
 
   Raptor raptor(stops, routes, trips, stop_times);
-  Query query = {2, 3, "08:00:00"};
 
-  std::vector<std::vector<JourneyStep>> journeys = raptor.findRoute(query);
-
-  if (journeys.empty()) {
-    std::cout << "No journey found :/" << std::endl;
-  } else {
-
-    std::cout << "Found " << journeys.size() << " journeys! =) " << std::endl;
-
-    for (const auto &journey: journeys) {
-      std::cout << std::endl << "Journey:" << std::endl;
-      std::cout << std::setw(6) << " trip " << std::setw(5) << "stop" << std::setw(10) << " dep_time " << std::setw(10) << " -> stop " << std::setw(10) << " arr_time " << std::endl;
-
-      for (const auto &step: journey) {
-        if (step.trip_id != -1)
-          std::cout << std::setw(6) << step.trip_id;
-        else
-          std::cout << std::setw(6) << "footpath";
-
-        std::cout << std::setw(5) << step.stop_src_id << std::setw(10) << secondsToTime(step.departure_time)
-                  << std::setw(10) << step.stop_dest_id << std::setw(10) << secondsToTime(step.arrival_time);
-
-        std::cout << std::endl;
-      }
-    }
-  }
+  Application application(raptor);
+  application.run();
 
   return 0;
 }
