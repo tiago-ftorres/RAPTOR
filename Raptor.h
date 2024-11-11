@@ -20,7 +20,7 @@ public:
   Raptor(const std::unordered_map<int, Stop>& stops,
          const std::unordered_map<int, Route>& routes,
          const std::unordered_map<int, Trip>& trips,
-         const std::vector<StopTime>& stop_times);
+         const std::unordered_map<std::pair<int, int>, StopTime, pair_hash>& stop_times);
 
   // Returns all Pareto-optimal journeys
   std::vector<std::vector<JourneyStep>> findRoute(const Query& query);
@@ -37,7 +37,8 @@ private:
   std::unordered_map<int, Stop> stops_;
   std::unordered_map<int, Route> routes_;
   std::unordered_map<int, Trip> trips_;
-  std::vector<StopTime> stop_times_;
+//  std::vector<StopTime> stop_times_;
+  std::unordered_map<std::pair<int, int>, StopTime, pair_hash> stop_times_; // key is (trip_id, stop_id)
   std::unordered_map<int, std::vector<StopInfo>> min_arrival_time;
   int k;
 

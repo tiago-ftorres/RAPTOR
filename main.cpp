@@ -14,12 +14,12 @@ int main(int argc, char *argv[]) {
     std::getline(std::cin, inputDirectory);
   }
 
-  auto agencies = readAgencies(inputDirectory + "/agency.csv");
-  auto calendars = readCalendars(inputDirectory + "/calendar.csv");
-  auto routes = readRoutes(inputDirectory + "/routes.csv");
-  auto stops = readStops(inputDirectory + "/stops.csv");
-  auto trips = readTrips(inputDirectory + "/trips.csv");
-  auto stop_times = readStopTimes(inputDirectory + "/stop_times.csv");
+  std::unordered_map<int, Agency> agencies = readAgencies(inputDirectory + "/agency.csv");
+  std::unordered_map<int, Calendar> calendars = readCalendars(inputDirectory + "/calendar.csv");
+  std::unordered_map<int, Route> routes = readRoutes(inputDirectory + "/routes.csv");
+  std::unordered_map<int, Stop> stops = readStops(inputDirectory + "/stops.csv");
+  std::unordered_map<int, Trip> trips = readTrips(inputDirectory + "/trips.csv");
+  std::unordered_map<std::pair<int, int>, StopTime, pair_hash> stop_times = readStopTimes(inputDirectory + "/stop_times.csv");
 
   std::cout << "Agencies number: " << agencies.size() << std::endl;
   std::cout << "Calendars number: " << calendars.size() << std::endl;
@@ -41,15 +41,16 @@ int main(int argc, char *argv[]) {
 
     for (const auto &journey: journeys) {
       std::cout << std::endl << "Journey:" << std::endl;
-      std::cout << std::setw(5) << "stop" << std::setw(10) << " dep_time " << std::setw(10) << " -> stop " << std::setw(10) << " arr_time " << std::setw(10) << " trip " << std::endl;
+      std::cout << std::setw(6) << " trip " << std::setw(5) << "stop" << std::setw(10) << " dep_time " << std::setw(10) << " -> stop " << std::setw(10) << " arr_time " << std::endl;
+
       for (const auto &step: journey) {
+        if (step.trip_id != -1)
+          std::cout << std::setw(6) << step.trip_id;
+        else
+          std::cout << std::setw(6) << "footpath";
+
         std::cout << std::setw(5) << step.stop_src_id << std::setw(10) << secondsToTime(step.departure_time)
                   << std::setw(10) << step.stop_dest_id << std::setw(10) << secondsToTime(step.arrival_time);
-
-        if (step.trip_id != -1)
-          std::cout << std::setw(10) << step.trip_id;
-        else
-          std::cout << std::setw(10) << "footpath";
 
         std::cout << std::endl;
       }

@@ -1,7 +1,6 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <iostream>
 #include "Parse.h"
 
 std::unordered_map<int, Agency> readAgencies(const std::string &filePath) {
@@ -167,8 +166,8 @@ std::unordered_map<int, Trip> readTrips(const std::string &filePath) {
   return trips;
 }
 
-std::vector<StopTime> readStopTimes(const std::string &filePath) {
-  std::vector<StopTime> stop_times;
+std::unordered_map<std::pair<int, int>, StopTime, pair_hash> readStopTimes(const std::string &filePath) {
+  std::unordered_map<std::pair<int, int>, StopTime, pair_hash> stop_times; // key is (trip_id, stop_id)
   std::ifstream file(filePath);
   std::string line;
   std::getline(file, line);  // Skip header
@@ -185,18 +184,19 @@ std::vector<StopTime> readStopTimes(const std::string &filePath) {
 
     std::string trip_id_str;
     std::getline(ss, trip_id_str, ',');
-    stop_time.trip_id = std::stoi(trip_id_str);
+    int trip_id = std::stoi(trip_id_str);
+    stop_time.trip_id = trip_id;
 
     std::getline(ss, stop_time.arrival_time, ',');
     std::getline(ss, stop_time.departure_time, ',');
 
     std::string stop_id_str;
     std::getline(ss, stop_id_str, ',');
-    stop_time.stop_id = std::stoi(stop_id_str);
+    int stop_id =  std::stoi(stop_id_str);
+    stop_time.stop_id = stop_id;
 
     ss >> stop_time.stop_sequence;
-    stop_times.push_back(stop_time);
-    // TODO: primary key is trip_id, stop_sequence
+    stop_times[{trip_id, stop_id}] = stop_time;
   }
   return stop_times;
 }

@@ -84,4 +84,10 @@ struct JourneyStep {
   int arrival_time;
 };
 
+struct pair_hash {
+  std::size_t operator()(const std::pair<int, int>& pair) const {
+    return std::hash<int>()(pair.first) ^ std::hash<int>()(pair.second);
+  }
+};
+
 #endif //DATASTRUCTURES_H
