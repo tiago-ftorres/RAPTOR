@@ -24,7 +24,12 @@ public:
 
   // Returns all Pareto-optimal journeys
   std::vector<std::vector<JourneyStep>> findRoute(const Query& query);
-  std::vector<std::vector<JourneyStep>> reconstructJourneys(const Query &query, int k);
+
+  // Reconstruct all journeys
+  std::vector<std::vector<JourneyStep>> reconstructJourneys(const Query &query);
+
+  // Prints minimal arrival times for each stop, at each round
+  void printMinArrivalTimes();
 
 private:
   void initializeData();
@@ -34,8 +39,8 @@ private:
   std::unordered_map<int, Trip> trips_;
   std::vector<StopTime> stop_times_;
   std::unordered_map<int, std::vector<StopInfo>> min_arrival_time;
+  int k;
 
-  void printMinArrivalTimes(int max_k);
 };
 
 #endif //RAPTOR_RAPTOR_H

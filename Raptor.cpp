@@ -11,6 +11,7 @@ Raptor::Raptor(const std::unordered_map<int, Stop>& stops,
                const std::unordered_map<int, Trip>& trips,
                const std::vector<StopTime>& stop_times) // TODO: primary key to be (trip_id, stop_sequence)
                 : stops_(stops), routes_(routes), trips_(trips), stop_times_(stop_times) {
+  k = 1;
   initializeData();
 }
 
@@ -85,8 +86,8 @@ std::vector<std::vector<JourneyStep>> Raptor::findRoute(const Query &query) {
   }
   min_arrival_time[query.source_id][0].min_arrival_time = timeToSeconds(query.departure_time);
   marked_stops.insert(query.source_id);
+  k = 1;
 
-  int k = 1;
   while (true) {
     std::cout << std::endl << "Round " << k << std::endl << std::endl;
 
@@ -124,7 +125,11 @@ std::vector<std::vector<JourneyStep>> Raptor::findRoute(const Query &query) {
     while (route_id != routes_id_set.end()) {
       const Route& route = routes_[*route_id];
 
-      std::cout << std::endl << "Traversing route " << route.route_id << " that has " << route.stops.size() << " stops" << std::endl;
+      std::cout << std::endl << "Traversing route " << route.route_id << " that has " << route.stops.size() << " stops: " ;
+      for (Stop *stop : route.stops){
+        std::cout << stop->stop_id << " " ;
+      }
+      std::cout << std::endl;
 
       // For each stop on this route, try to find the earliest trip (et) that can be taken
       for (size_t i = 0; i < route.stops.size(); ++i) {
@@ -162,20 +167,20 @@ std::vector<std::vector<JourneyStep>> Raptor::findRoute(const Query &query) {
 //        if (arrival_time < std::min(min_arrival_time[stop_id][k], min_arrival_time[query.target_id][k])) {
           if (arrival_time < min_arrival_time[next_stop_id][k].min_arrival_time) {
 
+            std::cout << secondsToTime(arrival_time) << " < " << secondsToTime(min_arrival_time[next_stop_id][k].min_arrival_time)
+                      << ", so we mark stop " << next_stop_id << " and update Tk(pj) using et." << std::endl;
+
             min_arrival_time[next_stop_id][k] = {arrival_time, et_id, stop_id};
-
             marked_stops.insert(next_stop_id); // Mark this stop for the next round
-
-            std::cout << "Marked stop " << next_stop_id << " because arrival time was improved. Updated Tk(pj) using et. " << std::endl;
           }
 
           // TODO: do it for current stop i, for subsequent stops j or for all route stops i?
           // Check if an earlier trip can be caught at stop i (because a quicker path was found in a previous round)
           // if Tk-1(pi) < Tarr(t, pi)
           if (min_arrival_time[next_stop_id][k - 1].min_arrival_time < arrival_time) {
-            std::cout << min_arrival_time[next_stop_id][k-1].min_arrival_time <<  " < " << arrival_time;
+            std::cout << secondsToTime(min_arrival_time[next_stop_id][k-1].min_arrival_time) <<  " < " << secondsToTime(arrival_time);
 
-            // TODO: update t by recomputing et(r, pi)
+            // TODO: update t by recomputing et(r, pi) ---> would it mean only to update min_arrival_time array?
             et_id = min_arrival_time[next_stop_id][k-1].parent_trip_id;
 
             std::cout << ", so now et_id = " << et_id <<std::endl;
@@ -209,33 +214,33 @@ std::vector<std::vector<JourneyStep>> Raptor::findRoute(const Query &query) {
       break;
     }
 
-    printMinArrivalTimes(k);
+    printMinArrivalTimes();
     k++;
   }
-  std::cout << "Reconstructing journeys..." << std::endl;
-  std::vector<std::vector<JourneyStep>> journeys = reconstructJourneys(query, k);
+
+  printMinArrivalTimes();
+
+  std::vector<std::vector<JourneyStep>> journeys = reconstructJourneys(query);
   return journeys;
 }
 
 
-std::vector<std::vector<JourneyStep>> Raptor::reconstructJourneys(const Query &query, int k) {
+std::vector<std::vector<JourneyStep>> Raptor::reconstructJourneys(const Query &query) {
   std::vector<std::vector<JourneyStep>> journeys;
 
+  std::cout << std::endl << "Reconstructing journeys..." << std::endl << std::endl ;
+
   // Start from the target stop and reconstruct the journey
-  while (k >= 0) {
+  int current_k = k-1;
+  while (current_k >= 0) {
     std::vector<JourneyStep> journey;
     int current_stop_id = query.target_id;
     bool found_journey = false;
 
-    std::cout << "current_stop_id: " << current_stop_id << std::endl;
-
     while (current_stop_id != -1) {
 
-      const int parent_trip_id = min_arrival_time[current_stop_id][k].parent_trip_id;
-      const int parent_stop_id = min_arrival_time[current_stop_id][k].parent_stop_id;
-
-      std::cout << "parent_trip_id: " << parent_trip_id << std::endl;
-      std::cout << "parent_stop_id: " << parent_stop_id << std::endl;
+      const int parent_trip_id = min_arrival_time[current_stop_id][current_k].parent_trip_id;
+      const int parent_stop_id = min_arrival_time[current_stop_id][current_k].parent_stop_id;
 
       if (parent_stop_id == -1) {
         found_journey = false;
@@ -244,13 +249,13 @@ std::vector<std::vector<JourneyStep>> Raptor::reconstructJourneys(const Query &q
 
       if (parent_trip_id == -1) { // Footpath
         int footpath_duration = stops_[parent_stop_id].footpaths[current_stop_id].duration;
-        int departure_time = min_arrival_time[parent_stop_id][k].min_arrival_time;
+        int departure_time = min_arrival_time[parent_stop_id][current_k].min_arrival_time;
         int arrival_time = departure_time + footpath_duration;
         journey.push_back({-1, parent_stop_id, current_stop_id, departure_time, arrival_time});
         break;
       } else { // Trip
         // TODO: trip departure time
-        journey.push_back({parent_trip_id, parent_stop_id, current_stop_id, 0, min_arrival_time[current_stop_id][k].min_arrival_time});
+        journey.push_back({parent_trip_id, parent_stop_id, current_stop_id, 0, min_arrival_time[current_stop_id][current_k].min_arrival_time});
       }
 
       // Update to the previous stop boarded
@@ -258,7 +263,6 @@ std::vector<std::vector<JourneyStep>> Raptor::reconstructJourneys(const Query &q
 
       // Make sure we only add valid journeys
       if (current_stop_id == query.source_id) {
-        std::cout << "Found a journey!" << std::endl;
         found_journey = true;
         break;
       }
@@ -269,22 +273,21 @@ std::vector<std::vector<JourneyStep>> Raptor::reconstructJourneys(const Query &q
       std::reverse(journey.begin(), journey.end());
 
       journeys.push_back(journey);
-      std::cout << "Added a journey with k = " << k << std::endl;
     }
 
     // Decrease to the next journey with fewer transfers
-    k--;
+    current_k--;
   }
   return journeys;
 }
 
-void Raptor::printMinArrivalTimes(int max_k) {
-  std::cout << std::endl << "    Minimal arrival times:\n";
+void Raptor::printMinArrivalTimes() {
+  std::cout << std::endl << "    Minimal arrival times:" << std::endl << std::endl;
 
   // Print the header row
   std::cout << std::setw(6) << "Stop";
-  for (int k = 0; k <= max_k; k++) {
-    std::cout << std::setw(10) << k;
+  for (int current_k = 0; current_k <= k; current_k++) {
+    std::cout << std::setw(10) << current_k;
   }
   std::cout << std::endl;
 

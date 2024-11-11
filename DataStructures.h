@@ -50,7 +50,7 @@ struct Trip {
   int route_id;
   int service_id;
   int trip_id;
-  std::vector<StopTime*> stop_times;
+  std::vector<StopTime*> stop_times; // Ordered by stop_times' sequence
 };
 
 struct Route {
