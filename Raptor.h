@@ -35,6 +35,7 @@ private:
   std::vector<StopTime> stop_times_;
   std::unordered_map<int, std::vector<StopInfo>> min_arrival_time;
 
+  void printMinArrivalTimes(int max_k);
 };
 
 #endif //RAPTOR_RAPTOR_H

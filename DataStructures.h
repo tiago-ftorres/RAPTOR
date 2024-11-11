@@ -39,7 +39,7 @@ struct Stop {
   int stop_id;
   std::string stop_name;
   Coordinates coordinates;
-  std::vector<StopTime*> stop_times;
+  std::vector<StopTime*> stop_times; // Ordered by earliest to latest departure time
   std::vector<int> routes_ids;
   std::unordered_map<int, Footpath> footpaths;
 
@@ -60,7 +60,7 @@ struct Route {
   std::string route_long_name;
   int route_type;
 
-  std::vector<Trip*> trips; // Trips that follow this route
+  std::vector<Trip*> trips; // Trips that follow this route, ordered by earliest to latest arrival time
   std::vector<Stop*> stops; // Stops that compose this route
 };
 
