@@ -11,7 +11,7 @@
 const double EARTH_RADIUS = 6371.0;
 
 // Haversine formula
-double haversine(const Coordinates& coord1, const Coordinates& coord2) {
+double Utils::haversine(const Coordinates& coord1, const Coordinates& coord2) {
   double lat1 = coord1.lat * M_PI / 180.0; // Degrees to radians
   double lon1 = coord1.lon * M_PI / 180.0;
   double lat2 = coord2.lat * M_PI / 180.0;
@@ -28,12 +28,12 @@ double haversine(const Coordinates& coord1, const Coordinates& coord2) {
   return EARTH_RADIUS * c; // Kilometers
 }
 
-int getDuration(const Coordinates& coord1, const Coordinates& coord2) {
+int Utils::getDuration(const Coordinates& coord1, const Coordinates& coord2) {
   double average_speed = 5.0; // km/h
-  return (haversine(coord1, coord2)/average_speed) * 60 * 60; // Seconds
+  return (Utils::haversine(coord1, coord2)/average_speed) * 60 * 60; // Seconds
 }
 
-std::string secondsToTime(int seconds) {
+std::string Utils::secondsToTime(int seconds) {
   int hours = seconds / 3600;
   int minutes = (seconds % 3600) / 60;
   int secs = seconds % 60;
@@ -45,7 +45,7 @@ std::string secondsToTime(int seconds) {
   return oss.str();
 }
 
-int timeToSeconds(const std::string& timeStr) {
+int Utils::timeToSeconds(const std::string& timeStr) {
   int hours, minutes, seconds;
   char colon;
 

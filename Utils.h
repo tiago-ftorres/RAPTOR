@@ -7,13 +7,15 @@
 
 #include <utility> // for std::pair
 #include <cmath>   // for std::sin, std::cos, std::atan2, std::sqrt
-#include <string>
 #include "DataStructures.h"
 
-double haversine(const Coordinates& coord1, const Coordinates& coord2);
-int getDuration(const Coordinates& coord1, const Coordinates& coord2);
+class Utils {
+public:
+  static double haversine(const Coordinates& coord1, const Coordinates& coord2);
+  static int getDuration(const Coordinates& coord1, const Coordinates& coord2);
 
-std::string secondsToTime(int seconds);
-int timeToSeconds(const std::string& timeStr);
+  static std::string secondsToTime(int seconds);
+  static int timeToSeconds(const std::string& timeStr);
+};
 
 #endif //RAPTOR_UTILS_H

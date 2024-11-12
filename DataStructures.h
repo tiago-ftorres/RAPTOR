@@ -7,21 +7,21 @@
 #include <unordered_set>
 
 struct Agency {
-  int agency_id;
+  std::string agency_id;
   std::string agency_name;
 };
 
 struct Calendar {
-  int service_id;
+  std::string service_id;
   bool monday, tuesday, wednesday, thursday, friday, saturday, sunday;
   std::string start_date, end_date;
 };
 
 struct StopTime {
-  int trip_id;
+  std::string trip_id;
   std::string arrival_time;
   std::string departure_time;
-  int stop_id;
+  std::string stop_id;
   int stop_sequence;
 };
 
@@ -31,33 +31,34 @@ struct Coordinates {
 };
 
 struct Footpath {
-  int dest_id;
+  std::string dest_id;
   int duration;
 };
 
 struct Stop {
-  int stop_id;
+  std::string stop_id;
+  std::string stop_code;
   std::string stop_name;
+  std::string stop_desc;
   Coordinates coordinates;
   std::vector<StopTime*> stop_times; // Ordered by earliest to latest departure time
-  std::vector<int> routes_ids;
-  std::unordered_map<int, Footpath> footpaths;
-
-  // Stop() : stop_id(0), stop_name(""), coordinates(), footpaths() {}
+  std::vector<std::string> routes_ids;
+  std::unordered_map<std::string, Footpath> footpaths;
 };
 
 struct Trip {
-  int route_id;
-  int service_id;
-  int trip_id;
+  std::string route_id;
+  std::string service_id;
+  std::string trip_id;
   std::vector<StopTime*> stop_times; // Ordered by stop_times' sequence
 };
 
 struct Route {
-  int route_id;
-  int agency_id;
+  std::string route_id;
+  std::string agency_id;
   std::string route_short_name;
   std::string route_long_name;
+  std::string route_desc;
   int route_type;
 
   std::vector<Trip*> trips; // Trips that follow this route, ordered by earliest to latest arrival time
@@ -65,28 +66,28 @@ struct Route {
 };
 
 struct Query {
-  int source_id;
-  int target_id;
+  std::string source_id;
+  std::string target_id;
   std::string departure_time;
 };
 
 struct StopInfo {
   int min_arrival_time;
-  int parent_trip_id; // if footpath, parent_trip_id = -1
-  int parent_stop_id; // if first stop, parent_stop_id = -1
+  std::string parent_trip_id; // if footpath, parent_trip_id = -1
+  std::string parent_stop_id; // if first stop, parent_stop_id = -1
 };
 
 struct JourneyStep {
-  int trip_id; // if footpath, trip_id = -1
-  int stop_src_id;
-  int stop_dest_id;
+  std::string trip_id; // if footpath, trip_id = -1
+  std::string stop_src_id;
+  std::string stop_dest_id;
   int departure_time;
   int arrival_time;
 };
 
 struct pair_hash {
-  std::size_t operator()(const std::pair<int, int>& pair) const {
-    return std::hash<int>()(pair.first) ^ std::hash<int>()(pair.second);
+  std::size_t operator()(const std::pair<std::string, std::string>& pair) const {
+    return std::hash<std::string>()(pair.first) ^ std::hash<std::string>()(pair.second);
   }
 };
 

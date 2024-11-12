@@ -5,22 +5,16 @@
 #ifndef RAPTOR_RAPTOR_H
 #define RAPTOR_RAPTOR_H
 
-#include <vector>
-#include <queue>
 #include <limits>
-#include <unordered_map>
-#include <unordered_set>
-#include "Parse.h"
+#include "Parser.h"
 #include "Utils.h"
-
-const int INF = std::numeric_limits<int>::max();
 
 class Raptor {
 public:
-  Raptor(const std::unordered_map<int, Stop>& stops,
-         const std::unordered_map<int, Route>& routes,
-         const std::unordered_map<int, Trip>& trips,
-         const std::unordered_map<std::pair<int, int>, StopTime, pair_hash>& stop_times);
+  Raptor(const std::unordered_map<std::string, Stop>& stops,
+         const std::unordered_map<std::string, Route>& routes,
+         const std::unordered_map<std::string, Trip>& trips,
+         const std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash>& stop_times);
 
   // Returns all Pareto-optimal journeys
   std::vector<std::vector<JourneyStep>> findJourneys(const Query& query);
@@ -31,15 +25,16 @@ public:
   // Prints minimal arrival times for each stop, at each round
   void showMinArrivalTimes();
 
+  static constexpr int INF = std::numeric_limits<int>::max();
+
 private:
   void initializeData();
 
-  std::unordered_map<int, Stop> stops_;
-  std::unordered_map<int, Route> routes_;
-  std::unordered_map<int, Trip> trips_;
-//  std::vector<StopTime> stop_times_;
-  std::unordered_map<std::pair<int, int>, StopTime, pair_hash> stop_times_; // key is (trip_id, stop_id)
-  std::unordered_map<int, std::vector<StopInfo>> min_arrival_time;
+  std::unordered_map<std::string, Stop> stops_;
+  std::unordered_map<std::string, Route> routes_;
+  std::unordered_map<std::string, Trip> trips_;
+  std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash> stop_times_; // key is (trip_id, stop_id)
+  std::unordered_map<std::string, std::vector<StopInfo>> min_arrival_time; // each stop_id has a vector of min_arrival time for each k
   int k;
 
 };

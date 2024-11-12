@@ -8,18 +8,18 @@
 #include "Raptor.h"
 #include <iostream>
 #include <iomanip>
+#include <utility>
 
 class Application {
 public:
-  explicit Application(Raptor& raptor) : raptor(raptor) {}
-
+  explicit Application(std::string  inputDirectory);
   void run();
 
 private:
-  void handleQuery(const std::string& command);
+  static void handleQuery(Raptor &raptor, const std::string &command);
   static void showCommands();
 
-  Raptor& raptor;
+  std::string inputDirectory;
 };
 
 #endif //RAPTOR_APPLICATION_H

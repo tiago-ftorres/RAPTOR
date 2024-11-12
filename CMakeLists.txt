@@ -8,11 +8,12 @@ include_directories(.)
 add_executable(raptor
         DataStructures.h
         main.cpp
-        Parse.cpp
-        Parse.h
+        Parser.cpp
+        Parser.h
         Raptor.cpp
+        Raptor.h
         Utils.h
         Utils.cpp
-        Raptor.h
         Application.h
-        Application.cpp)
+        Application.cpp
+        Parser.cpp)
