@@ -62,7 +62,7 @@ struct Route {
   int route_type;
 
   std::vector<Trip*> trips; // Trips that follow this route, ordered by earliest to latest arrival time
-  std::vector<Stop*> stops; // Stops that compose this route
+  std::vector<Stop*> stops; // Stops that compose this route, ordered by stop_sequence
 };
 
 struct Query {

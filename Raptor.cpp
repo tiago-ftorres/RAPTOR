@@ -99,7 +99,7 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
     }
 
     // Accumulate routes serving marked stops from previous round
-    std::unordered_set<std::string> routes_id_set;
+    std::unordered_set<std::pair<std::string, std::string>, pair_hash> routes_stops_set; // (route_id, stop_id)
 
     // For each marked stop p
     auto marked_stop_id = marked_stops.begin();
@@ -115,16 +115,18 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
         //  else
         //    Add(r, p) to Q
 
-        routes_id_set.insert(route_id);
+        routes_stops_set.insert({route_id, *marked_stop_id});
       }
+
       // Unmark p
       marked_stop_id = marked_stops.erase(marked_stop_id); // Next valid stop
     }
 
     // 2nd: Traverse each route
-    auto route_id = routes_id_set.begin();
-    while (route_id != routes_id_set.end()) {
-      const Route& route = routes_[*route_id];
+    auto route_stop = routes_stops_set.begin();
+    while (route_stop != routes_stops_set.end()) {
+      const auto& [route_id, p_stop_id] = *route_stop;
+      const Route& route = routes_[route_id];
 
       std::cout << "Traversing route " << route.route_id << " that has " << route.stops.size() << " stops: " << std::endl ;
       for (Stop *stop : route.stops){
@@ -132,23 +134,27 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
       }
       std::cout << std::endl;
 
+      // TODO: what is the complexity of this?
+      auto stop_it = std::find_if(route.stops.begin(), route.stops.end(),
+                                         [&](Stop* stop) { return stop->stop_id == p_stop_id; });
+
       // For each stop on this route, try to find the earliest trip (et) that can be taken
-      // TODO: only for subsequent stops
-      for (size_t i = 0; i < route.stops.size(); ++i) {
-        std::string stop_id = route.stops[i]->stop_id;
+      for (auto it = stop_it; it != route.stops.end(); ++it) {
+        Stop* pi_stop = *it;
+        std::string pi_stop_id = pi_stop->stop_id;
         std::string et_id = "-1";
 
-        // Find the earliest trip in route r that can be caught at stop i in round k
-        for (StopTime* stop_time : stops_[stop_id].stop_times){
+        // Find the earliest trip in route r that can be caught at stop pi in round k
+        for (StopTime* stop_time : stops_[pi_stop_id].stop_times){
           // Check if the stop_time is from a trip that belongs to the route being traversed
           std::string stop_time_trip_id = stop_time->trip_id;
           if ((trips_[stop_time_trip_id].route_id == route.route_id)
-            && (Utils::timeToSeconds(stop_time->departure_time) >= min_arrival_time[stop_id][k-1].min_arrival_time)){
+            && (Utils::timeToSeconds(stop_time->departure_time) >= min_arrival_time[pi_stop_id][k-1].min_arrival_time)){
 
             et_id = stop_time->trip_id;
-            std::cout << "Selected et_id = " << et_id << " for stop_id " << stop_id << " because departure time "
-                      << stop_time->departure_time << " >= " << Utils::secondsToTime(min_arrival_time[stop_id][k-1].min_arrival_time)
-                      << " min_arrival_time[stop_id][k-1]" << std::endl;
+            std::cout << "Selected et_id = " << et_id << " for pi_stop_id " << pi_stop_id << " because departure time "
+                      << stop_time->departure_time << " >= " << Utils::secondsToTime(min_arrival_time[pi_stop_id][k-1].min_arrival_time)
+                      << " min_arrival_time[pi_stop_id][k-1]" << std::endl;
             break; // We can break because stop_times is ordered
           }
         }
@@ -157,36 +163,30 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
 
         Trip et = trips_[et_id];
 
-        std::cout << "Traversing remaining stops on route " << *route_id << " being et_id = " << et_id << std::endl;
+        std::cout << "Traversing remaining stops on route " << route_id << " being et_id = " << et_id << std::endl;
 
         // Traverse remaining stops on the route to update arrival times
-        for (size_t j = i + 1; j < route.stops.size(); ++j) { // j is the next stop
+        for (auto itt = std::next(it); itt != route.stops.end(); ++itt) {
 
-          std::cout << "et.stop_times[" << j << "]";
-
-          std::cout << " (" << route.stops[j]->stop_id << " " << route.stops[j]->stop_name << ")" << std::endl;
-
-          std::cout << "This trip has " << et.stop_times.size() << " stop_times." << std::endl;
+          Stop* next_stop = *itt;
+          std::string next_stop_id = next_stop->stop_id;
 
           // Calculate the arrival time
-          int arrival_time = Utils::timeToSeconds(et.stop_times[j]->arrival_time);
+          int arrival_time = Utils::timeToSeconds(stop_times_[{et_id, next_stop_id}].arrival_time);
 
-          std::cout << "->arrival_time = " ;
-
+          std::cout << "->arrival_time = ";
           std::cout << Utils::secondsToTime(arrival_time);
-
-          std::string next_stop_id = route.stops[j]->stop_id;
 
 
           // If arrival time can be improved, update Tk(pj) using et
 //        if (arrival_time < std::min(min_arrival_time[stop_id][k], min_arrival_time[query.target_id][k])) {
           if (arrival_time < min_arrival_time[next_stop_id][k].min_arrival_time) {
 
-            min_arrival_time[next_stop_id][k] = {arrival_time, et_id, stop_id};
+            min_arrival_time[next_stop_id][k] = {arrival_time, et_id, pi_stop_id};
             marked_stops.insert(next_stop_id); // Mark this stop for the next round
           }
 
-          // TODO: do it for current stop i, for subsequent stops j or for all route stops i?
+          // TODO: do it for current stop i or for subsequent stops j?
           // Check if an earlier trip can be caught at stop i (because a quicker path was found in a previous round)
           // if Tk-1(pi) < Tarr(t, pi)
           if (min_arrival_time[next_stop_id][k - 1].min_arrival_time < arrival_time) {
@@ -200,7 +200,7 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
 
       } // end each stop on route
 
-      route_id = routes_id_set.erase(route_id);
+      route_stop = routes_stops_set.erase(route_stop);
     } // end each route
 
     // Look for foot-paths
