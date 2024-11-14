@@ -3,31 +3,16 @@
 //
 #include "Application.h"
 
-#include <utility>
-
 Application::Application(std::string  inputDirectory)
         : inputDirectory(std::move(inputDirectory)){}
 
 void Application::run() {
   Parser parser(inputDirectory);
 
-  std::unordered_map<std::string, Agency> agencies = parser.readAgencies();
-  std::cout << "Agencies number: " << agencies.size() << std::endl;
-
-  std::unordered_map<std::string, Calendar> calendars = parser.readCalendars();
-  std::cout << "Calendars number: " << calendars.size() << std::endl;
-
-  std::unordered_map<std::string, Route> routes = parser.readRoutes();
-  std::cout << "Routes number: " << routes.size() << std::endl;
-
-  std::unordered_map<std::string, Stop> stops = parser.readStops();
-  std::cout << "Stops number: " << stops.size() << std::endl;
-
-  std::unordered_map<std::string, Trip> trips = parser.readTrips();
-  std::cout << "Trips number: " << trips.size() << std::endl;
-
-  std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash> stop_times = parser.readStopTimes();
-  std::cout << "Stop Times number: " << stop_times.size() << std::endl;
+  std::unordered_map<std::string, Trip> trips = parser.getTrips();
+  std::unordered_map<std::pair<std::string, std::string>, Route, pair_hash> routes = parser.getRoutes();
+  std::unordered_map<std::string, Stop> stops = parser.getStops();
+  std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash> stop_times = parser.getStopTimes();
 
   Raptor raptor(stops, routes, trips, stop_times);
 
@@ -54,6 +39,10 @@ void Application::run() {
 }
 
 void Application::handleQuery(Raptor& raptor,const std::string &command) {
+
+  // TODO: ask for input directory here
+  // TODO: create raptor instance here
+  // TODO: ask for query here
   std::string source, target, departure_time;
 
   std::istringstream iss(command);

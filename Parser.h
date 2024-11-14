@@ -11,16 +11,30 @@ class Parser {
   private:
     std::string inputDirectory;
 
-  public:
-    explicit Parser(std::string  directory) : inputDirectory(std::move(directory)) {}
+    std::unordered_map<std::string, Agency> agencies_; // TODO: pass it to Raptor
+    std::unordered_map<std::string, Calendar> calendars_; // TODO: pass it to Raptor
+    std::unordered_map<std::string, Stop> stops_;
+    std::unordered_map<std::pair<std::string, std::string>, Route, pair_hash> routes_; // Key is (route_id, direction_id)
+    std::unordered_map<std::string, Trip> trips_;
+    std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash> stop_times_; // key is (trip_id, stop_id)
 
-    [[nodiscard]] std::unordered_map<std::string, Agency> readAgencies() const;
-    [[nodiscard]] std::unordered_map<std::string, Calendar> readCalendars() const;
-    [[nodiscard]] std::unordered_map<std::string, Route> readRoutes() const;
-    [[nodiscard]] std::unordered_map<std::string, Stop> readStops() const;
-    [[nodiscard]] std::unordered_map<std::string, Trip> readTrips() const;
-    [[nodiscard]] std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash> readStopTimes() const;
-    static void cleanLine(std::string &line) ;
+    void parseAgencies();
+    void parseCalendars();
+    void parseRoutes();
+    void parseStops();
+    void parseTrips();
+    void parseStopTimes();
+
+  public:
+    explicit Parser(std::string  directory);
+
+
+    [[nodiscard]] std::unordered_map<std::string, Stop> getStops();
+    [[nodiscard]] std::unordered_map<std::pair<std::string, std::string>, Route, pair_hash> getRoutes(); // Key is (route_id, direction_id)
+    [[nodiscard]] std::unordered_map<std::string, Trip> getTrips();
+    [[nodiscard]] std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash> getStopTimes(); // key is (trip_id, stop_id)
+
+  static void cleanLine(std::string &line) ;
 };
 
 #endif //PARSE_H

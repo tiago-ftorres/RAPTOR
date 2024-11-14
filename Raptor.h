@@ -6,36 +6,37 @@
 #define RAPTOR_RAPTOR_H
 
 #include <limits>
+#include <map>
 #include "Parser.h"
 #include "Utils.h"
 
 class Raptor {
-public:
-  Raptor(const std::unordered_map<std::string, Stop>& stops,
-         const std::unordered_map<std::string, Route>& routes,
-         const std::unordered_map<std::string, Trip>& trips,
-         const std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash>& stop_times);
+  public:
+    Raptor(const std::unordered_map<std::string, Stop>& stops,
+           const std::unordered_map<std::pair<std::string, std::string>, Route, pair_hash>& routes,
+           const std::unordered_map<std::string, Trip>& trips,
+           const std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash>& stop_times);
 
-  // Returns all Pareto-optimal journeys
-  std::vector<std::vector<JourneyStep>> findJourneys(const Query& query);
+    // Returns all Pareto-optimal journeys
+    std::vector<std::vector<JourneyStep>> findJourneys(const Query& query);
 
-  // Reconstruct all journeys
-  std::vector<std::vector<JourneyStep>> reconstructJourneys(const Query &query);
+    // Reconstruct all journeys
+    std::vector<std::vector<JourneyStep>> reconstructJourneys(const Query &query);
 
-  // Prints minimal arrival times for each stop, at each round
-  void showMinArrivalTimes();
+    // Prints minimal arrival times for each stop, at each round
+    void showMinArrivalTimes();
 
-  static constexpr int INF = std::numeric_limits<int>::max();
+    static constexpr int INF = std::numeric_limits<int>::max();
 
-private:
-  void initializeData();
+  private:
+    void initializeData();
 
-  std::unordered_map<std::string, Stop> stops_;
-  std::unordered_map<std::string, Route> routes_;
-  std::unordered_map<std::string, Trip> trips_;
-  std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash> stop_times_; // key is (trip_id, stop_id)
-  std::unordered_map<std::string, std::vector<StopInfo>> min_arrival_time; // each stop_id has a vector of min_arrival time for each k
-  int k;
+    std::unordered_map<std::string, Stop> stops_;
+    std::unordered_map<std::pair<std::string, std::string>, Route, pair_hash> routes_;
+    std::unordered_map<std::string, Trip> trips_;
+    std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash> stop_times_; // key is (trip_id, stop_id)
+    std::map<std::string, std::vector<StopInfo>> min_arrival_time; // each stop_id has a vector of min_arrival time for each k
+    int k;
 
 };
 

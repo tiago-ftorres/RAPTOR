@@ -2,7 +2,7 @@
 
 To compile the project, use the following command:
 
-``` g++ -o RAPTOR main.cpp Application.cpp Raptor.cpp Parse.cpp Utils.cpp -std=c++17 ```
+``` g++ -o RAPTOR main.cpp Application.cpp Raptor.cpp Parse.cpp Utils.cpp -std=c++20 ```
 
 You can run the program by executing the following command in the terminal:
 
