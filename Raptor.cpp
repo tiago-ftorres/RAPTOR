@@ -132,7 +132,7 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
       const auto& [route_key, p_stop_id] = *route_stop;
       const Route& route = routes_[route_key];
 
-      std::cout << "Traversing route " << route.route_id << " that has " << route.stops.size() << " stops: " << std::endl ;
+      std::cout << "Traversing route " << route.route_id << " direction " << route.direction_id << " that has " << route.stops.size() << " stops: " << std::endl ;
       for (Stop *stop : route.stops){
         std::cout << stop->stop_id << " " << stop->stop_name << std::endl;
       }
@@ -152,7 +152,7 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
         for (StopTime* stop_time : stops_[pi_stop_id].stop_times){
           // Check if the stop_time is from a trip that belongs to the route being traversed
           std::string stop_time_trip_id = stop_time->trip_id;
-          if ((trips_[stop_time_trip_id].route_id == route.route_id)
+          if ((trips_[stop_time_trip_id].route_id == route.route_id) && (trips_[stop_time_trip_id].direction_id == route.direction_id)
             && (Utils::timeToSeconds(stop_time->departure_time) >= min_arrival_time[pi_stop_id][k-1].min_arrival_time)){
 
             et_id = stop_time->trip_id;
@@ -171,29 +171,49 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
                   << " being et_id = " << et_id << std::endl;
 
         // Traverse remaining stops on the route to update arrival times
+        // TODO: could it be the remaining stops on the trip?
+        std::cout << "Analysing remaining stops after stop " << pi_stop_id << std::endl;
+
         for (auto itt = std::next(it); itt != route.stops.end(); ++itt) {
 
           Stop* next_stop = *itt;
           std::string next_stop_id = next_stop->stop_id;
 
-          // Calculate the arrival time
-          int arrival_time = Utils::timeToSeconds(stop_times_[{et_id, next_stop_id}].arrival_time);
+          std::cout << " Next stop: " << next_stop_id << " " << next_stop->stop_name << std::endl;
+
+          // Check if the stop time entry exists for this stop on the trip
+          auto stop_time_it = stop_times_.find({et_id, next_stop_id});
+
+          if (stop_time_it == stop_times_.end()){
+            std::cout << "Warning: Stop time not found for trip " << et_id << " at stop " << next_stop_id << std::endl;
+            continue;
+          }
+
+          // Access arrival time at next_stop_id for trip et_id
+          int arrival_time = Utils::timeToSeconds(stop_time_it->second.arrival_time);
 
           // If arrival time can be improved, update Tk(pj) using et
-//        if (arrival_time < std::min(min_arrival_time[stop_id][k], min_arrival_time[query.target_id][k])) {
-          if (arrival_time < min_arrival_time[next_stop_id][k].min_arrival_time) {
-
+          if (arrival_time < std::min(min_arrival_time[next_stop_id][k].min_arrival_time, min_arrival_time[query.target_id][k].min_arrival_time)) {
+            std::cout << "Marking " << stops_[next_stop_id].stop_name << " because trip " << et_id
+                      << " arrives there at "
+                      << Utils::secondsToTime(arrival_time) << " that is lower than prev arr time there ("
+                      << Utils::secondsToTime(min_arrival_time[next_stop_id][k].min_arrival_time)
+                      << ") and than target min arr time ("
+                      << Utils::secondsToTime(min_arrival_time[query.target_id][k].min_arrival_time)
+                      << std::endl;
             min_arrival_time[next_stop_id][k] = {arrival_time, et_id, pi_stop_id};
             marked_stops.insert(next_stop_id); // Mark this stop for the next round
           }
 
           // TODO: do it for current stop i or for subsequent stops j?
           // Check if an earlier trip can be caught at stop i (because a quicker path was found in a previous round)
-          // if Tk-1(pi) < Tarr(t, pi)
-          if (min_arrival_time[next_stop_id][k - 1].min_arrival_time < arrival_time) {
+          if (min_arrival_time[next_stop_id][k - 1].min_arrival_time < arrival_time) { // if Tk-1(pi) < Tarr(t, pi)
 
             // TODO: update t by recomputing et(r, pi) ---> would it mean only to update min_arrival_time array?
             et_id = min_arrival_time[next_stop_id][k-1].parent_trip_id;
+            std::cout << "Updated et_id for " << et_id << " because " << next_stop_id << " in k-1 has a better arrival time than with this trip "
+                      << Utils::secondsToTime(min_arrival_time[next_stop_id][k - 1].min_arrival_time)
+                      << " < " << Utils::secondsToTime(arrival_time) << std::endl;
 
           }
 
@@ -210,7 +230,12 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
       // For each foot-path (p, p')
       for (const auto& [dest_id, footpath]: stops_[stop_id].footpaths) {
         int new_arrival = min_arrival_time[stop_id][k].min_arrival_time + footpath.duration;
-        if (new_arrival < min_arrival_time[dest_id][k].min_arrival_time) {
+        // TODO: should I add this target comparison?
+        if (new_arrival < std::min(min_arrival_time[dest_id][k].min_arrival_time, min_arrival_time[query.target_id][k].min_arrival_time)) {
+          std::cout << "Marking stop " << dest_id << " because we can use a footpath to get there quicker ("
+                    << new_arrival << " < min(" << min_arrival_time[dest_id][k].min_arrival_time
+                    << ", " << min_arrival_time[query.target_id][k].min_arrival_time
+                    << ") " << std::endl;
           min_arrival_time[dest_id][k].min_arrival_time = new_arrival;
           min_arrival_time[dest_id][k].parent_trip_id = "-1";
           min_arrival_time[dest_id][k].parent_stop_id = stop_id;

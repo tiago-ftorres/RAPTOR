@@ -122,6 +122,7 @@ void Parser::parseRoutes() {
     for (auto& [key, r] : routes_) {
       // if key.route_id == route.route_id
       if (key.first == route.route_id) {
+        route.direction_id = key.second; // Set route direction_id
         routes_[key]=route;
       }
     }

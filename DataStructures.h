@@ -57,6 +57,7 @@ struct Trip {
 
 struct Route {
   std::string route_id;
+  std::string direction_id;
   std::string agency_id;
   std::string route_short_name;
   std::string route_long_name;
