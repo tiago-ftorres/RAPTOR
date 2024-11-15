@@ -5,7 +5,6 @@
 #ifndef RAPTOR_RAPTOR_H
 #define RAPTOR_RAPTOR_H
 
-#include <limits>
 #include <map>
 #include "Parser.h"
 #include "Utils.h"
@@ -25,8 +24,6 @@ class Raptor {
 
     // Prints minimal arrival times for each stop, at each round
     void showMinArrivalTimes();
-
-    static constexpr int INF = std::numeric_limits<int>::max();
 
   private:
     void initializeData();

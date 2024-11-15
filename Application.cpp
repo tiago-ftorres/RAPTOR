@@ -83,8 +83,9 @@ void Application::showCommands() {
   std::cout << std::endl << "Available commands:" << std::endl;
 
 
-  std::cout << std::left << std::setw(45) << " 1. query <source_id> <target_id> <departure_time>" <<" Runs RAPTOR from source to target at departure_time." << std::endl;
+  std::cout << std::left << std::setw(55) << " 1. query <source_id> <target_id> <departure_time>" <<" Runs RAPTOR from source to target at departure_time." << std::endl;
   std::cout << "     example: query 5777 5776 22:00:00" << std::endl;
-  std::cout << std::left << std::setw(45) << " 2. help " << " Shows available commands. "<< std::endl;
+  std::cout << "              query 5775 5813 03:00:33" << std::endl;
+  std::cout << std::left << std::setw(55) << " 2. help " << " Shows available commands. "<< std::endl;
   std::cout << " 3. quit " << std::endl;
 }

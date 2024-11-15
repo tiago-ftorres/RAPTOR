@@ -34,6 +34,10 @@ int Utils::getDuration(const Coordinates& coord1, const Coordinates& coord2) {
 }
 
 std::string Utils::secondsToTime(int seconds) {
+
+  if (seconds == INF)
+    return "INF";
+
   int hours = seconds / 3600;
   int minutes = (seconds % 3600) / 60;
   int secs = seconds % 60;
@@ -54,3 +58,4 @@ int Utils::timeToSeconds(const std::string& timeStr) {
 
   return hours * 3600 + minutes * 60 + seconds;
 }
+

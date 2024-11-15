@@ -5,6 +5,9 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
+#include <limits>
+
+static constexpr int INF = std::numeric_limits<int>::max();
 
 struct Agency {
   std::string agency_id;
