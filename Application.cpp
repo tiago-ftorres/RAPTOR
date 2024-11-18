@@ -57,23 +57,25 @@ void Application::handleQuery(Raptor& raptor,const std::string &command) {
     std::cout << "No journey found :/" << std::endl;
   } else {
 
-    std::cout << "Found " << journeys.size() << " journeys! =) " << std::endl;
+    std::cout << "Found " << journeys.size() << " journey(s)! =) " << std::endl;
 
-    for (const auto &journey: journeys) {
-      std::cout << std::endl << "Journey:" << std::endl;
-      std::cout << std::setw(6) << " step "<< std::setw(10) << " trip " << std::setw(5) << "stop" << std::setw(10) << " dep_time " << std::setw(10) << " -> stop " << std::setw(10) << " arr_time " << std::endl;
+    for (int i = 0 ; i < journeys.size(); i++){
+      const std::vector<JourneyStep>& journey = journeys[i];
+      std::cout << std::endl << "Journey " << i + 1 << ": " << std::endl << std::endl;
+      std::cout << std::setw(5) << "step"<< std::setw(11) << " trip " << std::setw(6) << "stop" << std::setw(10) << "dep_time "
+                << std::setw(9) << "-> stop " << std::setw(9) << "arr_time " << std::endl;
 
-      for (int i = 0 ; i < journey.size() ; i++){
-        const JourneyStep& step = journey[i];
-        std::cout << std::setw(6) << i + 1;
+      for (int j = 0 ; j < journey.size() ; j++){
+        const JourneyStep& step = journey[j];
+        std::cout << std::setw(6) << j + 1;
 
         if (step.trip_id != "-1")
           std::cout << std::setw(10) << step.trip_id;
         else
           std::cout << std::setw(10) << "footpath";
 
-        std::cout << std::setw(5) << step.stop_src_id << std::setw(10) << Utils::secondsToTime(step.departure_time)
-                  << std::setw(10) << step.stop_dest_id << std::setw(10) << Utils::secondsToTime(step.arrival_time);
+        std::cout << std::setw(6) << step.stop_src_id << std::setw(10) << Utils::secondsToTime(step.departure_time)
+                  << std::setw(9) << step.stop_dest_id << std::setw(9) << Utils::secondsToTime(step.arrival_time);
 
         std::cout << std::endl;
       }
@@ -90,6 +92,7 @@ void Application::showCommands() {
   std::cout << "     example: query 5777 5776 22:00:00" << std::endl;
   std::cout << "              query 5775 5813 03:00:33" << std::endl;
   std::cout << "              query 5746 5756 12:22:33" << std::endl;
+  std::cout << "              query 5753 5782 19:44:00" << std::endl;
   std::cout << std::left << std::setw(55) << " 2. help " << " Shows available commands. "<< std::endl;
   std::cout << " 3. quit " << std::endl;
 }
