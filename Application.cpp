@@ -61,13 +61,16 @@ void Application::handleQuery(Raptor& raptor,const std::string &command) {
 
     for (const auto &journey: journeys) {
       std::cout << std::endl << "Journey:" << std::endl;
-      std::cout << std::setw(6) << " trip " << std::setw(5) << "stop" << std::setw(10) << " dep_time " << std::setw(10) << " -> stop " << std::setw(10) << " arr_time " << std::endl;
+      std::cout << std::setw(6) << " step "<< std::setw(10) << " trip " << std::setw(5) << "stop" << std::setw(10) << " dep_time " << std::setw(10) << " -> stop " << std::setw(10) << " arr_time " << std::endl;
 
-      for (const auto &step: journey) {
+      for (int i = 0 ; i < journey.size() ; i++){
+        const JourneyStep& step = journey[i];
+        std::cout << std::setw(6) << i + 1;
+
         if (step.trip_id != "-1")
-          std::cout << std::setw(6) << step.trip_id;
+          std::cout << std::setw(10) << step.trip_id;
         else
-          std::cout << std::setw(6) << "footpath";
+          std::cout << std::setw(10) << "footpath";
 
         std::cout << std::setw(5) << step.stop_src_id << std::setw(10) << Utils::secondsToTime(step.departure_time)
                   << std::setw(10) << step.stop_dest_id << std::setw(10) << Utils::secondsToTime(step.arrival_time);
@@ -86,6 +89,7 @@ void Application::showCommands() {
   std::cout << std::left << std::setw(55) << " 1. query <source_id> <target_id> <departure_time>" <<" Runs RAPTOR from source to target at departure_time." << std::endl;
   std::cout << "     example: query 5777 5776 22:00:00" << std::endl;
   std::cout << "              query 5775 5813 03:00:33" << std::endl;
+  std::cout << "              query 5746 5756 12:22:33" << std::endl;
   std::cout << std::left << std::setw(55) << " 2. help " << " Shows available commands. "<< std::endl;
   std::cout << " 3. quit " << std::endl;
 }
