@@ -17,5 +17,4 @@ add_executable(raptor
         Utils.cpp
         Application.h
         Application.cpp
-        Parser.cpp
-        gtfsClasses/Route.h)
+        Parser.cpp)
