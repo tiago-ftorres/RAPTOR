@@ -17,12 +17,12 @@ double Utils::haversine(const Coordinates& coord1, const Coordinates& coord2) {
   double lat2 = coord2.lat * M_PI / 180.0;
   double lon2 = coord2.lon * M_PI / 180.0;
 
-  double dlat = lat2 - lat1;
-  double dlon = lon2 - lon1;
+  double diff_lat = lat2 - lat1;
+  double diff_lon = lon2 - lon1;
 
-  double a = std::sin(dlat / 2) * std::sin(dlat / 2) +
+  double a = std::sin(diff_lat / 2) * std::sin(diff_lat / 2) +
              std::cos(lat1) * std::cos(lat2) *
-             std::sin(dlon / 2) * std::sin(dlon / 2);
+             std::sin(diff_lon / 2) * std::sin(diff_lon / 2);
   double c = 2 * std::atan2(std::sqrt(a), std::sqrt(1 - a));
 
   return EARTH_RADIUS * c; // Kilometers
@@ -30,7 +30,7 @@ double Utils::haversine(const Coordinates& coord1, const Coordinates& coord2) {
 
 int Utils::getDuration(const Coordinates& coord1, const Coordinates& coord2) {
   double average_speed = 5.0; // km/h
-  return (Utils::haversine(coord1, coord2)/average_speed) * 60 * 60; // Seconds
+  return (int) ((Utils::haversine(coord1, coord2)/average_speed) * 60 * 60); // Seconds
 }
 
 std::string Utils::secondsToTime(int seconds) {

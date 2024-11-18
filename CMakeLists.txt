@@ -16,5 +16,4 @@ add_executable(raptor
         Utils.h
         Utils.cpp
         Application.h
-        Application.cpp
-        Parser.cpp)
+        Application.cpp)

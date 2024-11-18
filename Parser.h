@@ -5,14 +5,16 @@
 #include <sstream>
 #include <iostream>
 #include <utility>
+#include <algorithm>
 #include "DataStructures.h"
+#include "Utils.h"
 
 class Parser {
   private:
     std::string inputDirectory;
 
-    std::unordered_map<std::string, Agency> agencies_; // TODO: pass it to Raptor
-    std::unordered_map<std::string, Calendar> calendars_; // TODO: pass it to Raptor
+    std::unordered_map<std::string, Agency> agencies_;
+    std::unordered_map<std::string, Calendar> calendars_;
     std::unordered_map<std::string, Stop> stops_;
     std::unordered_map<std::pair<std::string, std::string>, Route, pair_hash> routes_; // Key is (route_id, direction_id)
     std::unordered_map<std::string, Trip> trips_;
@@ -25,10 +27,13 @@ class Parser {
     void parseTrips();
     void parseStopTimes();
 
-  public:
+    void associateData();
+
+public:
     explicit Parser(std::string  directory);
 
-
+    [[nodiscard]] std::unordered_map<std::string, Agency> getAgencies();
+    [[nodiscard]] std::unordered_map<std::string, Calendar> getCalendars();
     [[nodiscard]] std::unordered_map<std::string, Stop> getStops();
     [[nodiscard]] std::unordered_map<std::pair<std::string, std::string>, Route, pair_hash> getRoutes(); // Key is (route_id, direction_id)
     [[nodiscard]] std::unordered_map<std::string, Trip> getTrips();

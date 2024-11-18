@@ -9,6 +9,8 @@ Parser::Parser(std::string directory) : inputDirectory(std::move(directory)) {
   parseStops();
   parseStopTimes();
 
+  associateData();
+
   std::cout << "Agencies numbers: " << agencies_.size() << std::endl;
   std::cout << "Calendars number: " << calendars_.size() << std::endl;
   std::cout << "Trips number: " << trips_.size() << std::endl;
@@ -130,7 +132,6 @@ void Parser::parseRoutes() {
   }
 }
 
-// TODO: for all, fill fields based on header
 void Parser::parseStops() {
   std::ifstream file(inputDirectory + "stops.txt");
   std::string line;
@@ -191,9 +192,91 @@ void Parser::parseStopTimes() {
   }
 }
 
+void Parser::associateData() {
+  // Initialize footpaths
+  for (auto& [id, stop] : stops_) {
+    for (const auto& [other_id, other_stop]: stops_) {
+      if (id != other_id) {
+        stop.footpaths[other_id] = {other_id, Utils::getDuration(stop.coordinates, other_stop.coordinates)};
+      }
+    }
+  }
+
+  // Associate stop_times to trips
+  for (auto& [ key, stop_time] : stop_times_) {
+    auto& [trip_id, stop_id] = key;
+    trips_[trip_id].stop_times.push_back(&stop_time);
+  }
+
+  // Order each trip's stop_times
+  for (auto& [id, trip] : trips_) {
+    std::sort(trip.stop_times.begin(), trip.stop_times.end(), [](const StopTime* a, const StopTime* b) {
+      return a->stop_sequence < b->stop_sequence;
+    });
+  }
+
+  // Associate trips to routes
+  for (auto& [id, trip] : trips_){
+    auto route_key = std::make_pair(trip.route_id, trip.direction_id);
+    routes_[route_key].trips.push_back(&trip);
+  }
+
+  // Order each route's trip by earliest to latest arrival time
+  for (auto& [id, route] : routes_ ) {
+    std::sort(route.trips.begin(), route.trips.end(), [&](const Trip *a, const Trip *b) {
+      return Utils::timeToSeconds(a->stop_times.front()->arrival_time) < Utils::timeToSeconds(b->stop_times.front()->arrival_time);
+    });
+  }
+
+  // Associate stops to routes
+  for (auto& [key, route] : routes_){
+    // If there is no trip associated to this route, skip the route
+    if (route.trips.empty()) continue;
+
+    // Find the route's trip that has the most stops
+    Trip* largest_trip = route.trips[0];
+    for (size_t i = 1; i<route.trips.size(); i++){
+      Trip* trip = route.trips[i];
+      if (trip->stop_times.size() > largest_trip->stop_times.size()){
+        largest_trip = trip;
+      }
+    }
+
+    // A route stops' order will be the same as the routes' largest_trip stops' order, because it has the most stops
+    for (const auto& stop_time: largest_trip->stop_times){
+      route.stops.push_back(&stops_[stop_time->stop_id]);
+    }
+  }
+
+  for (auto& [key, stop_time] : stop_times_){
+    auto& [trip_id, stop_id] = key;
+    // Associate stop_times to stops
+    stops_[stop_id].stop_times.push_back(&stop_time);
+
+    // Associate routes to stops
+    stops_[stop_id].routes_keys.emplace_back(trips_[trip_id].route_id, trips_[trip_id].direction_id);
+  }
+
+  // Order each stop's stop_times by earliest to latest departure time
+  for (auto& [id, stop] : stops_){
+    std::sort(stop.stop_times.begin(), stop.stop_times.end(), [&](const StopTime *a, const StopTime *b) {
+      return Utils::timeToSeconds(a->departure_time) < Utils::timeToSeconds(b->departure_time);
+    });
+  }
+
+}
+
 void Parser::cleanLine(std::string &line) {
   line.erase(line.find_last_not_of(" \t\n\r\f\v") + 1);
   line.erase(0, line.find_first_not_of(" \t\n\r\f\v"));
+}
+
+std::unordered_map<std::string, Agency> Parser::getAgencies() {
+  return agencies_;
+}
+
+std::unordered_map<std::string, Calendar> Parser::getCalendars() {
+  return calendars_;
 }
 
 std::unordered_map<std::string, Stop> Parser::getStops() {
@@ -211,3 +294,4 @@ std::unordered_map<std::string, Trip> Parser::getTrips() {
 std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash> Parser::getStopTimes() {
   return stop_times_;
 }
+

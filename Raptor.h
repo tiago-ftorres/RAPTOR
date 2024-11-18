@@ -11,7 +11,9 @@
 
 class Raptor {
   public:
-    Raptor(const std::unordered_map<std::string, Stop>& stops,
+    Raptor(const std::unordered_map<std::string, Agency>& agencies_,
+           const std::unordered_map<std::string, Calendar>& calendars_,
+           const std::unordered_map<std::string, Stop>& stops,
            const std::unordered_map<std::pair<std::string, std::string>, Route, pair_hash>& routes,
            const std::unordered_map<std::string, Trip>& trips,
            const std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash>& stop_times);
@@ -26,8 +28,9 @@ class Raptor {
     void showMinArrivalTimes();
 
   private:
-    void initializeData();
 
+    std::unordered_map<std::string, Agency> agencies_;
+    std::unordered_map<std::string, Calendar> calendars_;
     std::unordered_map<std::string, Stop> stops_;
     std::unordered_map<std::pair<std::string, std::string>, Route, pair_hash> routes_;
     std::unordered_map<std::string, Trip> trips_;

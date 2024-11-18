@@ -9,12 +9,14 @@ Application::Application(std::string  inputDirectory)
 void Application::run() {
   Parser parser(inputDirectory);
 
+  std::unordered_map<std::string, Agency> agencies = parser.getAgencies();
+  std::unordered_map<std::string, Calendar> calendars = parser.getCalendars();
   std::unordered_map<std::string, Trip> trips = parser.getTrips();
   std::unordered_map<std::pair<std::string, std::string>, Route, pair_hash> routes = parser.getRoutes();
   std::unordered_map<std::string, Stop> stops = parser.getStops();
   std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash> stop_times = parser.getStopTimes();
 
-  Raptor raptor(stops, routes, trips, stop_times);
+  Raptor raptor(agencies, calendars, stops, routes, trips, stop_times);
 
   std::string command;
   showCommands();
@@ -40,9 +42,6 @@ void Application::run() {
 
 void Application::handleQuery(Raptor& raptor,const std::string &command) {
 
-  // TODO: ask for input directory here
-  // TODO: create raptor instance here
-  // TODO: ask for query here
   std::string source, target, departure_time;
 
   std::istringstream iss(command);
