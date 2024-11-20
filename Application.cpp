@@ -61,7 +61,7 @@ void Application::handleQuery(Raptor& raptor,const std::string &command) {
     for (int i = 0 ; i < journeys.size(); i++){
       const std::vector<JourneyStep>& journey = journeys[i];
       std::cout << std::endl << "Journey " << i + 1 << ": " << std::endl << std::endl;
-      std::cout << std::setw(5) << "step"<< std::setw(11) << " trip " << std::setw(6) << "stop" << std::setw(10) << "dep_time "
+      std::cout << std::setw(5) << "step"<< std::setw(13) << " trip " << std::setw(6) << "stop" << std::setw(10) << "dep_time "
                 << std::setw(9) << "-> stop " << std::setw(9) << "arr_time " << std::endl;
 
       for (int j = 0 ; j < journey.size() ; j++){
@@ -69,9 +69,9 @@ void Application::handleQuery(Raptor& raptor,const std::string &command) {
         std::cout << std::setw(6) << j + 1;
 
         if (step.trip_id != "-1")
-          std::cout << std::setw(10) << step.trip_id;
+          std::cout << std::setw(12) << step.trip_id;
         else
-          std::cout << std::setw(10) << "footpath";
+          std::cout << std::setw(12) << "footpath";
 
         std::cout << std::setw(6) << step.stop_src_id << std::setw(10) << Utils::secondsToTime(step.departure_time)
                   << std::setw(9) << step.stop_dest_id << std::setw(9) << Utils::secondsToTime(step.arrival_time);
@@ -92,7 +92,8 @@ void Application::showCommands() {
   std::cout << "              query 5775 5813 03:00:33" << std::endl;
   std::cout << "              query 5746 5756 12:22:33" << std::endl;
   std::cout << "              query 5753 5782 19:44:00" << std::endl;
-  std::cout << "              query 5726 5739 06:44:00" << std::endl; // Trindade to Lidador
+  std::cout << "              query 5726 5739 06:44:00" << std::endl; // Metro Trindade to Lidador
+  std::cout << "              query SAL2 IPO5 14:00:00" << std::endl; // STCP Salgueiros to IPO
   std::cout << std::left << std::setw(55) << " 2. help " << " Shows available commands. "<< std::endl;
   std::cout << " 3. quit " << std::endl;
 }

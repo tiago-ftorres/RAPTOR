@@ -5,11 +5,16 @@
 #include <sstream>
 #include <iostream>
 #include <utility>
-#include "DataStructures.h"
+
 #include "Utils.h"
-#include "NetworkObjects/Route.h"
-#include "NetworkObjects/Trip.h"
-#include "NetworkObjects/Stop.h"
+
+#include "NetworkObjects/DataStructures.h"
+#include "NetworkObjects/GTFSObjects/Agency.h"
+#include "NetworkObjects/GTFSObjects/Calendar.h"
+#include "NetworkObjects/GTFSObjects/Route.h"
+#include "NetworkObjects/GTFSObjects/Stop.h"
+#include "NetworkObjects/GTFSObjects/Trip.h"
+#include "NetworkObjects/GTFSObjects/StopTime.h"
 
 class Parser {
   private:

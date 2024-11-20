@@ -10,40 +10,10 @@
 
 static constexpr int INF = std::numeric_limits<int>::max();
 
-struct Agency {
-  std::string agency_id;
-  std::string agency_name;
-};
-
-struct Calendar {
-  std::string service_id;
-  bool monday, tuesday, wednesday, thursday, friday, saturday, sunday;
-  std::string start_date, end_date;
-};
-
-struct StopTime {
-  std::string trip_id;
-  std::string arrival_time;
-  std::string departure_time;
-  std::string stop_id;
-  int stop_sequence;
-};
-
 struct Footpath {
   std::string dest_id;
   int duration;
 };
-
-//struct Stop {
-//  std::string stop_id;
-//  std::string stop_code;
-//  std::string stop_name;
-//  std::string stop_desc;
-//  Coordinates coordinates;
-//  std::vector<StopTime*> stop_times; // Ordered by earliest to latest departure time
-//  std::vector<std::pair<std::string, std::string>> routes_keys; // (route_id, direction_id)
-//  std::unordered_map<std::string, Footpath> footpaths;
-//};
 
 struct Query {
   std::string source_id;

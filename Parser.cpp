@@ -27,24 +27,30 @@ Parser::Parser(std::string directory) : inputDirectory(std::move(directory)) {
 
 void Parser::parseAgencies() {
   std::ifstream file(inputDirectory + "/agency.txt");
+
   if (!file.is_open())
     throw std::runtime_error("Could not open agency.txt");
 
   std::string line;
-  std::getline(file, line);  // Skip header
+  std::getline(file, line);
+  std::vector<std::string> fields = Utils::split(line, ',');
 
   while (std::getline(file, line)) {
     cleanLine(line);
 
     if (line.empty()) continue;
 
-    std::stringstream ss(line);
+    std::vector<std::string> tokens = Utils::split(line, ',');
+
+    if (tokens.size() != fields.size())
+      throw std::runtime_error("Mismatched number of tokens and fields");
+
     Agency agency;
 
-    std::getline(ss, agency.agency_id, ',');
-    std::getline(ss, agency.agency_name, ',');
+    for (size_t i = 0; i < fields.size(); ++i)
+      agency.setField(fields[i], tokens[i]);
 
-    agencies_[agency.agency_id] = agency;
+    agencies_[agency.getField("agency_id")] = agency;
   }
 }
 
@@ -54,25 +60,26 @@ void Parser::parseCalendars() {
     throw std::runtime_error("Could not open calendar.txt");
 
   std::string line;
-  std::getline(file, line);  // Skip header
+  std::getline(file, line);
+  std::vector<std::string> fields = Utils::split(line, ',');
 
   while (std::getline(file, line)) {
     cleanLine(line);
 
     if (line.empty()) continue;
 
-    std::stringstream ss(line);
+    std::vector<std::string> tokens = Utils::split(line, ',');
+
+    if (tokens.size() != fields.size())
+      throw std::runtime_error("Mismatched number of tokens and fields");
+
+
     Calendar calendar;
 
-    std::getline(ss, calendar.service_id, ',');
+    for (size_t i = 0; i < fields.size(); ++i)
+      calendar.setField(fields[i], tokens[i]);
 
-    ss >> calendar.monday >> calendar.tuesday >> calendar.wednesday >> calendar.thursday
-       >> calendar.friday >> calendar.saturday >> calendar.sunday;
-
-    std::getline(ss, calendar.start_date, ',');
-    std::getline(ss, calendar.end_date);
-
-    calendars_[calendar.service_id] = calendar;
+    calendars_[calendar.getField("service_id")] = calendar;
   }
 }
 
@@ -93,14 +100,12 @@ void Parser::parseTrips() {
 
     std::vector<std::string> tokens = Utils::split(line, ',');
 
-    if (tokens.size() != fields.size()) {
+    if (tokens.size() != fields.size())
       throw std::runtime_error("Mismatched number of tokens and fields");
-    }
 
     Trip trip;
-    for (size_t i = 0; i < fields.size(); ++i) {
+    for (size_t i = 0; i < fields.size(); ++i)
       trip.setField(fields[i], tokens[i]);
-    }
 
     trips_[trip.getField("trip_id")] = trip;
     routes_[std::make_pair(trip.getField("route_id"), trip.getField("direction_id"))]; // Create entry
@@ -124,14 +129,12 @@ void Parser::parseRoutes() {
 
     std::vector<std::string> tokens = Utils::split(line, ',');
 
-    if (tokens.size() != fields.size()) {
+    if (tokens.size() != fields.size())
       throw std::runtime_error("Mismatched number of tokens and fields");
-    }
 
     Route route;
-    for (size_t i = 0; i < fields.size(); ++i) {
+    for (size_t i = 0; i < fields.size(); ++i)
       route.setField(fields[i], tokens[i]);
-    }
 
     // Iterate through all existing (route_id, direction_id) pairs in routes_
     for (auto& [key, r] : routes_) {
@@ -162,14 +165,12 @@ void Parser::parseStops() {
 
     std::vector<std::string> tokens = Utils::split(line, ',');
 
-    if (tokens.size() != fields.size()) {
+    if (tokens.size() != fields.size())
       throw std::runtime_error("Mismatched number of tokens and fields");
-    }
 
     Stop stop;
-    for (size_t i = 0; i < fields.size(); ++i) {
+    for (size_t i = 0; i < fields.size(); ++i)
       stop.setField(fields[i], tokens[i]);
-    }
 
     stops_[stop.getField("stop_id")] = stop;
   }
@@ -181,25 +182,25 @@ void Parser::parseStopTimes() {
     throw std::runtime_error("Could not open stop_times.txt");
 
   std::string line;
-  std::getline(file, line);  // Skip header
+  std::getline(file, line);
+  std::vector<std::string> fields = Utils::split(line, ',');
 
   while (std::getline(file, line)) {
     cleanLine(line);
 
     if (line.empty()) continue;
 
-    std::stringstream ss(line);
+    std::vector<std::string> tokens = Utils::split(line, ',');
+
+    if (tokens.size() != fields.size())
+      throw std::runtime_error("Mismatched number of tokens and fields");
+
     StopTime stop_time;
 
-    std::getline(ss, stop_time.trip_id, ',');
+    for (size_t i = 0; i < fields.size(); ++i)
+      stop_time.setField(fields[i], tokens[i]);
 
-    std::getline(ss, stop_time.arrival_time, ',');
-    std::getline(ss, stop_time.departure_time, ',');
-
-    std::getline(ss, stop_time.stop_id, ',');
-
-    ss >> stop_time.stop_sequence;
-    stop_times_[{stop_time.trip_id, stop_time.stop_id}] = stop_time;
+    stop_times_[{stop_time.getField("trip_id"), stop_time.getField("stop_id")}] = stop_time;
   }
 }
 
@@ -253,7 +254,7 @@ void Parser::associateData() {
 
     // A route stops' order will be the same as the routes' largest_trip stops' order, because it has the most stops
     for (const auto& stop_time: largest_trip->getStopTimes()){
-      route.addStop(&stops_[stop_time->stop_id]);
+      route.addStop(&stops_[stop_time->getField("stop_id")]);
     }
   }
 

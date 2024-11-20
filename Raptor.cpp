@@ -120,12 +120,12 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
         // Find the earliest trip in route r that can be caught at stop pi in round k
         for (StopTime* stop_time : stops_[pi_stop_id].getStopTimes()){
           // Check if the stop_time is from a trip that belongs to the route being traversed
-          std::string stop_time_trip_id = stop_time->trip_id;
+          std::string stop_time_trip_id = stop_time->getField("trip_id");
           if ((trips_[stop_time_trip_id].getField("route_id") == route.getField("route_id")) && (trips_[stop_time_trip_id].getField("direction_id") == route.getField("direction_id"))
-            && (Utils::timeToSeconds(stop_time->departure_time) >= min_arrival_time[pi_stop_id][k-1].min_arrival_time)
-            && (Utils::timeToSeconds(stop_time->departure_time) < min_arrival_time[query.target_id][k].min_arrival_time)
+            && (Utils::timeToSeconds(stop_time->getField("departure_time")) >= min_arrival_time[pi_stop_id][k-1].min_arrival_time)
+            && (Utils::timeToSeconds(stop_time->getField("departure_time")) < min_arrival_time[query.target_id][k].min_arrival_time)
             ) {
-            et_id = stop_time->trip_id;
+            et_id = stop_time->getField("trip_id");
 //            std::cout << "Selected " << et_id << " d " << trips_[et_id].getField("direction_id")
 //                      << " for " << std::setw(15) << stops_[pi_stop_id].getField("stop_name")
 //                      << " (dep at " << stop_time->departure_time
@@ -144,15 +144,15 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
 //                  << " being et_id = " << et_id << std::endl;
 
         auto et_stop_it = std::find_if(et.getStopTimes().begin(), et.getStopTimes().end(),
-                                    [&](StopTime* stoptime) { return stoptime->stop_id == pi_stop_id; });
+                                    [&](StopTime* stoptime) { return stoptime->getField("stop_id") == pi_stop_id; });
 
         // Traverse remaining stops on the trip to update arrival times
         for (auto next_stop_time = std::next(et_stop_it); next_stop_time != et.getStopTimes().end(); ++next_stop_time) {
 
-          std::string next_stop_id = (*next_stop_time)->stop_id;
+          std::string next_stop_id = (*next_stop_time)->getField("stop_id");
 
           // Access arrival time at next_stop_id for trip et_id
-          int arrival_time = Utils::timeToSeconds((*next_stop_time)->arrival_time);
+          int arrival_time = Utils::timeToSeconds((*next_stop_time)->getField("arrival_time"));
 
           // If arrival time can be improved, update Tk(pj) using et
           if (arrival_time < std::min(min_arrival_time[next_stop_id][k].min_arrival_time, min_arrival_time[query.target_id][k].min_arrival_time)) {
@@ -275,7 +275,7 @@ std::vector<std::vector<JourneyStep>> Raptor::reconstructJourneys(const Query &q
         departure_time = min_arrival_time[parent_stop_id][current_k].min_arrival_time;
         arrival_time = departure_time + footpath_duration;
       } else { // Trip
-        departure_time = Utils::timeToSeconds(stop_times_[{parent_trip_id, parent_stop_id}].departure_time);
+        departure_time = Utils::timeToSeconds(stop_times_[{parent_trip_id, parent_stop_id}].getField("departure_time"));
         arrival_time = min_arrival_time[current_stop_id][current_k].min_arrival_time;
         ntrips++;
       }
