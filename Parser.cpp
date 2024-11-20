@@ -21,6 +21,7 @@ Parser::Parser(std::string directory) : inputDirectory(std::move(directory)) {
   std::cout << "Stop Times number: " << stop_times_.size() << std::endl;
 
   associateData();
+  std::cout << "Data associated." << std::endl;
 
 }
 
@@ -77,28 +78,32 @@ void Parser::parseCalendars() {
 
 void Parser::parseTrips() {
   std::ifstream file(inputDirectory + "trips.txt");
+
   if (!file.is_open())
     throw std::runtime_error("Could not open trips.txt");
 
   std::string line;
-  std::getline(file, line);  // Skip header
+  std::getline(file, line);
+  std::vector<std::string> fields = Utils::split(line, ',');
 
   while (std::getline(file, line)) {
     cleanLine(line);
 
     if (line.empty()) continue;
 
-    std::stringstream ss(line);
+    std::vector<std::string> tokens = Utils::split(line, ',');
+
+    if (tokens.size() != fields.size()) {
+      throw std::runtime_error("Mismatched number of tokens and fields");
+    }
+
     Trip trip;
+    for (size_t i = 0; i < fields.size(); ++i) {
+      trip.setField(fields[i], tokens[i]);
+    }
 
-    std::getline(ss, trip.route_id, ',');
-    std::getline(ss, trip.service_id, ',');
-    std::getline(ss, trip.trip_id, ',');
-    std::getline(ss, trip.head_sign, ',');
-    std::getline(ss, trip.direction_id, ',');
-
-    trips_[trip.trip_id] = trip;
-    routes_[std::make_pair(trip.route_id, trip.direction_id)]; // Create entry
+    trips_[trip.getField("trip_id")] = trip;
+    routes_[std::make_pair(trip.getField("route_id"), trip.getField("direction_id"))]; // Create entry
   }
 }
 
@@ -128,24 +133,11 @@ void Parser::parseRoutes() {
       route.setField(fields[i], tokens[i]);
     }
 
-//    std::stringstream ss(line);
-//
-//    std::getline(ss, route.route_id, ',');
-//    std::getline(ss, route.agency_id, ',');
-//    std::getline(ss, route.route_short_name, ',');
-//    std::getline(ss, route.route_long_name, ',');
-//    std::getline(ss, route.route_desc, ',');
-
-//    std::string route_type_str;
-//    std::getline(ss, route_type_str);
-//    route.route_type = std::stoi(route_type_str);
-
     // Iterate through all existing (route_id, direction_id) pairs in routes_
     for (auto& [key, r] : routes_) {
       // if key.route_id == route.route_id
       if (key.first == route.getField("route_id")) {
         route.setField("direction_id", key.second);
-//        route.direction_id = key.second; // Set route direction_id
         routes_[key]=route;
       }
     }
@@ -155,35 +147,31 @@ void Parser::parseRoutes() {
 
 void Parser::parseStops() {
   std::ifstream file(inputDirectory + "stops.txt");
+
   if (!file.is_open())
     throw std::runtime_error("Could not open stops.txt");
 
   std::string line;
-  std::getline(file, line);  // Skip header
+  std::getline(file, line);
+  std::vector<std::string> fields = Utils::split(line, ',');
 
   while (std::getline(file, line)) {
     cleanLine(line);
 
     if (line.empty()) continue;
 
-    std::stringstream ss(line);
+    std::vector<std::string> tokens = Utils::split(line, ',');
+
+    if (tokens.size() != fields.size()) {
+      throw std::runtime_error("Mismatched number of tokens and fields");
+    }
+
     Stop stop;
+    for (size_t i = 0; i < fields.size(); ++i) {
+      stop.setField(fields[i], tokens[i]);
+    }
 
-    std::getline(ss, stop.stop_id, ',');
-    std::getline(ss, stop.stop_code, ',');
-    std::getline(ss, stop.stop_name, ',');
-    std::getline(ss, stop.stop_desc, ',');
-
-    std::string lat_str;
-    std::getline(ss, lat_str, ',');
-
-    std::string lon_str;
-    std::getline(ss, lon_str);
-
-    stop.coordinates.lat = std::stod(lat_str);
-    stop.coordinates.lon = std::stod(lon_str);
-
-    stops_[stop.stop_id] = stop;
+    stops_[stop.getField("stop_id")] = stop;
   }
 }
 
@@ -217,41 +205,37 @@ void Parser::parseStopTimes() {
 
 void Parser::associateData() {
   // Initialize footpaths
+  std::cout << "Initializing footpaths..." << std::endl;
+  // TODO: only initialize this data when we mark a stop
   for (auto& [id, stop] : stops_) {
     for (const auto& [other_id, other_stop]: stops_) {
       if (id != other_id) {
-        stop.footpaths[other_id] = {other_id, Utils::getDuration(stop.coordinates, other_stop.coordinates)};
+        stop.addFootpath(other_id, Utils::getDuration(stop.getField("stop_lat"),  stop.getField("stop_lon"),
+                                                              other_stop.getField("stop_lat"),  other_stop.getField("stop_lon")));
       }
     }
   }
+  std::cout << "Footpaths initialized." << std::endl;
 
   // Associate stop_times to trips
   for (auto& [ key, stop_time] : stop_times_) {
     auto& [trip_id, stop_id] = key;
-    trips_[trip_id].stop_times.push_back(&stop_time);
+    trips_[trip_id].addStopTime(&stop_time);
   }
 
   // Sort each trip's stop_times
-  for (auto& [id, trip] : trips_) {
-    std::sort(trip.stop_times.begin(), trip.stop_times.end(), [](const StopTime* a, const StopTime* b) {
-      return a->stop_sequence < b->stop_sequence;
-    });
-  }
+  for (auto& [id, trip] : trips_)
+    trip.sortStopTimes();
 
   // Associate trips to routes
   for (auto& [id, trip] : trips_){
-    auto route_key = std::make_pair(trip.route_id, trip.direction_id);
+    auto route_key = std::make_pair(trip.getField("route_id"), trip.getField("direction_id"));
     routes_[route_key].addTrip(&trip);
-//    routes_[route_key].trips.push_back(&trip);
   }
 
   // Sort each route's trip by earliest to latest arrival time
-  for (auto& [id, route] : routes_ ) {
+  for (auto& [id, route] : routes_ )
     route.sortTrips();
-//    std::sort(route.getTrips().begin(), route.getTrips().end(), [&](const Trip *a, const Trip *b) {
-//      return Utils::timeToSeconds(a->stop_times.front()->arrival_time) < Utils::timeToSeconds(b->stop_times.front()->arrival_time);
-//    });
-  }
 
   // Associate stops to routes
   for (auto& [key, route] : routes_){
@@ -262,33 +246,29 @@ void Parser::associateData() {
     Trip* largest_trip = route.getTrips()[0];
     for (size_t i = 1; i<route.getTrips().size(); i++){
       Trip* trip = route.getTrips()[i];
-      if (trip->stop_times.size() > largest_trip->stop_times.size()){
+      if (trip->getStopTimes().size() > largest_trip->getStopTimes().size()){
         largest_trip = trip;
       }
     }
 
     // A route stops' order will be the same as the routes' largest_trip stops' order, because it has the most stops
-    for (const auto& stop_time: largest_trip->stop_times){
+    for (const auto& stop_time: largest_trip->getStopTimes()){
       route.addStop(&stops_[stop_time->stop_id]);
-//      route.getStops().push_back(&stops_[stop_time->stop_id]);
     }
   }
 
   for (auto& [key, stop_time] : stop_times_){
     auto& [trip_id, stop_id] = key;
     // Associate stop_times to stops
-    stops_[stop_id].stop_times.push_back(&stop_time);
+    stops_[stop_id].addStopTime(&stop_time);
 
     // Associate routes to stops
-    stops_[stop_id].routes_keys.emplace_back(trips_[trip_id].route_id, trips_[trip_id].direction_id);
+    stops_[stop_id].addRouteKey(std::make_pair(trips_[trip_id].getField("route_id"), trips_[trip_id].getField("direction_id")));
   }
 
   // Sort each stop's stop_times by earliest to latest departure time
-  for (auto& [id, stop] : stops_){
-    std::sort(stop.stop_times.begin(), stop.stop_times.end(), [&](const StopTime *a, const StopTime *b) {
-      return Utils::timeToSeconds(a->departure_time) < Utils::timeToSeconds(b->departure_time);
-    });
-  }
+  for (auto& [id, stop] : stops_)
+    stop.sortStopTimes();
 
 }
 

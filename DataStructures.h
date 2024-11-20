@@ -29,47 +29,20 @@ struct StopTime {
   int stop_sequence;
 };
 
-struct Coordinates {
-  double lat;
-  double lon;
-};
-
 struct Footpath {
   std::string dest_id;
   int duration;
 };
 
-struct Stop {
-  std::string stop_id;
-  std::string stop_code;
-  std::string stop_name;
-  std::string stop_desc;
-  Coordinates coordinates;
-  std::vector<StopTime*> stop_times; // Ordered by earliest to latest departure time
-  std::vector<std::pair<std::string, std::string>> routes_keys; // (route_id, direction_id)
-  std::unordered_map<std::string, Footpath> footpaths;
-};
-
-struct Trip {
-  std::string route_id;
-  std::string service_id;
-  std::string trip_id;
-  std::string head_sign;
-  std::string direction_id;
-  std::vector<StopTime*> stop_times; // Ordered by stop_times' sequence
-};
-
-//struct Route {
-//  std::string route_id;
-//  std::string direction_id;
-//  std::string agency_id;
-//  std::string route_short_name;
-//  std::string route_long_name;
-//  std::string route_desc;
-//  int route_type;
-//
-//  std::vector<Trip*> trips; // Trips that follow this route, ordered by earliest to latest arrival time
-//  std::vector<Stop*> stops; // Stops that compose this route, ordered by stop_sequence
+//struct Stop {
+//  std::string stop_id;
+//  std::string stop_code;
+//  std::string stop_name;
+//  std::string stop_desc;
+//  Coordinates coordinates;
+//  std::vector<StopTime*> stop_times; // Ordered by earliest to latest departure time
+//  std::vector<std::pair<std::string, std::string>> routes_keys; // (route_id, direction_id)
+//  std::unordered_map<std::string, Footpath> footpaths;
 //};
 
 struct Query {

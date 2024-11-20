@@ -20,4 +20,6 @@ add_executable(raptor
         NetworkObjects/Route.h
         NetworkObjects/Route.cpp
         NetworkObjects/Trip.cpp
-        NetworkObjects/Trip.h)
+        NetworkObjects/Trip.h
+        NetworkObjects/Stop.cpp
+        NetworkObjects/Stop.h)

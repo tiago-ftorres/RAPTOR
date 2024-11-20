@@ -6,8 +6,10 @@
 #include <iostream>
 #include <utility>
 #include "DataStructures.h"
-#include "NetworkObjects/Route.h"
 #include "Utils.h"
+#include "NetworkObjects/Route.h"
+#include "NetworkObjects/Trip.h"
+#include "NetworkObjects/Stop.h"
 
 class Parser {
   private:

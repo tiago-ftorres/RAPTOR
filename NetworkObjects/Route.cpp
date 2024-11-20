@@ -17,12 +17,12 @@ void Route::addStop(Stop *stop) {
 
 void Route::sortTrips() {
   std::sort(trips.begin(), trips.end(), [&](const Trip* a, const Trip* b) {
-    return Utils::timeToSeconds(a->stop_times.front()->arrival_time) <
-           Utils::timeToSeconds(b->stop_times.front()->arrival_time);
+    return Utils::timeToSeconds(a->getStopTimes().front()->arrival_time) <
+           Utils::timeToSeconds(b->getStopTimes().front()->arrival_time);
   });
 }
 
-std::string Route::getField(const std::string &field) const {
+const std::string& Route::getField(const std::string &field) const {
   auto it = fields.find(field);
   if (it != fields.end()) {
     return it->second;
