@@ -92,6 +92,7 @@ void Application::showCommands() {
   std::cout << "              query 5775 5813 03:00:33" << std::endl;
   std::cout << "              query 5746 5756 12:22:33" << std::endl;
   std::cout << "              query 5753 5782 19:44:00" << std::endl;
+  std::cout << "              query 5726 5739 06:44:00" << std::endl; // Trindade to Lidador
   std::cout << std::left << std::setw(55) << " 2. help " << " Shows available commands. "<< std::endl;
   std::cout << " 3. quit " << std::endl;
 }

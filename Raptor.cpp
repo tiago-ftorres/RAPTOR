@@ -251,11 +251,17 @@ std::vector<std::vector<JourneyStep>> Raptor::reconstructJourneys(const Query &q
     std::vector<JourneyStep> journey;
     std::string current_stop_id = query.target_id;
     bool found_journey = false;
+    int ntrips = 0;
 
     while (current_stop_id != "-1") {
 
       const std::string parent_trip_id = min_arrival_time[current_stop_id][current_k].parent_trip_id;
       const std::string parent_stop_id = min_arrival_time[current_stop_id][current_k].parent_stop_id;
+
+//      std::cout << "current stop " << current_stop_id
+//                << " parent trip " << parent_trip_id
+//                << " parent stop " << parent_stop_id
+//                << std::endl;
 
       if (parent_stop_id == "-1") {
         break;
@@ -266,10 +272,10 @@ std::vector<std::vector<JourneyStep>> Raptor::reconstructJourneys(const Query &q
         int footpath_duration = stops_[parent_stop_id].footpaths[current_stop_id].duration;
         departure_time = min_arrival_time[parent_stop_id][current_k].min_arrival_time;
         arrival_time = departure_time + footpath_duration;
-        break;
       } else { // Trip
         departure_time = Utils::timeToSeconds(stop_times_[{parent_trip_id, parent_stop_id}].departure_time);
         arrival_time = min_arrival_time[current_stop_id][current_k].min_arrival_time;
+        ntrips++;
       }
 
       journey.push_back({parent_trip_id, parent_stop_id, current_stop_id, departure_time, arrival_time});
@@ -289,7 +295,7 @@ std::vector<std::vector<JourneyStep>> Raptor::reconstructJourneys(const Query &q
       std::reverse(journey.begin(), journey.end());
 
       journeys.push_back(journey);
-      current_k = (int) journey.size() - 1; // Decrease to the next journey with fewer transfers
+      current_k = ntrips - 1; // Decrease to the next journey with fewer transfers
     } else  // No journey found
       break;
   }
