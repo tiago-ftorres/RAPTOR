@@ -2,7 +2,13 @@
 
 To compile the project, use the following command in WSL:
 
-``` g++ -o RAPTOR main.cpp Application.cpp Raptor.cpp Parser.cpp Utils.cpp -std=c++20 ```
+<code> 
+g++ -std=c++20 -o raptor main.cpp Parser.cpp Raptor.cpp Utils.cpp Application.cpp \ 
+NetworkObjects/GTFSObjects/Route.cpp NetworkObjects/GTFSObjects/Trip.cpp \
+NetworkObjects/GTFSObjects/Stop.cpp NetworkObjects/GTFSObjects/GTFSObject.cpp \
+NetworkObjects/GTFSObjects/Agency.cpp NetworkObjects/GTFSObjects/Calendar.cpp \
+NetworkObjects/GTFSObjects/StopTime.cpp 
+</code>
 
 You can run the program by executing one of the following command in the terminal:
 

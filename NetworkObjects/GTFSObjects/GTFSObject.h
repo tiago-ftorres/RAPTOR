@@ -10,8 +10,8 @@
 #include <algorithm>
 #include <stdexcept>
 
-#include "NetworkObjects/DataStructures.h"
-#include "Utils.h"
+#include "../DataStructures.h"
+#include "../../Utils.h"
 
 class GTFSObject {
 public:

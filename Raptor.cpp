@@ -126,12 +126,6 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
             && (Utils::timeToSeconds(stop_time->getField("departure_time")) < min_arrival_time[query.target_id][k].min_arrival_time)
             ) {
             et_id = stop_time->getField("trip_id");
-//            std::cout << "Selected " << et_id << " d " << trips_[et_id].getField("direction_id")
-//                      << " for " << std::setw(15) << stops_[pi_stop_id].getField("stop_name")
-//                      << " (dep at " << stop_time->getField("departure_time")
-//                      << " >= " << Utils::secondsToTime(min_arrival_time[pi_stop_id][k-1].min_arrival_time)
-//                      << " min arr there [k-1]), target arr time: " << Utils::secondsToTime(min_arrival_time[query.target_id][k].min_arrival_time)
-//                      << std::endl << std::endl;
             break; // We can break because stop_times is ordered
           }
         }
