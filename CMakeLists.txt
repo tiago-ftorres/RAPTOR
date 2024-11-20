@@ -16,4 +16,8 @@ add_executable(raptor
         Utils.h
         Utils.cpp
         Application.h
-        Application.cpp)
+        Application.cpp
+        NetworkObjects/Route.h
+        NetworkObjects/Route.cpp
+        NetworkObjects/Trip.cpp
+        NetworkObjects/Trip.h)

@@ -11,6 +11,8 @@
 
 class Utils {
 public:
+  static std::vector<std::string> split(const std::string& str, char delimiter);
+
   static double haversine(const Coordinates& coord1, const Coordinates& coord2);
   static int getDuration(const Coordinates& coord1, const Coordinates& coord2);
 

@@ -52,7 +52,7 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
 
         // Iterate over all stops in the route
         bool already_has_point = false;
-        for (Stop* stop: routes_[route_key].stops) {
+        for (Stop* stop: routes_[route_key].getStops()) {
           std::string stop_id = stop->stop_id;
 
           // Check if a point p' is already in the list
@@ -60,9 +60,9 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
           if (existing_entry != routes_stops_set.end()) {
             already_has_point = true;
 
-            auto it_marked = std::find_if(routes_[route_key].stops.begin(), routes_[route_key].stops.end(),
+            auto it_marked = std::find_if(routes_[route_key].getStops().begin(), routes_[route_key].getStops().end(),
                                           [&](Stop* s) { return s->stop_id == *marked_stop_id; });
-            auto it_stop = std::find_if(routes_[route_key].stops.begin(), routes_[route_key].stops.end(),
+            auto it_stop = std::find_if(routes_[route_key].getStops().begin(), routes_[route_key].getStops().end(),
                                         [&](Stop* s) { return s->stop_id == stop_id; });
 
             if (it_marked < it_stop) { // if marked_p comes before p'
@@ -99,7 +99,7 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
 //        std::cout << stop->stop_id << " " << stop->stop_name << std::endl;
 //      }
 
-      auto stop_it = std::find_if(route.stops.begin(), route.stops.end(),
+      auto stop_it = std::find_if(route.getStops().begin(), route.getStops().end(),
                                          [&](Stop* stop) { return stop->stop_id == p_stop_id; });
 
       // Remaining stops to be traversed on the route:
@@ -110,7 +110,7 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
 //      std::cout << std::endl << std::endl << std::endl;
 
       // For each stop pi on this route, try to find the earliest trip (et) that can be taken
-      for (auto it = stop_it; it != route.stops.end(); ++it) {
+      for (auto it = stop_it; it != route.getStops().end(); ++it) {
         Stop* pi_stop = *it;
         std::string pi_stop_id = pi_stop->stop_id;
         std::string et_id = "-1";
@@ -119,7 +119,7 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
         for (StopTime* stop_time : stops_[pi_stop_id].stop_times){
           // Check if the stop_time is from a trip that belongs to the route being traversed
           std::string stop_time_trip_id = stop_time->trip_id;
-          if ((trips_[stop_time_trip_id].route_id == route.route_id) && (trips_[stop_time_trip_id].direction_id == route.direction_id)
+          if ((trips_[stop_time_trip_id].route_id == route.getField("route_id")) && (trips_[stop_time_trip_id].direction_id == route.getField("direction_id"))
             && (Utils::timeToSeconds(stop_time->departure_time) >= min_arrival_time[pi_stop_id][k-1].min_arrival_time)
             && (Utils::timeToSeconds(stop_time->departure_time) < min_arrival_time[query.target_id][k].min_arrival_time)
             ) {

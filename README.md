@@ -4,9 +4,11 @@ To compile the project, use the following command in WSL:
 
 ``` g++ -o RAPTOR main.cpp Application.cpp Raptor.cpp Parser.cpp Utils.cpp -std=c++20 ```
 
-You can run the program by executing the following command in the terminal:
+You can run the program by executing one of the following command in the terminal:
 
- ``` ./RAPTOR ./dataset/Porto/large/GTFS/```
+``` ./RAPTOR ./dataset/Porto/metro/GTFS/```
+
+``` ./RAPTOR ./dataset/Porto/sctp/GTFS/```
 
  - You can specify the path to the GTFS directory directly in the command line. 
  - If no path is provided, the program will prompt you to enter the directory path.

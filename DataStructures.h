@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <limits>
+#include <algorithm>
 
 static constexpr int INF = std::numeric_limits<int>::max();
 
@@ -58,18 +59,18 @@ struct Trip {
   std::vector<StopTime*> stop_times; // Ordered by stop_times' sequence
 };
 
-struct Route {
-  std::string route_id;
-  std::string direction_id;
-  std::string agency_id;
-  std::string route_short_name;
-  std::string route_long_name;
-  std::string route_desc;
-  int route_type;
-
-  std::vector<Trip*> trips; // Trips that follow this route, ordered by earliest to latest arrival time
-  std::vector<Stop*> stops; // Stops that compose this route, ordered by stop_sequence
-};
+//struct Route {
+//  std::string route_id;
+//  std::string direction_id;
+//  std::string agency_id;
+//  std::string route_short_name;
+//  std::string route_long_name;
+//  std::string route_desc;
+//  int route_type;
+//
+//  std::vector<Trip*> trips; // Trips that follow this route, ordered by earliest to latest arrival time
+//  std::vector<Stop*> stops; // Stops that compose this route, ordered by stop_sequence
+//};
 
 struct Query {
   std::string source_id;
