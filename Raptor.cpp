@@ -272,8 +272,8 @@ std::vector<std::vector<JourneyStep>> Raptor::reconstructJourneys(const Query &q
         arrival_time = min_arrival_time[current_stop_id][current_k].min_arrival_time;
         ntrips++;
       }
-
-      journey.push_back({parent_trip_id, parent_stop_id, current_stop_id, departure_time, arrival_time});
+      JourneyStep step = {parent_trip_id, &stops_[parent_stop_id], &stops_[current_stop_id], departure_time, arrival_time};
+      journey.push_back(step);
 
       // Update to the previous stop boarded
       current_stop_id = parent_stop_id;

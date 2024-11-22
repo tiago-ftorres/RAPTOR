@@ -10,7 +10,6 @@
 #include <algorithm>
 #include <stdexcept>
 
-#include "../DataStructures.h"
 #include "../../Utils.h"
 
 class GTFSObject {

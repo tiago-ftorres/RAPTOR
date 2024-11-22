@@ -7,6 +7,7 @@
 
 #include "GTFSObject.h"
 #include "StopTime.h"
+#include "../DataStructures.h"
 
 class Stop : public GTFSObject {
   public:

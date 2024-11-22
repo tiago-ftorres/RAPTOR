@@ -5,11 +5,9 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
-#include <limits>
 #include <algorithm>
-#include "GTFSObjects/GTFSObject.h"
 
-static constexpr int INF = std::numeric_limits<int>::max();
+class Stop;
 
 struct Footpath {
   std::string dest_id;
@@ -30,10 +28,8 @@ struct StopInfo {
 
 struct JourneyStep {
   std::string trip_id; // if footpath, trip_id = -1
-  std::string stop_src_id;
-  std::string stop_dest_id;
-//  Stop* src_stop;
-//  Stop* dest_stop;
+  Stop* src_stop;
+  Stop* dest_stop;
 
   int departure_time;
   int arrival_time;

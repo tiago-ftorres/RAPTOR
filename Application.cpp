@@ -61,8 +61,8 @@ void Application::handleQuery(Raptor& raptor,const std::string &command) {
     for (int i = 0 ; i < journeys.size(); i++){
       const std::vector<JourneyStep>& journey = journeys[i];
       std::cout << std::endl << "Journey " << i + 1 << ": " << std::endl << std::endl;
-      std::cout << std::setw(5) << "step"<< std::setw(13) << " trip " << std::setw(6) << "stop" << std::setw(10) << "dep_time "
-                << std::setw(9) << "-> stop " << std::setw(9) << "arr_time " << std::endl;
+      std::cout << std::setw(5) << "step"<< std::setw(13) << " trip " << std::setw(22) << "stop" << std::setw(10) << "dep_time "
+                << std::setw(22) << "-> stop " << std::setw(9) << "arr_time " << std::endl;
 
       for (int j = 0 ; j < journey.size() ; j++){
         const JourneyStep& step = journey[j];
@@ -73,8 +73,8 @@ void Application::handleQuery(Raptor& raptor,const std::string &command) {
         else
           std::cout << std::setw(12) << "footpath";
 
-        std::cout << std::setw(6) << step.stop_src_id << std::setw(10) << Utils::secondsToTime(step.departure_time)
-                  << std::setw(9) << step.stop_dest_id << std::setw(9) << Utils::secondsToTime(step.arrival_time);
+        std::cout << std::setw(22) << step.src_stop->getField("stop_name") << std::setw(10) << Utils::secondsToTime(step.departure_time)
+                  << std::setw(22) << step.dest_stop->getField("stop_name") << std::setw(9) << Utils::secondsToTime(step.arrival_time);
 
         std::cout << std::endl;
       }
