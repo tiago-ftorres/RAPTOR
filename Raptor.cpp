@@ -1,9 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <unordered_map>
-#include <unordered_set>
-#include <algorithm>
-#include <iomanip>  // for setw
+
 #include "Raptor.h"
 
 Raptor::Raptor(const std::unordered_map<std::string, Agency>& agencies_,
@@ -317,4 +312,8 @@ void Raptor::showMinArrivalTimes() {
 
     std::cout << std::endl;
   }
+}
+
+const std::unordered_map<std::string, Stop> &Raptor::getStops() const {
+  return stops_;
 }

@@ -3,7 +3,6 @@
 //
 
 #include "Trip.h"
-#include <iostream>
 
 void Trip::addStopTime(StopTime *stopTime) {
   stop_times.push_back(stopTime);

@@ -2,9 +2,6 @@
 // Created by maria on 10/28/2024.
 //
 
-#include <sstream>
-#include <iomanip>
-#include <iostream>
 #include "Utils.h"
 
 // Earth radius in kilometers
@@ -96,4 +93,16 @@ std::vector<std::string> Utils::split(const std::string &str, char delimiter) {
 std::string Utils::getFirstWord(const std::string &str) {
   return str.substr(0, str.find(' '));
 }
+
+std::string Utils::trim(const std::string &str) {
+  size_t first = str.find_first_not_of(" \t");
+  size_t last = str.find_last_not_of(" \t");
+  return (first == std::string::npos) ? "" : str.substr(first, (last - first + 1));
+}
+
+
+bool Utils::isNumber(const std::string& str) {
+  return std::ranges::all_of(str, [](char c) { return std::isdigit(c); });
+}
+
 

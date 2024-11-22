@@ -25,11 +25,13 @@ void Application::run() {
     std::cout << "\nType a command: ";
     std::getline(std::cin, command);
 
-    if (command.rfind("query", 0) == 0) {
-      handleQuery(raptor, command);
-    } else if (command == "help") {
+    std::string trimmedCommand = Utils::trim(command);
+
+    if (trimmedCommand == "query") {
+      handleQuery(raptor);
+    } else if (trimmedCommand == "help") {
       showCommands();
-    } else if (command == "quit") {
+    } else if (trimmedCommand == "quit") {
       std::cout << "Quitting program..." << std::endl;
       break;
     } else {
@@ -40,14 +42,65 @@ void Application::run() {
   }
 }
 
-void Application::handleQuery(Raptor& raptor,const std::string &command) {
+//std::cout << "     example: query 5777 5776 22:00:00" << std::endl;
+//  std::cout << "              query 5775 5813 03:00:33" << std::endl;
+//  std::cout << "              query 5746 5756 12:22:33" << std::endl;
+//  std::cout << "              query 5753 5782 19:44:00" << std::endl;
+//  std::cout << "              query 5726 5739 06:44:00" << std::endl; // Metro Trindade to Lidador
+//  std::cout << "              query SAL2 IPO5 14:00:00" << std::endl; // STCP Salgueiros to IPO
+//  std::cout << "              query MAIA3 PARR3 5:55:55" << std::endl; // STCP Maia to Arrabida
+
+void Application::handleQuery(Raptor& raptor) {
 
   std::string source, target, departure_time;
 
-  std::istringstream iss(command);
-  std::string queryCommand;
+  while (true) {
+    std::cout << "Enter source stop id: ";
+    std::getline(std::cin, source);
+    source = Utils::trim(source);
 
-  iss >> queryCommand >> source >> target >> departure_time;
+    if (raptor.getStops().find(source) != raptor.getStops().end()) break;
+    else std::cout << "Invalid source stop id. Please try again. Example: 5753 for Metro or SAL2 for STCP." << std::endl;
+  }
+
+  while (true) {
+    std::cout << "Enter target stop id: ";
+    std::getline(std::cin, target);
+    target = Utils::trim(target);
+
+    if (raptor.getStops().find(target) != raptor.getStops().end()) break;
+    else std::cout << "Invalid target stop id. Please try again. Example: 5753 for Metro or SAL2 for STCP." << std::endl;
+  }
+
+  std::string input;
+
+  // Ask for hours
+  int hours;
+  while (true) {
+    std::cout << "Enter hours (0-23): ";
+    std::getline(std::cin, input);
+    input = Utils::trim(input);
+    if (Utils::isNumber(input)) {
+      hours = std::stoi(input);
+      if (hours >= 0 && hours <= 23) break;
+    }
+    std::cout << "Invalid hours. Please enter a valid hour between 0 and 23.\n";
+  }
+
+  // Ask for minutes
+  int minutes;
+  while (true) {
+    std::cout << "Enter minutes (0-59): ";
+    std::getline(std::cin, input);
+    input = Utils::trim(input);
+    if (Utils::isNumber(input)) {
+      minutes = std::stoi(input);
+      if (minutes >= 0 && minutes <= 59) break;
+    }
+    std::cout << "Invalid minutes. Please enter valid minutes between 0 and 59.\n";
+  }
+
+  departure_time = std::to_string(hours) + ":" + std::to_string(minutes) + ":00";
 
   Query query = {source, target, departure_time};
   std::vector<std::vector<JourneyStep>> journeys = raptor.findJourneys(query);
@@ -88,14 +141,14 @@ void Application::showCommands() {
   std::cout << std::endl << "Available commands:" << std::endl;
 
 
-  std::cout << std::left << std::setw(55) << " 1. query <source_id> <target_id> <departure_time>" <<" Runs RAPTOR from source to target at departure_time." << std::endl;
-  std::cout << "     example: query 5777 5776 22:00:00" << std::endl;
-  std::cout << "              query 5775 5813 03:00:33" << std::endl;
-  std::cout << "              query 5746 5756 12:22:33" << std::endl;
-  std::cout << "              query 5753 5782 19:44:00" << std::endl;
-  std::cout << "              query 5726 5739 06:44:00" << std::endl; // Metro Trindade to Lidador
-  std::cout << "              query SAL2 IPO5 14:00:00" << std::endl; // STCP Salgueiros to IPO
-  std::cout << "              query MAIA3 PARR3 5:55:55" << std::endl; // STCP Maia to Arrabida
-  std::cout << std::left << std::setw(55) << " 2. help " << " Shows available commands. "<< std::endl;
+  std::cout << std::left << std::setw(30) << " 1. query " <<" Runs RAPTOR algorithm." << std::endl;
+//  std::cout << "     example: query 5777 5776 22:00:00" << std::endl;
+//  std::cout << "              query 5775 5813 03:00:33" << std::endl;
+//  std::cout << "              query 5746 5756 12:22:33" << std::endl;
+//  std::cout << "              query 5753 5782 19:44:00" << std::endl;
+//  std::cout << "              query 5726 5739 06:44:00" << std::endl; // Metro Trindade to Lidador
+//  std::cout << "              query SAL2 IPO5 14:00:00" << std::endl; // STCP Salgueiros to IPO
+//  std::cout << "              query MAIA3 PARR3 5:55:55" << std::endl; // STCP Maia to Arrabida
+  std::cout << std::left << std::setw(30) << " 2. help " << " Shows available commands. "<< std::endl;
   std::cout << " 3. quit " << std::endl;
 }

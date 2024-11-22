@@ -15,7 +15,7 @@ public:
   void run();
 
 private:
-  static void handleQuery(Raptor &raptor, const std::string &command);
+  static void handleQuery(Raptor &raptor);
   static void showCommands();
 
   std::string inputDirectory;

@@ -5,6 +5,10 @@
 #ifndef RAPTOR_UTILS_H
 #define RAPTOR_UTILS_H
 
+
+#include <sstream>
+#include <iomanip>
+#include <algorithm>
 #include <utility> // for std::pair
 #include <cmath>   // for std::sin, std::cos, std::atan2, std::sqrt
 #include <vector>
@@ -25,6 +29,9 @@ public:
 
   static std::vector<std::string> split(const std::string& str, char delimiter);
   static std::string getFirstWord(const std::string& str);
+  static std::string trim(const std::string& str);
+
+  static bool isNumber(const std::string &str);
 
 };
 

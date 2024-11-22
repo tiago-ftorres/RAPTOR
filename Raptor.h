@@ -5,6 +5,11 @@
 #ifndef RAPTOR_RAPTOR_H
 #define RAPTOR_RAPTOR_H
 
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
+#include <iomanip>  // for setw
 #include "Parser.h"
 #include "Utils.h"
 
@@ -26,7 +31,9 @@ class Raptor {
     // Prints minimal arrival times for each stop, at each round
     void showMinArrivalTimes();
 
-  private:
+    const std::unordered_map<std::string, Stop>& getStops() const;
+
+private:
 
     std::unordered_map<std::string, Agency> agencies_;
     std::unordered_map<std::string, Calendar> calendars_;

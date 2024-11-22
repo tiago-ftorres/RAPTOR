@@ -7,7 +7,6 @@
 
 #include <unordered_map>
 #include <string>
-#include <algorithm>
 #include <stdexcept>
 
 #include "../../Utils.h"
