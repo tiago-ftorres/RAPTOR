@@ -12,7 +12,7 @@ class Stop : public GTFSObject {
   public:
     void addStopTime(StopTime* stopTime);
     void addRouteKey(const std::pair<std::string, std::string>& route_key);
-    void addFootpath(const std::string& other_id, int duration);
+    void addFootpath(const std::string& other_id, int& duration);
 
     const std::vector<StopTime*>& getStopTimes() const;
     const std::vector<std::pair<std::string, std::string>>& getRouteKeys() const;

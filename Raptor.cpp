@@ -2,7 +2,6 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
-#include <set>
 #include <algorithm>
 #include <iomanip>  // for setw
 #include "Raptor.h"
@@ -44,7 +43,7 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys(const Query &query) {
 
     // Accumulate routes serving marked stops from previous round
     // ((route_id, direction_id), stop_id)
-    std::set<std::pair<std::pair<std::string, std::string>, std::string>> routes_stops_set;
+    std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, nested_pair_hash> routes_stops_set;
     // For each marked stop p
     auto marked_stop_id = marked_stops.begin();
     while (marked_stop_id != marked_stops.end()) {

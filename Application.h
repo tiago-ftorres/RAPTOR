@@ -8,7 +8,6 @@
 #include "Raptor.h"
 #include <iostream>
 #include <iomanip>
-#include <utility>
 
 class Application {
 public:

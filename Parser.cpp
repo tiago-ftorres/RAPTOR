@@ -207,16 +207,39 @@ void Parser::parseStopTimes() {
 void Parser::associateData() {
   // Initialize footpaths
   std::cout << "Initializing footpaths..." << std::endl;
-  // TODO: only initialize this data when we mark a stop
+  auto start_time = std::chrono::high_resolution_clock::now();
+
+  // Using a vector so in the inner loop we can stop when j > i
+  std::vector<std::pair<std::string, std::reference_wrapper<Stop>>> stops_vector;
+
+  stops_vector.reserve(stops_.size());
   for (auto& [id, stop] : stops_) {
-    for (const auto& [other_id, other_stop]: stops_) {
-      if (id != other_id) {
-        stop.addFootpath(other_id, Utils::getDuration(stop.getField("stop_lat"),  stop.getField("stop_lon"),
-                                                              other_stop.getField("stop_lat"),  other_stop.getField("stop_lon")));
-      }
-    }
+    stops_vector.emplace_back(id, std::ref(stop));
   }
-  std::cout << "Footpaths initialized." << std::endl;
+
+  for (size_t i = 0; i < stops_vector.size(); i++) {
+    auto& [id, stop_ref] = stops_vector[i];
+    Stop& stop = stop_ref.get();
+    for (size_t j = stops_vector.size() - 1; j > i; j--) {
+      auto& [other_id, other_stop_ref] = stops_vector[j];
+      Stop& other_stop = other_stop_ref.get();
+
+      // Avoids both-sides calculation
+      if (id < other_id) {
+        int duration = Utils::getDuration(stop.getField("stop_lat"),  stop.getField("stop_lon"),
+                                          other_stop.getField("stop_lat"),  other_stop.getField("stop_lon"));
+        stop.addFootpath(other_id, duration);
+        other_stop.addFootpath(id, duration);
+      }
+   }
+  }
+
+  auto end_time = std::chrono::high_resolution_clock::now();
+
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
+
+  std::cout << "Footpaths initialized in " << duration << " ms ("
+            << duration/1000 << " seconds)." << std::endl;
 
   // Associate stop_times to trips
   for (auto& [ key, stop_time] : stop_times_) {

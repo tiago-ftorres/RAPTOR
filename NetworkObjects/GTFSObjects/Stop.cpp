@@ -12,7 +12,7 @@ void Stop::addRouteKey(const std::pair<std::string, std::string>& route_key) {
   routes_keys.push_back(route_key);
 }
 
-void Stop::addFootpath(const std::string &other_id, int duration) {
+void Stop::addFootpath(const std::string &other_id, int &duration) {
   footpaths[other_id] = {other_id, duration};
 }
 

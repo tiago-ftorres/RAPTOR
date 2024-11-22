@@ -5,7 +5,6 @@
 #ifndef RAPTOR_RAPTOR_H
 #define RAPTOR_RAPTOR_H
 
-#include <map>
 #include "Parser.h"
 #include "Utils.h"
 
@@ -35,7 +34,7 @@ class Raptor {
     std::unordered_map<std::pair<std::string, std::string>, Route, pair_hash> routes_;
     std::unordered_map<std::string, Trip> trips_;
     std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash> stop_times_; // key is (trip_id, stop_id)
-    std::map<std::string, std::vector<StopInfo>> min_arrival_time; // each stop_id has a vector of min_arrival time for each k
+    std::unordered_map<std::string, std::vector<StopInfo>> min_arrival_time; // each stop_id has a vector of min_arrival time for each k
     int k;
 
 };
