@@ -92,3 +92,8 @@ std::vector<std::string> Utils::split(const std::string &str, char delimiter) {
   return tokens;
 }
 
+
+std::string Utils::getFirstWord(const std::string &str) {
+  return str.substr(0, str.find(' '));
+}
+

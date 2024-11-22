@@ -13,7 +13,6 @@
 
 class Utils {
 public:
-  static std::vector<std::string> split(const std::string& str, char delimiter);
 
   static double haversine(const double& lat1, const double& lon1,
                           const double& lat2, const double& lon2);
@@ -23,6 +22,10 @@ public:
 
   static std::string secondsToTime(int seconds);
   static int timeToSeconds(const std::string& timeStr);
+
+  static std::vector<std::string> split(const std::string& str, char delimiter);
+  static std::string getFirstWord(const std::string& str);
+
 };
 
 #endif //RAPTOR_UTILS_H
