@@ -58,7 +58,7 @@ void Raptor::initializeAlgorithm() {
   marked_stops.clear();
 
   for (const auto &[id, stop]: stops_)
-    min_arrival_time[id] = std::vector<StopInfo>(1, {INF, "-1", "-1"});
+    min_arrival_time[id] = std::vector<StopInfo>(1, {INF, std::nullopt, std::nullopt});
 
   min_arrival_time[query_.source_id][0].min_arrival_time = Utils::timeToSeconds(query_.departure_time);
   marked_stops.insert(query_.source_id);
@@ -66,7 +66,8 @@ void Raptor::initializeAlgorithm() {
   k = 1;
 }
 
-std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, nested_pair_hash> Raptor::accumulateRoutesServingStops() {
+std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, nested_pair_hash>
+Raptor::accumulateRoutesServingStops() {
   std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, nested_pair_hash> routes_stops_set;
 
   // For each marked stop p
@@ -109,7 +110,8 @@ std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, 
   return routes_stops_set;
 }
 
-void Raptor::traverseRoutes(std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, nested_pair_hash> routes_stops_set) {
+void Raptor::traverseRoutes(
+        std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, nested_pair_hash> routes_stops_set) {
   auto route_stop = routes_stops_set.begin();
 
   while (route_stop != routes_stops_set.end()) {
@@ -123,20 +125,11 @@ void Raptor::traverseRoutes(std::unordered_set<std::pair<std::pair<std::string, 
     for (auto it = stop_it; it != route.getStops().end(); ++it) {
       Stop *pi_stop = *it;
       std::string pi_stop_id = pi_stop->getField("stop_id");
-      std::string et_id = findEarliestTrip(pi_stop_id, route_key);
 
-      if (et_id == "-1") continue; // No valid trip found for this stop
-
-//      auto et_id = findEarliestTrip(pi_stop_id, route_key, query);
-//      if (et_id.has_value()) {
-//        traverseTrip(et_id.value(), pi_stop_id, query);
-//      } else {
-//        // Nenhum trip válido encontrado
-//        continue;
-//      }
-
-
-      traverseTrip(et_id, pi_stop_id);
+      auto et_id = findEarliestTrip(pi_stop_id, route_key);
+      if (et_id.has_value()) {
+        traverseTrip(et_id.value(), pi_stop_id);
+      } else continue; // No valid trip found for this stop
 
     } // end each stop pi on route
 
@@ -145,8 +138,8 @@ void Raptor::traverseRoutes(std::unordered_set<std::pair<std::pair<std::string, 
 
 }
 
-std::string Raptor::findEarliestTrip(const std::string &pi_stop_id, const std::pair<std::string, std::string> &route_key) {
-//  std::optional<std::string>
+std::optional<std::string>
+Raptor::findEarliestTrip(const std::string &pi_stop_id, const std::pair<std::string, std::string> &route_key) {
 
   // Find the earliest trip in route r that can be caught at stop pi in round k
   for (StopTime *stop_time: stops_[pi_stop_id].getStopTimes()) {
@@ -158,11 +151,11 @@ std::string Raptor::findEarliestTrip(const std::string &pi_stop_id, const std::p
       return stop_time->getField("trip_id"); // We can return because stop_times is ordered
   }
 
-//  return std::nullopt;
-  return "-1";
+  return std::nullopt;
 }
 
-bool Raptor::isValidTrip(const std::string &trip_id, const std::pair<std::string, std::string> &route_key, StopTime *stop_time) {
+bool Raptor::isValidTrip(const std::string &trip_id, const std::pair<std::string, std::string> &route_key,
+                         StopTime *stop_time) {
 
   const Trip &trip = trips_[trip_id];
   return ((trip.getField("route_id") == route_key.first) &&
@@ -203,7 +196,7 @@ void Raptor::traverseTrip(std::string &et_id, std::string &pi_stop_id) {
     }
 
     // Check if an earlier trip can be caught at stop i (because a quicker path was found in a previous round)
-    if ((min_arrival_time[next_stop_id][k - 1].parent_trip_id != "-1") // Because we can instantly arrive at source
+    if ((min_arrival_time[next_stop_id][k - 1].parent_trip_id.has_value()) // Because we can instantly arrive at source
         && (min_arrival_time[next_stop_id][k - 1].min_arrival_time < arrival_time))  // if Tk-1(pi) < Tarr(t, pi)
       break;
 
@@ -228,7 +221,7 @@ void Raptor::handleFootpaths() {
 //                    << " < min(" << Utils::secondsToTime(min_arrival_time[dest_id][k].min_arrival_time)
 //                    << ", " << Utils::secondsToTime(min_arrival_time[query.target_id][k].min_arrival_time)
 //                    << ")" << std::endl;
-        min_arrival_time[dest_id][k] = {new_arrival, "-1", stop_id};
+        min_arrival_time[dest_id][k] = {new_arrival, std::nullopt, stop_id};
         marked_stops.insert(dest_id);
       }
 
@@ -245,35 +238,39 @@ std::vector<std::vector<JourneyStep>> Raptor::reconstructJourneys() {
   // Start from the target stop and reconstruct the journey
   int current_k = k - 1;
   while (current_k >= 0) {
+
+    std::cout << "Looking for journeys at k " << current_k  << std::endl;
     std::vector<JourneyStep> journey;
     std::string current_stop_id = query_.target_id;
     bool found_journey = false;
     int ntrips = 0;
 
-    while (current_stop_id != "-1") {
+    while (true) {
 
-      const std::string parent_trip_id = min_arrival_time[current_stop_id][current_k].parent_trip_id;
-      const std::string parent_stop_id = min_arrival_time[current_stop_id][current_k].parent_stop_id;
+      const std::optional<std::string> parent_trip_id_opt = min_arrival_time[current_stop_id][current_k].parent_trip_id;
+      const std::optional<std::string> parent_stop_id_opt = min_arrival_time[current_stop_id][current_k].parent_stop_id;
 
-      if (parent_stop_id == "-1") break;
+      if (!parent_stop_id_opt.has_value()) break;
+      const std::string& parent_stop_id = parent_stop_id_opt.value();
 
       int departure_time, duration, arrival_time;
-      if (parent_trip_id == "-1") { // Footpath
+      if (!parent_trip_id_opt.has_value()) { // Footpath
 
         departure_time = min_arrival_time[parent_stop_id][current_k].min_arrival_time;
         duration = stops_[parent_stop_id].getFootpaths().at(current_stop_id).duration;
         arrival_time = departure_time + duration;
 
       } else { // Trip
+        const std::string& parent_trip_id = parent_trip_id_opt.value();
 
         departure_time = Utils::timeToSeconds(stop_times_[{parent_trip_id, parent_stop_id}].getField("departure_time"));
         arrival_time = min_arrival_time[current_stop_id][current_k].min_arrival_time;
 
         duration = arrival_time - departure_time;
         ntrips++;
-
       }
-      JourneyStep step = {parent_trip_id, &stops_[parent_stop_id], &stops_[current_stop_id],
+
+      JourneyStep step = {parent_trip_id_opt, &stops_[parent_stop_id], &stops_[current_stop_id],
                           departure_time, duration, arrival_time};
       journey.push_back(step);
 
@@ -293,6 +290,7 @@ std::vector<std::vector<JourneyStep>> Raptor::reconstructJourneys() {
 
       journeys.push_back(journey);
       current_k = ntrips - 1; // Decrease to the next journey with fewer transfers
+      std::cout << "Found journey with " << ntrips << " trips and " << journey.size() << " steps." << std::endl;
     } else break; // No journey found
 
   }

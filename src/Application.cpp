@@ -107,7 +107,14 @@ void Application::handleQuery(Raptor &raptor) {
   Query query = {source, target, departure_time};
   raptor.setQuery(query);
 
+  auto start_time = std::chrono::high_resolution_clock::now();
+
   std::vector<std::vector<JourneyStep>> journeys = raptor.findJourneys();
+
+  auto end_time = std::chrono::high_resolution_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
+
+  std::cout << "Took " << duration << " ms (" << duration / 1000 << " seconds) to look for journeys." << std::endl;
 
   if (journeys.empty()) std::cout << "No journey found :/" << std::endl;
   else {
@@ -130,8 +137,8 @@ void Application::handleQuery(Raptor &raptor) {
         const JourneyStep &step = journey[j];
         std::cout << std::setw(6) << j + 1;
 
-        if (step.trip_id != "-1")
-          std::cout << std::setw(12) << step.trip_id;
+        if (step.trip_id.has_value())
+          std::cout << std::setw(12) << step.trip_id.value();
         else
           std::cout << std::setw(12) << "footpath";
 

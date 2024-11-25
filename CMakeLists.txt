@@ -6,29 +6,31 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 
 include_directories(.)
 
+add_subdirectory(Google_tests)
+
 add_executable(raptor
-        NetworkObjects/DataStructures.h
-        main.cpp
-        Parser.cpp
-        Parser.h
-        Raptor.cpp
-        Raptor.h
-        Utils.h
-        Utils.cpp
-        Application.h
-        Application.cpp
-        NetworkObjects/GTFSObjects/Route.h
-        NetworkObjects/GTFSObjects/Route.cpp
-        NetworkObjects/GTFSObjects/Trip.cpp
-        NetworkObjects/GTFSObjects/Trip.h
-        NetworkObjects/GTFSObjects/Stop.cpp
-        NetworkObjects/GTFSObjects/Stop.h
-        NetworkObjects/GTFSObjects/GTFSObject.cpp
-        NetworkObjects/GTFSObjects/GTFSObject.h
-        NetworkObjects/GTFSObjects/Agency.cpp
-        NetworkObjects/GTFSObjects/Agency.h
-        NetworkObjects/GTFSObjects/Calendar.cpp
-        NetworkObjects/GTFSObjects/Calendar.h
-        NetworkObjects/GTFSObjects/StopTime.cpp
-        NetworkObjects/GTFSObjects/StopTime.h
-        Constants.h)
+        src/main.cpp
+        src/Parser.cpp
+        src/Parser.h
+        src/Raptor.cpp
+        src/Raptor.h
+        src/Utils.h
+        src/Utils.cpp
+        src/Application.h
+        src/Application.cpp
+        src/NetworkObjects/DataStructures.h
+        src/NetworkObjects/GTFSObjects/Route.h
+        src/NetworkObjects/GTFSObjects/Route.cpp
+        src/NetworkObjects/GTFSObjects/Trip.cpp
+        src/NetworkObjects/GTFSObjects/Trip.h
+        src/NetworkObjects/GTFSObjects/Stop.cpp
+        src/NetworkObjects/GTFSObjects/Stop.h
+        src/NetworkObjects/GTFSObjects/GTFSObject.cpp
+        src/NetworkObjects/GTFSObjects/GTFSObject.h
+        src/NetworkObjects/GTFSObjects/Agency.cpp
+        src/NetworkObjects/GTFSObjects/Agency.h
+        src/NetworkObjects/GTFSObjects/Calendar.cpp
+        src/NetworkObjects/GTFSObjects/Calendar.h
+        src/NetworkObjects/GTFSObjects/StopTime.cpp
+        src/NetworkObjects/GTFSObjects/StopTime.h
+        src/Constants.h)

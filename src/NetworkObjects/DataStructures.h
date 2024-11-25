@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <algorithm>
+#include <optional>
 
 class Stop;
 
@@ -21,19 +22,19 @@ struct Query {
 };
 
 struct StopInfo {
-  int min_arrival_time;
-  std::string parent_trip_id; // if footpath, parent_trip_id = -1
-  std::string parent_stop_id; // if first stop, parent_stop_id = -1
+  int min_arrival_time{};
+  std::optional<std::string> parent_trip_id; // if footpath, will be std::nullopt
+  std::optional<std::string> parent_stop_id; // if first stop, will be std::nullopt
 };
 
 struct JourneyStep {
-  std::string trip_id; // if footpath, trip_id = -1
-  Stop *src_stop;
-  Stop *dest_stop;
+  std::optional<std::string> trip_id; // if footpath, will be std::nullopt
+  Stop *src_stop{};
+  Stop *dest_stop{};
 
-  int departure_time;
-  int duration;
-  int arrival_time;
+  int departure_time{};
+  int duration{};
+  int arrival_time{};
 };
 
 struct pair_hash {
