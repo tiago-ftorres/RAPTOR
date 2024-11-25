@@ -49,10 +49,9 @@ int Utils::getDuration(const std::string& string_lat1, const std::string& string
 
 std::string Utils::secondsToTime(int seconds) {
 
-  if (seconds == INF)
-    return "INF";
+  if (seconds == INF) return "INF";
 
-  int hours = seconds / 3600;
+  int hours = seconds / 3600 % 24;
   int minutes = (seconds % 3600) / 60;
   int secs = seconds % 60;
 

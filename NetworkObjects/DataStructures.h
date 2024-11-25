@@ -32,6 +32,7 @@ struct JourneyStep {
   Stop* dest_stop;
 
   int departure_time;
+  int duration;
   int arrival_time;
 };
 
