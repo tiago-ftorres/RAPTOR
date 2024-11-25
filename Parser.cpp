@@ -137,11 +137,11 @@ void Parser::parseRoutes() {
       route.setField(fields[i], tokens[i]);
 
     // Iterate through all existing (route_id, direction_id) pairs in routes_
-    for (auto& [key, r] : routes_) {
+    for (auto &[key, r]: routes_) {
       // if key.route_id == route.route_id
       if (key.first == route.getField("route_id")) {
         route.setField("direction_id", key.second);
-        routes_[key]=route;
+        routes_[key] = route;
       }
     }
 
@@ -213,25 +213,22 @@ void Parser::associateData() {
   std::vector<std::pair<std::string, std::reference_wrapper<Stop>>> stops_vector;
 
   stops_vector.reserve(stops_.size());
-  for (auto& [id, stop] : stops_) {
+  for (auto &[id, stop]: stops_)
     stops_vector.emplace_back(id, std::ref(stop));
-  }
 
   for (size_t i = 0; i < stops_vector.size(); i++) {
-    auto& [id, stop_ref] = stops_vector[i];
-    Stop& stop = stop_ref.get();
+    auto &[id, stop_ref] = stops_vector[i];
+    Stop &stop = stop_ref.get();
+    // j<i avoids both-sides calculation
     for (size_t j = stops_vector.size() - 1; j > i; j--) {
-      auto& [other_id, other_stop_ref] = stops_vector[j];
-      Stop& other_stop = other_stop_ref.get();
+      auto &[other_id, other_stop_ref] = stops_vector[j];
+      Stop &other_stop = other_stop_ref.get();
+      int duration = Utils::getDuration(stop.getField("stop_lat"), stop.getField("stop_lon"),
+                                        other_stop.getField("stop_lat"), other_stop.getField("stop_lon"));
 
-      // Avoids both-sides calculation
-      if (id < other_id) {
-        int duration = Utils::getDuration(stop.getField("stop_lat"),  stop.getField("stop_lon"),
-                                          other_stop.getField("stop_lat"),  other_stop.getField("stop_lon"));
-        stop.addFootpath(other_id, duration);
-        other_stop.addFootpath(id, duration);
-      }
-   }
+      stop.addFootpath(other_id, duration);
+      other_stop.addFootpath(id, duration);
+    }
   }
 
   auto end_time = std::chrono::high_resolution_clock::now();
@@ -239,59 +236,60 @@ void Parser::associateData() {
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
 
   std::cout << "Footpaths initialized in " << duration << " ms ("
-            << duration/1000 << " seconds)." << std::endl;
+            << duration / 1000 << " seconds)." << std::endl;
 
   // Associate stop_times to trips
-  for (auto& [ key, stop_time] : stop_times_) {
-    auto& [trip_id, stop_id] = key;
+  for (auto &[key, stop_time]: stop_times_) {
+    auto &[trip_id, stop_id] = key;
     trips_[trip_id].addStopTime(&stop_time);
   }
 
   // Sort each trip's stop_times
-  for (auto& [id, trip] : trips_)
+  for (auto &[id, trip]: trips_)
     trip.sortStopTimes();
 
   // Associate trips to routes
-  for (auto& [id, trip] : trips_){
+  for (auto &[id, trip]: trips_) {
     auto route_key = std::make_pair(trip.getField("route_id"), trip.getField("direction_id"));
     routes_[route_key].addTrip(&trip);
   }
 
   // Sort each route's trip by earliest to latest arrival time
-  for (auto& [id, route] : routes_ )
+  for (auto &[id, route]: routes_)
     route.sortTrips();
 
   // Associate stops to routes
-  for (auto& [key, route] : routes_){
+  for (auto &[key, route]: routes_) {
     // If there is no trip associated to this route, skip the route
     if (route.getTrips().empty()) continue;
 
     // Find the route's trip that has the most stops
-    Trip* largest_trip = route.getTrips()[0];
-    for (size_t i = 1; i<route.getTrips().size(); i++){
-      Trip* trip = route.getTrips()[i];
-      if (trip->getStopTimes().size() > largest_trip->getStopTimes().size()){
+    Trip *largest_trip = route.getTrips()[0];
+    for (size_t i = 1; i < route.getTrips().size(); i++) {
+      Trip *trip = route.getTrips()[i];
+      if (trip->getStopTimes().size() > largest_trip->getStopTimes().size()) {
         largest_trip = trip;
       }
     }
 
     // A route stops' order will be the same as the routes' largest_trip stops' order, because it has the most stops
-    for (const auto& stop_time: largest_trip->getStopTimes()){
+    for (const auto &stop_time: largest_trip->getStopTimes()) {
       route.addStop(&stops_[stop_time->getField("stop_id")]);
     }
   }
 
-  for (auto& [key, stop_time] : stop_times_){
-    auto& [trip_id, stop_id] = key;
+  for (auto &[key, stop_time]: stop_times_) {
+    auto &[trip_id, stop_id] = key;
     // Associate stop_times to stops
     stops_[stop_id].addStopTime(&stop_time);
 
     // Associate routes to stops
-    stops_[stop_id].addRouteKey(std::make_pair(trips_[trip_id].getField("route_id"), trips_[trip_id].getField("direction_id")));
+    stops_[stop_id].addRouteKey(
+            std::make_pair(trips_[trip_id].getField("route_id"), trips_[trip_id].getField("direction_id")));
   }
 
   // Sort each stop's stop_times by earliest to latest departure time
-  for (auto& [id, stop] : stops_)
+  for (auto &[id, stop]: stops_)
     stop.sortStopTimes();
 
 }

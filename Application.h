@@ -11,11 +11,13 @@
 
 class Application {
 public:
-  explicit Application(std::string  inputDirectory);
+  explicit Application(std::string inputDirectory);
+
   void run();
 
 private:
   static void handleQuery(Raptor &raptor);
+
   static void showCommands();
 
   std::string inputDirectory;

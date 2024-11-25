@@ -8,7 +8,7 @@ void Stop::addStopTime(StopTime *stopTime) {
   stop_times.push_back(stopTime);
 }
 
-void Stop::addRouteKey(const std::pair<std::string, std::string>& route_key) {
+void Stop::addRouteKey(const std::pair<std::string, std::string> &route_key) {
   routes_keys.push_back(route_key);
 }
 

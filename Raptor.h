@@ -48,13 +48,16 @@ private:
 
   void initializeAlgorithm();
 
-  std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, nested_pair_hash> accumulateRoutesServingStops();
+  std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, nested_pair_hash>
+  accumulateRoutesServingStops();
 
-  void traverseRoutes(std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, nested_pair_hash> routes_stops_set);
+  void traverseRoutes(
+          std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, nested_pair_hash> routes_stops_set);
 
-  std::string findEarliestTrip(const std::string& pi_stop_id, const std::pair<std::string, std::string>& route_key);
+  std::string findEarliestTrip(const std::string &pi_stop_id, const std::pair<std::string, std::string> &route_key);
 
-  bool isValidTrip(const std::string& trip_id, const std::pair<std::string, std::string>& route_key, StopTime *stop_time);
+  bool
+  isValidTrip(const std::string &trip_id, const std::pair<std::string, std::string> &route_key, StopTime *stop_time);
 
   void traverseTrip(std::string &et_id, std::string &pi_stop_id);
 

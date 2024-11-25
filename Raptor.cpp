@@ -49,7 +49,6 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys() {
   return reconstructJourneys();
 }
 
-
 void Raptor::initializeAlgorithm() {
   std::cout << "Finding journeys from " << stops_[query_.source_id].getField("stop_name") << " to "
             << stops_[query_.target_id].getField("stop_name")
@@ -128,6 +127,15 @@ void Raptor::traverseRoutes(std::unordered_set<std::pair<std::pair<std::string, 
 
       if (et_id == "-1") continue; // No valid trip found for this stop
 
+//      auto et_id = findEarliestTrip(pi_stop_id, route_key, query);
+//      if (et_id.has_value()) {
+//        traverseTrip(et_id.value(), pi_stop_id, query);
+//      } else {
+//        // Nenhum trip válido encontrado
+//        continue;
+//      }
+
+
       traverseTrip(et_id, pi_stop_id);
 
     } // end each stop pi on route
@@ -137,7 +145,8 @@ void Raptor::traverseRoutes(std::unordered_set<std::pair<std::pair<std::string, 
 
 }
 
-std::string Raptor::findEarliestTrip(const std::string& pi_stop_id, const std::pair<std::string, std::string>& route_key) {
+std::string Raptor::findEarliestTrip(const std::string &pi_stop_id, const std::pair<std::string, std::string> &route_key) {
+//  std::optional<std::string>
 
   // Find the earliest trip in route r that can be caught at stop pi in round k
   for (StopTime *stop_time: stops_[pi_stop_id].getStopTimes()) {
@@ -149,12 +158,13 @@ std::string Raptor::findEarliestTrip(const std::string& pi_stop_id, const std::p
       return stop_time->getField("trip_id"); // We can return because stop_times is ordered
   }
 
+//  return std::nullopt;
   return "-1";
 }
 
-bool Raptor::isValidTrip(const std::string& trip_id, const std::pair<std::string, std::string>& route_key, StopTime *stop_time) {
+bool Raptor::isValidTrip(const std::string &trip_id, const std::pair<std::string, std::string> &route_key, StopTime *stop_time) {
 
-  const Trip& trip = trips_[trip_id];
+  const Trip &trip = trips_[trip_id];
   return ((trip.getField("route_id") == route_key.first) &&
           (trip.getField("direction_id") == route_key.second) &&
           (Utils::timeToSeconds(stop_time->getField("departure_time")) >=
@@ -163,8 +173,7 @@ bool Raptor::isValidTrip(const std::string& trip_id, const std::pair<std::string
            min_arrival_time[query_.target_id][k].min_arrival_time));
 }
 
-
-void Raptor::traverseTrip(std::string& et_id, std::string& pi_stop_id) {
+void Raptor::traverseTrip(std::string &et_id, std::string &pi_stop_id) {
   Trip et = trips_[et_id];
 
   auto et_stop_it = std::find_if(et.getStopTimes().begin(), et.getStopTimes().end(),
