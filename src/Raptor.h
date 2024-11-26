@@ -30,6 +30,9 @@ public:
   // Prints minimal arrival times for each stop, at each round
   void showMinArrivalTimes();
 
+  // Prints a journey`s steps
+  static void showJourney(const std::vector<JourneyStep>& journey);
+
   const std::unordered_map<std::string, Stop> &getStops() const;
 
 private:
@@ -66,6 +69,9 @@ private:
 
   // Reconstruct all journeys
   std::vector<std::vector<JourneyStep>> reconstructJourneys();
+
+  std::vector<JourneyStep> reconstructJourney();
+
 };
 
 #endif //RAPTOR_RAPTOR_H

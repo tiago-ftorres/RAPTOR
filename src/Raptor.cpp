@@ -16,6 +16,7 @@ void Raptor::setQuery(const Query &query) {
 }
 
 std::vector<std::vector<JourneyStep>> Raptor::findJourneys() {
+  std::vector<std::vector<JourneyStep>> journeys;
 
   initializeAlgorithm();
 
@@ -43,10 +44,26 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys() {
 
     std::cout << "Marked " << std::setw(2) << marked_stops.size() << " stops during round " << k << std::endl;
 
+    if (marked_stops.find(query_.target_id) != marked_stops.end()) {
+      std::cout << "Looking for journeys at k " << k << std::endl;
+      std::vector<JourneyStep> journey = reconstructJourney();
+
+      if (!journey.empty() && journey.front().src_stop->getField("stop_id") == query_.source_id) {
+        journeys.push_back(journey);
+        int ntrips = 0;
+
+        for (const JourneyStep &step: journey)
+          if (step.trip_id.has_value()) ntrips++;
+
+        std::cout << "Found journey with " << ntrips << " trips and " << journey.size() << " steps." << std::endl;
+        Raptor::showJourney(journey);
+      }
+    }
+
     k++;
   }
 
-  return reconstructJourneys();
+  return journeys;
 }
 
 void Raptor::initializeAlgorithm() {
@@ -183,14 +200,17 @@ void Raptor::traverseTrip(std::string &et_id, std::string &pi_stop_id) {
     // If arrival time can be improved, update Tk(pj) using et
     if (arrival_time < std::min(min_arrival_time[next_stop_id][k].min_arrival_time,
                                 min_arrival_time[query_.target_id][k].min_arrival_time)) {
-//            std::cout << "Marking " << std::setw(25) << stops_[next_stop_id].getField("stop_name") << et_id
-//                      << " from " << std::setw(20) << stops_[pi_stop_id].getField("stop_name")
-//                      << " "
-//                      << Utils::secondsToTime(arrival_time) << " < min("
-//                      << Utils::secondsToTime(min_arrival_time[next_stop_id][k].min_arrival_time)
-//                      << ", "
-//                      << Utils::secondsToTime(min_arrival_time[query.target_id][k].min_arrival_time)
-//                      << ")" << std::endl;
+      if ((next_stop_id == "HSJ2") || (next_stop_id == "ARS4")
+       || (next_stop_id == "IPO4") || (next_stop_id == "HSJ7")
+       || (next_stop_id == "HSJ9") || (next_stop_id == "HSJ7"))
+            std::cout << "Marking " << std::setw(10) << next_stop_id << et_id
+                      << " from " << std::setw(10) << pi_stop_id
+                      << " "
+                      << Utils::secondsToTime(arrival_time) << " < min("
+                      << Utils::secondsToTime(min_arrival_time[next_stop_id][k].min_arrival_time)
+                      << ", "
+                      << Utils::secondsToTime(min_arrival_time[query_.target_id][k].min_arrival_time)
+                      << ")" << std::endl;
       min_arrival_time[next_stop_id][k] = {arrival_time, et_id, pi_stop_id};
       marked_stops.insert(next_stop_id); // Mark this stop for the next round
     }
@@ -213,14 +233,18 @@ void Raptor::handleFootpaths() {
       int new_arrival = current_arrival + footpath.duration;
       if (new_arrival < std::min(min_arrival_time[dest_id][k].min_arrival_time,
                                  min_arrival_time[query_.target_id][k].min_arrival_time)) {
-//          std::cout << "Marking " << std::setw(22) << stops_[dest_id].getField("stop_name")
-//                    << "fp from " << std::setw(22) << stops_[stop_id].getField("stop_name")
-//                    << " " << Utils::secondsToTime(min_arrival_time[stop_id][k].min_arrival_time)
-//                    << " + " << Utils::secondsToTime(footpath.duration)
-//                    << " = " << Utils::secondsToTime(new_arrival)
-//                    << " < min(" << Utils::secondsToTime(min_arrival_time[dest_id][k].min_arrival_time)
-//                    << ", " << Utils::secondsToTime(min_arrival_time[query.target_id][k].min_arrival_time)
-//                    << ")" << std::endl;
+        // Only updates footpath if it comes from a stop
+        if ((dest_id == "HSJ2") || (dest_id == "ARS4")
+            || (dest_id == "IPO4") || (dest_id == "HSJ7")
+            || (dest_id == "HSJ9") || (dest_id == "HSJ7"))
+          std::cout << "Marking " << std::setw(10) << dest_id
+                    << "fp from " << std::setw(10) << stop_id
+                    << " " << Utils::secondsToTime(min_arrival_time[stop_id][k].min_arrival_time)
+                    << " + " << Utils::secondsToTime(footpath.duration)
+                    << " = " << Utils::secondsToTime(new_arrival)
+                    << " < min(" << Utils::secondsToTime(min_arrival_time[dest_id][k].min_arrival_time)
+                    << ", " << Utils::secondsToTime(min_arrival_time[query_.target_id][k].min_arrival_time)
+                    << ")" << std::endl;
         min_arrival_time[dest_id][k] = {new_arrival, std::nullopt, stop_id};
         marked_stops.insert(dest_id);
       }
@@ -230,71 +254,80 @@ void Raptor::handleFootpaths() {
 
 }
 
-std::vector<std::vector<JourneyStep>> Raptor::reconstructJourneys() {
-  std::vector<std::vector<JourneyStep>> journeys;
+/*
+ * Looking for journeys at k 3
+Found journey with 4 trips and 6 steps.
+step  trip        stop    (name)         dep_time  duration  -> stop       (name)         arr_time
+1     602_0_U_114 MMAI5   MIRA           14:45:00  00:10:00  AEPT1         AEROPORTO      14:55:00
+2     604_1_D_11  AEPT1   AEROPORTO      14:55:00  00:09:02  QTM1          QUINTA         15:04:02
+3     footpath    QTM1    QUINTA         15:04:02  00:00:27  QTM2          QUINTA         15:04:29
+4     602_1_U_10  QTM2    QUINTA         15:05:00  00:28:18  CZV2          CRUZ           15:33:18
+5     footpath    CZV2    CRUZ           15:33:18  00:03:03  CZV3          CRUZ           15:36:21
+6     402_0_D_72  CZV3    CRUZ           15:42:39  00:06:25  FG2           FARIA          15:49:04
 
-  std::cout << std::endl << "Reconstructing journeys..." << std::endl << std::endl;
+Looking for journeys at k 2
+Found journey with 3 trips and 4 steps.
+step  trip        stop    (name)         dep_time  duration  -> stop       (name)         arr_time
+1     705_1_U_26  ASPL1   ASPRELA        16:09:05  00:00:18  IPO4          IPO            16:09:23
+2     505_1_U_25  IPO4    IPO            16:09:39  00:00:51  HSJ7          HOSP.          16:10:30
+3     footpath    HSJ7    HOSP.          16:10:30  00:00:46  HSJ9          HOSP.          16:11:16
+4     804_0_U_12  HSJ9    HOSP.          16:15:00  00:05:00  ARS4          AREOSA         16:20:00
 
-  // Start from the target stop and reconstruct the journey
-  int current_k = k - 1;
-  while (current_k >= 0) {
+Looking for journeys at k 3
+Found journey with 3 trips and 4 steps.
+step  trip        stop    (name)         dep_time  duration  -> stop       (name)         arr_time
+1     705_1_U_26  ASPL1   ASPRELA        16:09:05  00:00:18  IPO4          IPO            16:09:23
+2     505_1_U_25  IPO4    IPO            16:09:39  00:00:51  HSJ7          HOSP.          16:10:30
+3     footpath    HSJ7    HOSP.          16:10:30  00:00:46  HSJ9          HOSP.          16:11:16
+4     804_0_U_12  HSJ9    HOSP.          16:15:00  00:05:00  ARS4          AREOSA         16:20:00
+Looking for journeys at k 2
+Found journey with 3 trips and 4 steps.
+step  trip        stop    (name)         dep_time  duration  -> stop       (name)         arr_time
+1     705_1_U_26  ASPL1   ASPRELA        16:09:05  00:00:18  IPO4          IPO            16:09:23
+2     505_1_U_25  IPO4    IPO            16:09:39  00:00:51  HSJ7          HOSP.          16:10:30
+3     footpath    HSJ7    HOSP.          16:10:30  00:00:46  HSJ9          HOSP.          16:11:16
+4     804_0_U_12  HSJ9    HOSP.          16:15:00  00:05:00  ARS4          AREOSA         16:20:00
+ */
 
-    std::cout << "Looking for journeys at k " << current_k  << std::endl;
-    std::vector<JourneyStep> journey;
-    std::string current_stop_id = query_.target_id;
-    bool found_journey = false;
-    int ntrips = 0;
+std::vector<JourneyStep> Raptor::reconstructJourney() {
+  std::vector<JourneyStep> journey;
+  std::string current_stop_id = query_.target_id;
 
-    while (true) {
+  while (true) {
 
-      const std::optional<std::string> parent_trip_id_opt = min_arrival_time[current_stop_id][current_k].parent_trip_id;
-      const std::optional<std::string> parent_stop_id_opt = min_arrival_time[current_stop_id][current_k].parent_stop_id;
+    const std::optional<std::string> parent_trip_id_opt = min_arrival_time[current_stop_id][k].parent_trip_id;
+    const std::optional<std::string> parent_stop_id_opt = min_arrival_time[current_stop_id][k].parent_stop_id;
 
-      if (!parent_stop_id_opt.has_value()) break;
-      const std::string& parent_stop_id = parent_stop_id_opt.value();
+    if (!parent_stop_id_opt.has_value()) break;
 
-      int departure_time, duration, arrival_time;
-      if (!parent_trip_id_opt.has_value()) { // Footpath
+    const std::string &parent_stop_id = parent_stop_id_opt.value();
 
-        departure_time = min_arrival_time[parent_stop_id][current_k].min_arrival_time;
-        duration = stops_[parent_stop_id].getFootpaths().at(current_stop_id).duration;
-        arrival_time = departure_time + duration;
-
-      } else { // Trip
-        const std::string& parent_trip_id = parent_trip_id_opt.value();
-
-        departure_time = Utils::timeToSeconds(stop_times_[{parent_trip_id, parent_stop_id}].getField("departure_time"));
-        arrival_time = min_arrival_time[current_stop_id][current_k].min_arrival_time;
-
-        duration = arrival_time - departure_time;
-        ntrips++;
-      }
-
-      JourneyStep step = {parent_trip_id_opt, &stops_[parent_stop_id], &stops_[current_stop_id],
-                          departure_time, duration, arrival_time};
-      journey.push_back(step);
-
-      // Update to the previous stop boarded
-      current_stop_id = parent_stop_id;
-
-      // Make sure we only add valid journeys
-      if (current_stop_id == query_.source_id) {
-        found_journey = true;
-        break;
-      }
+    int departure_time, duration, arrival_time;
+    if (!parent_trip_id_opt.has_value()) { // Footpath
+      departure_time = min_arrival_time[parent_stop_id][k].min_arrival_time;
+      duration = stops_[parent_stop_id].getFootpaths().at(current_stop_id).duration;
+      arrival_time = departure_time + duration;
+    } else { // Trip
+      const std::string &parent_trip_id = parent_trip_id_opt.value();
+      departure_time = Utils::timeToSeconds(stop_times_[{parent_trip_id, parent_stop_id}].getField("departure_time"));
+      arrival_time = min_arrival_time[current_stop_id][k].min_arrival_time;
+      duration = arrival_time - departure_time;
     }
 
-    if (found_journey) {
-      // Reverse the journey to obtain the correct sequence
-      std::reverse(journey.begin(), journey.end());
+    JourneyStep step = {parent_trip_id_opt, &stops_[parent_stop_id], &stops_[current_stop_id],
+                        departure_time, duration, arrival_time};
+    journey.push_back(step);
 
-      journeys.push_back(journey);
-      current_k = ntrips - 1; // Decrease to the next journey with fewer transfers
-      std::cout << "Found journey with " << ntrips << " trips and " << journey.size() << " steps." << std::endl;
-    } else break; // No journey found
+    // Update to the previous stop boarded
+    current_stop_id = parent_stop_id;
 
+    // Make sure we only add valid journeys
+    if (current_stop_id == query_.source_id) break;
   }
-  return journeys;
+  // Reverse the journey to obtain the correct sequence
+  std::reverse(journey.begin(), journey.end());
+
+  return journey;
 }
 
 void Raptor::showMinArrivalTimes() {
@@ -321,4 +354,35 @@ void Raptor::showMinArrivalTimes() {
 
 const std::unordered_map<std::string, Stop> &Raptor::getStops() const {
   return stops_;
+}
+
+void Raptor::showJourney(const std::vector<JourneyStep> &journey) {
+
+  // Print the header row
+  std::cout << std::setw(5) << "step" << std::setw(13) << " trip "
+            << std::setw(8) << "stop " << std::setw(15) << "(name)" << std::setw(10) << "dep_time "
+            << std::setw(10) << "duration "
+            << std::setw(14) << "-> stop " << std::setw(15) << "(name)" << std::setw(9) << "arr_time " << std::endl;
+
+  // Print the journey steps
+  for (int j = 0; j < journey.size(); j++) {
+    const JourneyStep &step = journey[j];
+    std::cout << std::setw(6) << j + 1;
+
+    if (step.trip_id.has_value())
+      std::cout << std::setw(12) << step.trip_id.value();
+    else
+      std::cout << std::setw(12) << "footpath";
+
+    std::cout << std::setw(8) << step.src_stop->getField("stop_id") << std::setw(15)
+              << Utils::getFirstWord(step.src_stop->getField("stop_name")) << std::setw(10)
+              << Utils::secondsToTime(step.departure_time)
+              << std::setw(10) << Utils::secondsToTime(step.duration)
+              << std::setw(14) << step.dest_stop->getField("stop_id") << std::setw(15)
+              << Utils::getFirstWord(step.dest_stop->getField("stop_name")) << std::setw(9)
+              << Utils::secondsToTime(step.arrival_time);
+
+    std::cout << std::endl << std::endl;
+  }
+
 }

@@ -102,7 +102,12 @@ void Application::handleQuery(Raptor &raptor) {
     std::cout << "Invalid minutes. Please enter valid minutes between 0 and 59.\n";
   }
 
-  departure_time = std::to_string(hours) + ":" + std::to_string(minutes) + ":00";
+  std::ostringstream oss;
+  oss << std::setw(2) << std::setfill('0') << hours << ":"
+      << std::setw(2) << std::setfill('0') << minutes << ":00";
+  departure_time = oss.str();
+
+//  departure_time = std::to_string(hours) + ":" + std::to_string(minutes) + ":00";
 
   Query query = {source, target, departure_time};
   raptor.setQuery(query);
@@ -118,40 +123,13 @@ void Application::handleQuery(Raptor &raptor) {
 
   if (journeys.empty()) std::cout << "No journey found :/" << std::endl;
   else {
-
     std::cout << "Found " << journeys.size() << " journey(s)! =) " << std::endl;
 
     for (int i = 0; i < journeys.size(); i++) {
       const std::vector<JourneyStep> &journey = journeys[i];
       int journey_duration = journey.back().arrival_time - journey.front().departure_time;
-
-      std::cout << std::endl << "Journey " << i + 1 << " (" << Utils::secondsToTime(journey_duration) << "): "
-                << std::endl << std::endl;
-
-      std::cout << std::setw(5) << "step" << std::setw(13) << " trip "
-                << std::setw(8) << "stop " << std::setw(15) << "(name)" << std::setw(10) << "dep_time "
-                << std::setw(10) << "duration "
-                << std::setw(14) << "-> stop " << std::setw(15) << "(name)" << std::setw(9) << "arr_time " << std::endl;
-
-      for (int j = 0; j < journey.size(); j++) {
-        const JourneyStep &step = journey[j];
-        std::cout << std::setw(6) << j + 1;
-
-        if (step.trip_id.has_value())
-          std::cout << std::setw(12) << step.trip_id.value();
-        else
-          std::cout << std::setw(12) << "footpath";
-
-        std::cout << std::setw(8) << step.src_stop->getField("stop_id") << std::setw(15)
-                  << Utils::getFirstWord(step.src_stop->getField("stop_name")) << std::setw(10)
-                  << Utils::secondsToTime(step.departure_time)
-                  << std::setw(10) << Utils::secondsToTime(step.duration)
-                  << std::setw(14) << step.dest_stop->getField("stop_id") << std::setw(15)
-                  << Utils::getFirstWord(step.dest_stop->getField("stop_name")) << std::setw(9)
-                  << Utils::secondsToTime(step.arrival_time);
-
-        std::cout << std::endl;
-      }
+      std::cout << std::endl << "Journey " << i + 1 << " (" << Utils::secondsToTime(journey_duration) << "): " << std::endl << std::endl;
+      Raptor::showJourney(journey);
     }
   }
 
