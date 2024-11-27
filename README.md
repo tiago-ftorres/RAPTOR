@@ -33,4 +33,5 @@ This repository is developed as part of my internship at OPT (Optimizações e P
 
 ### References
 - Delling, Daniel, Thomas Pajor, Renato F. Werneck, “Round-based Public Transit Routing.” Microsoft Research (2012). https://www.microsoft.com/en-us/research/wp-content/uploads/2012/01/raptor_alenex.pdf
-- GTFS Schedule Documentation https://gtfs.org/documentation/schedule/reference/
+- GTFS Schedule Documentation (2024) https://gtfs.org/documentation/schedule/reference/
+- Raptor, another journey planning algorithm (2018) https://ljn.io/posts/raptor-journey-planning-algorithm

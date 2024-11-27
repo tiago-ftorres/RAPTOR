@@ -56,8 +56,8 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys() {
         for (const JourneyStep &step: journey)
           if (step.trip_id.has_value()) ntrips++;
 
-//        std::cout << "Found journey with " << ntrips << " trips and " << journey.size() << " steps." << std::endl;
-//        Raptor::showJourney(journey);
+        std::cout << "Found journey with " << ntrips << " trips and " << journey.size() << " steps." << std::endl;
+        Raptor::showJourney(journey);
       }
     }
 
@@ -198,10 +198,13 @@ void Raptor::traverseTrip(std::string &et_id, std::string &pi_stop_id) {
     // If arrival time can be improved, update Tk(pj) using et
     if (arrival_time < std::min(min_arrival_time[next_stop_id][k].min_arrival_time,
                                 min_arrival_time[query_.target_id][k].min_arrival_time)) {
-      if ((next_stop_id == "IPO4") || (next_stop_id == "HSJ7")|| (next_stop_id == "HSJ2")
-       || (next_stop_id == "HSJ9") || (next_stop_id == "HSJ11")|| (next_stop_id == "ARS4"))
-      std::cout << "Marking " << std::setw(10) << next_stop_id << et_id << " from " << std::setw(10) << pi_stop_id << " " << Utils::secondsToTime(arrival_time)
-                << " < min(" << Utils::secondsToTime(min_arrival_time[next_stop_id][k].min_arrival_time) << ", " << Utils::secondsToTime(min_arrival_time[query_.target_id][k].min_arrival_time) << ")" << std::endl;
+//      if ((next_stop_id == "IPO4") || (next_stop_id == "HSJ7")|| (next_stop_id == "HSJ2")
+//       || (next_stop_id == "HSJ9") || (next_stop_id == "HSJ11")|| (next_stop_id == "ARS4"))
+//      if ((next_stop_id == "PRU3") || (next_stop_id == "GATS2")|| (next_stop_id == "VIS1")
+//          || (next_stop_id == "FG2") )
+//
+//        std::cout << "Marking " << std::setw(10) << next_stop_id << et_id << " from " << std::setw(10) << pi_stop_id << " " << Utils::secondsToTime(arrival_time)
+//                << " < min(" << Utils::secondsToTime(min_arrival_time[next_stop_id][k].min_arrival_time) << ", " << Utils::secondsToTime(min_arrival_time[query_.target_id][k].min_arrival_time) << ")" << std::endl;
       min_arrival_time[next_stop_id][k] = {arrival_time, et_id, pi_stop_id};
       marked_stops.insert(next_stop_id); // Mark this stop for the next round
     }
@@ -227,6 +230,8 @@ void Raptor::handleFootpaths() {
         // Only updates footpath if it goes to a stop that has not made any improvements
 //        if ((dest_id == "IPO4") || (dest_id == "HSJ7") || (dest_id == "HSJ2")
 //            || (dest_id == "HSJ9")|| (dest_id == "HSJ11") || (dest_id == "ARS4"))
+//        if ((dest_id == "PRU3") || (dest_id == "GATS2")|| (dest_id == "VIS1")
+//            || (dest_id == "FG2") )
 //
 //          std::cout << "Marking " << std::setw(10) << dest_id << "fp from " << std::setw(10) << stop_id
 //                  << " " << Utils::secondsToTime(min_arrival_time[stop_id][k].min_arrival_time) << " + " << Utils::secondsToTime(footpath.duration) << " = " << Utils::secondsToTime(new_arrival)
@@ -239,41 +244,6 @@ void Raptor::handleFootpaths() {
   } // end each marked stop p
 
 }
-
-/*
- * Looking for journeys at k 3
-Found journey with 4 trips and 6 steps.
-step  trip        stop    (name)         dep_time  duration  -> stop       (name)         arr_time
-1     602_0_U_114 MMAI5   MIRA           14:45:00  00:10:00  AEPT1         AEROPORTO      14:55:00
-2     604_1_D_11  AEPT1   AEROPORTO      14:55:00  00:09:02  QTM1          QUINTA         15:04:02
-3     footpath    QTM1    QUINTA         15:04:02  00:00:27  QTM2          QUINTA         15:04:29
-4     602_1_U_10  QTM2    QUINTA         15:05:00  00:28:18  CZV2          CRUZ           15:33:18
-5     footpath    CZV2    CRUZ           15:33:18  00:03:03  CZV3          CRUZ           15:36:21
-6     402_0_D_72  CZV3    CRUZ           15:42:39  00:06:25  FG2           FARIA          15:49:04
-
-Looking for journeys at k 2
-Found journey with 3 trips and 4 steps.
-step  trip        stop    (name)         dep_time  duration  -> stop       (name)         arr_time
-1     705_1_U_26  ASPL1   ASPRELA        16:09:05  00:00:18  IPO4          IPO            16:09:23
-2     505_1_U_25  IPO4    IPO            16:09:39  00:00:51  HSJ7          HOSP.          16:10:30
-3     footpath    HSJ7    HOSP.          16:10:30  00:00:46  HSJ9          HOSP.          16:11:16
-4     804_0_U_12  HSJ9    HOSP.          16:15:00  00:05:00  ARS4          AREOSA         16:20:00
-
-Looking for journeys at k 3
-Found journey with 3 trips and 4 steps.
-step  trip        stop    (name)         dep_time  duration  -> stop       (name)         arr_time
-1     705_1_U_26  ASPL1   ASPRELA        16:09:05  00:00:18  IPO4          IPO            16:09:23
-2     505_1_U_25  IPO4    IPO            16:09:39  00:00:51  HSJ7          HOSP.          16:10:30
-3     footpath    HSJ7    HOSP.          16:10:30  00:00:46  HSJ9          HOSP.          16:11:16
-4     804_0_U_12  HSJ9    HOSP.          16:15:00  00:05:00  ARS4          AREOSA         16:20:00
-Looking for journeys at k 2
-Found journey with 3 trips and 4 steps.
-step  trip        stop    (name)         dep_time  duration  -> stop       (name)         arr_time
-1     705_1_U_26  ASPL1   ASPRELA        16:09:05  00:00:18  IPO4          IPO            16:09:23
-2     505_1_U_25  IPO4    IPO            16:09:39  00:00:51  HSJ7          HOSP.          16:10:30
-3     footpath    HSJ7    HOSP.          16:10:30  00:00:46  HSJ9          HOSP.          16:11:16
-4     804_0_U_12  HSJ9    HOSP.          16:15:00  00:05:00  ARS4          AREOSA         16:20:00
- */
 
 std::vector<JourneyStep> Raptor::reconstructJourney() {
   std::vector<JourneyStep> journey;

@@ -209,25 +209,24 @@ void Parser::associateData() {
   std::cout << "Initializing footpaths..." << std::endl;
   auto start_time = std::chrono::high_resolution_clock::now();
 
-  // Using a vector so in the inner loop we can stop when j > i
-  std::vector<std::pair<std::string, std::reference_wrapper<Stop>>> stops_vector;
+  // Avoid duplicating calculations for both sides
+  for (auto it1 = stops_.begin(); it1 != stops_.end(); ++it1) {
+    const std::string &id1 = it1->first;
+    Stop &stop1 = it1->second;
 
-  stops_vector.reserve(stops_.size());
-  for (auto &[id, stop]: stops_)
-    stops_vector.emplace_back(id, std::ref(stop));
+    // Start the inner loop from the next element
+    for (auto it2 = std::next(it1); it2 != stops_.end(); ++it2) {
+      const std::string &id2 = it2->first;
+      Stop &stop2 = it2->second;
 
-  for (size_t i = 0; i < stops_vector.size(); i++) {
-    auto &[id, stop_ref] = stops_vector[i];
-    Stop &stop = stop_ref.get();
-    // j<i avoids both-sides calculation
-    for (size_t j = stops_vector.size() - 1; j > i; j--) {
-      auto &[other_id, other_stop_ref] = stops_vector[j];
-      Stop &other_stop = other_stop_ref.get();
-      int duration = Utils::getDuration(stop.getField("stop_lat"), stop.getField("stop_lon"),
-                                        other_stop.getField("stop_lat"), other_stop.getField("stop_lon"));
+      // Calculate duration between the two stops
+      int duration = Utils::getDuration(
+              stop1.getField("stop_lat"), stop1.getField("stop_lon"),
+              stop2.getField("stop_lat"), stop2.getField("stop_lon"));
 
-      stop.addFootpath(other_id, duration);
-      other_stop.addFootpath(id, duration);
+      // Add footpaths in both directions
+      stop1.addFootpath(id2, duration);
+      stop2.addFootpath(id1, duration);
     }
   }
 
