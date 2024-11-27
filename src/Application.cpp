@@ -38,7 +38,6 @@ void Application::run() {
       std::cout << "Invalid command. :/" << std::endl;
       showCommands();
     }
-
   }
 }
 

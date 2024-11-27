@@ -46,6 +46,7 @@ private:
 
   Query query_;
   std::unordered_map<std::string, std::vector<StopInfo>> min_arrival_time; // each stop_id has a vector of min_arrival time for each k
+  std::unordered_set<std::string> prev_marked_stops;
   std::unordered_set<std::string> marked_stops;
   int k;
 

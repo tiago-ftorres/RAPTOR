@@ -27,6 +27,9 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys() {
       min_arrival_time[id].push_back(min_arrival_time[id][k - 1]);
     }
 
+    prev_marked_stops = marked_stops;
+    marked_stops.clear();
+
     // Accumulate routes serving marked stops from previous round
     // ((route_id, direction_id), stop_id)
     std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, nested_pair_hash> routes_stops_set = accumulateRoutesServingStops();
@@ -39,13 +42,11 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys() {
 
 //    showMinArrivalTimes();
 
+    std::cout << "Marked " << std::setw(2) << marked_stops.size() << " stops during round " << k << std::endl;
     // Stopping criterion: if no stops are marked, then stop
     if (marked_stops.empty()) break;
 
-    std::cout << "Marked " << std::setw(2) << marked_stops.size() << " stops during round " << k << std::endl;
-
     if (marked_stops.find(query_.target_id) != marked_stops.end()) {
-      std::cout << "Looking for journeys at k " << k << std::endl;
       std::vector<JourneyStep> journey = reconstructJourney();
 
       if (!journey.empty() && journey.front().src_stop->getField("stop_id") == query_.source_id) {
@@ -55,8 +56,8 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys() {
         for (const JourneyStep &step: journey)
           if (step.trip_id.has_value()) ntrips++;
 
-        std::cout << "Found journey with " << ntrips << " trips and " << journey.size() << " steps." << std::endl;
-        Raptor::showJourney(journey);
+//        std::cout << "Found journey with " << ntrips << " trips and " << journey.size() << " steps." << std::endl;
+//        Raptor::showJourney(journey);
       }
     }
 
@@ -72,6 +73,7 @@ void Raptor::initializeAlgorithm() {
             << " departing at " << query_.departure_time << std::endl << std::endl;
 
   min_arrival_time.clear();
+  prev_marked_stops.clear();
   marked_stops.clear();
 
   for (const auto &[id, stop]: stops_)
@@ -87,12 +89,11 @@ std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, 
 Raptor::accumulateRoutesServingStops() {
   std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, nested_pair_hash> routes_stops_set;
 
-  // For each marked stop p
-  auto marked_stop_id = marked_stops.begin();
-  while (marked_stop_id != marked_stops.end()) {
+  // For each previously marked stop p
+  for (const auto &marked_stop_id: prev_marked_stops) {
 
     // For each route r serving p
-    for (const auto &route_key: stops_[*marked_stop_id].getRouteKeys()) {
+    for (const auto &route_key: stops_[marked_stop_id].getRouteKeys()) {
 
       // Iterate over all stops in the route
       bool already_has_point = false;
@@ -105,23 +106,20 @@ Raptor::accumulateRoutesServingStops() {
           already_has_point = true;
 
           auto it_marked = std::find_if(routes_[route_key].getStops().begin(), routes_[route_key].getStops().end(),
-                                        [&](Stop *s) { return s->getField("stop_id") == *marked_stop_id; });
+                                        [&](Stop *s) { return s->getField("stop_id") == marked_stop_id; });
           auto it_stop = std::find_if(routes_[route_key].getStops().begin(), routes_[route_key].getStops().end(),
                                       [&](Stop *s) { return s->getField("stop_id") == stop_id; });
 
           if (it_marked < it_stop) { // if marked_p comes before p'
             routes_stops_set.erase(existing_entry);
-            routes_stops_set.insert({route_key, *marked_stop_id});
+            routes_stops_set.insert({route_key, marked_stop_id});
           } // else (if marked_p does not come before p'), we do not add it to the set and leave the p' entry
         }
       }
 
       if (!already_has_point)  // The route does not have a point in the list
-        routes_stops_set.insert({route_key, *marked_stop_id});
+        routes_stops_set.insert({route_key, marked_stop_id});
     }
-
-    // Unmark p
-    marked_stop_id = marked_stops.erase(marked_stop_id); // Next valid stop
   }
 
   return routes_stops_set;
@@ -200,17 +198,10 @@ void Raptor::traverseTrip(std::string &et_id, std::string &pi_stop_id) {
     // If arrival time can be improved, update Tk(pj) using et
     if (arrival_time < std::min(min_arrival_time[next_stop_id][k].min_arrival_time,
                                 min_arrival_time[query_.target_id][k].min_arrival_time)) {
-      if ((next_stop_id == "HSJ2") || (next_stop_id == "ARS4")
-       || (next_stop_id == "IPO4") || (next_stop_id == "HSJ7")
-       || (next_stop_id == "HSJ9") || (next_stop_id == "HSJ7"))
-            std::cout << "Marking " << std::setw(10) << next_stop_id << et_id
-                      << " from " << std::setw(10) << pi_stop_id
-                      << " "
-                      << Utils::secondsToTime(arrival_time) << " < min("
-                      << Utils::secondsToTime(min_arrival_time[next_stop_id][k].min_arrival_time)
-                      << ", "
-                      << Utils::secondsToTime(min_arrival_time[query_.target_id][k].min_arrival_time)
-                      << ")" << std::endl;
+      if ((next_stop_id == "IPO4") || (next_stop_id == "HSJ7")|| (next_stop_id == "HSJ2")
+       || (next_stop_id == "HSJ9") || (next_stop_id == "HSJ11")|| (next_stop_id == "ARS4"))
+      std::cout << "Marking " << std::setw(10) << next_stop_id << et_id << " from " << std::setw(10) << pi_stop_id << " " << Utils::secondsToTime(arrival_time)
+                << " < min(" << Utils::secondsToTime(min_arrival_time[next_stop_id][k].min_arrival_time) << ", " << Utils::secondsToTime(min_arrival_time[query_.target_id][k].min_arrival_time) << ")" << std::endl;
       min_arrival_time[next_stop_id][k] = {arrival_time, et_id, pi_stop_id};
       marked_stops.insert(next_stop_id); // Mark this stop for the next round
     }
@@ -225,26 +216,21 @@ void Raptor::traverseTrip(std::string &et_id, std::string &pi_stop_id) {
 }
 
 void Raptor::handleFootpaths() {
-  // For each marked stop p
-  for (const auto &stop_id: marked_stops) {
-    int current_arrival = min_arrival_time[stop_id][k].min_arrival_time;
+  // For each previously marked stop p
+  for (const auto &stop_id: prev_marked_stops) {
+    int p_prev_arrival = min_arrival_time[stop_id][k-1].min_arrival_time;
     // For each footpath (p, p')
     for (const auto &[dest_id, footpath]: stops_[stop_id].getFootpaths()) {
-      int new_arrival = current_arrival + footpath.duration;
+      int new_arrival = p_prev_arrival + footpath.duration;
       if (new_arrival < std::min(min_arrival_time[dest_id][k].min_arrival_time,
                                  min_arrival_time[query_.target_id][k].min_arrival_time)) {
-        // Only updates footpath if it comes from a stop
-        if ((dest_id == "HSJ2") || (dest_id == "ARS4")
-            || (dest_id == "IPO4") || (dest_id == "HSJ7")
-            || (dest_id == "HSJ9") || (dest_id == "HSJ7"))
-          std::cout << "Marking " << std::setw(10) << dest_id
-                    << "fp from " << std::setw(10) << stop_id
-                    << " " << Utils::secondsToTime(min_arrival_time[stop_id][k].min_arrival_time)
-                    << " + " << Utils::secondsToTime(footpath.duration)
-                    << " = " << Utils::secondsToTime(new_arrival)
-                    << " < min(" << Utils::secondsToTime(min_arrival_time[dest_id][k].min_arrival_time)
-                    << ", " << Utils::secondsToTime(min_arrival_time[query_.target_id][k].min_arrival_time)
-                    << ")" << std::endl;
+        // Only updates footpath if it goes to a stop that has not made any improvements
+//        if ((dest_id == "IPO4") || (dest_id == "HSJ7") || (dest_id == "HSJ2")
+//            || (dest_id == "HSJ9")|| (dest_id == "HSJ11") || (dest_id == "ARS4"))
+//
+//          std::cout << "Marking " << std::setw(10) << dest_id << "fp from " << std::setw(10) << stop_id
+//                  << " " << Utils::secondsToTime(min_arrival_time[stop_id][k].min_arrival_time) << " + " << Utils::secondsToTime(footpath.duration) << " = " << Utils::secondsToTime(new_arrival)
+//                  << " < min(" << Utils::secondsToTime(min_arrival_time[dest_id][k].min_arrival_time) << ", " << Utils::secondsToTime(min_arrival_time[query_.target_id][k].min_arrival_time) << ")" << std::endl;
         min_arrival_time[dest_id][k] = {new_arrival, std::nullopt, stop_id};
         marked_stops.insert(dest_id);
       }
@@ -292,6 +278,8 @@ step  trip        stop    (name)         dep_time  duration  -> stop       (name
 std::vector<JourneyStep> Raptor::reconstructJourney() {
   std::vector<JourneyStep> journey;
   std::string current_stop_id = query_.target_id;
+
+  std::cout << "Reconstructing journey at k " << k << std::endl;
 
   while (true) {
 
