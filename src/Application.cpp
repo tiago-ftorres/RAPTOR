@@ -119,7 +119,7 @@ void Application::handleQuery(Raptor &raptor) {
   auto end_time = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
 
-  std::cout << "Took " << duration << " ms (" << duration / 1000 << " seconds) to look for journeys." << std::endl;
+  std::cout << "Took " << duration << " ms (" << std::round(duration / 1000.0) << " seconds) to look for journeys." << std::endl;
 
   if (journeys.empty()) std::cout << "No journey found :/" << std::endl;
   else {
