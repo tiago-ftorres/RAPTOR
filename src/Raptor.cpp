@@ -49,14 +49,10 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys() {
     if (marked_stops.find(query_.target_id) != marked_stops.end()) {
       std::vector<JourneyStep> journey = reconstructJourney();
 
-      if (!journey.empty() && journey.front().src_stop->getField("stop_id") == query_.source_id) {
+      if (isValidJourney(journey)) {
         journeys.push_back(journey);
-        int ntrips = 0;
 
-        for (const JourneyStep &step: journey)
-          if (step.trip_id.has_value()) ntrips++;
-
-        std::cout << "Found journey with " << ntrips << " trips and " << journey.size() << " steps." << std::endl;
+        std::cout << "Found journey with " << journey.size() << " steps." << std::endl;
         Raptor::showJourney(journey);
       }
     }
@@ -142,9 +138,9 @@ void Raptor::traverseRoutes(
       std::string pi_stop_id = pi_stop->getField("stop_id");
 
       auto et_id = findEarliestTrip(pi_stop_id, route_key);
-      if (et_id.has_value()) {
+      if (et_id.has_value())
         traverseTrip(et_id.value(), pi_stop_id);
-      } else continue; // No valid trip found for this stop
+      else continue; // No valid trip found for this stop
 
     } // end each stop pi on route
 
@@ -221,7 +217,7 @@ void Raptor::traverseTrip(std::string &et_id, std::string &pi_stop_id) {
 void Raptor::handleFootpaths() {
   // For each previously marked stop p
   for (const auto &stop_id: prev_marked_stops) {
-    int p_prev_arrival = min_arrival_time[stop_id][k-1].min_arrival_time;
+    int p_prev_arrival = min_arrival_time[stop_id][k - 1].min_arrival_time;
     // For each footpath (p, p')
     for (const auto &[dest_id, footpath]: stops_[stop_id].getFootpaths()) {
       int new_arrival = p_prev_arrival + footpath.duration;
@@ -288,6 +284,19 @@ std::vector<JourneyStep> Raptor::reconstructJourney() {
   return journey;
 }
 
+// TODO: is it correct to assume that when we have consecutive footpaths, we have a journey with a direct one?
+bool Raptor::isValidJourney(std::vector<JourneyStep> journey) const {
+  if (journey.empty() ||
+      (journey.front().src_stop->getField("stop_id") != query_.source_id))
+    return false;
+
+  for (size_t i = 0; i < journey.size() - 1; ++i)
+    if (!journey[i].trip_id.has_value() && !journey[i + 1].trip_id.has_value())
+      return false;
+
+  return true;
+}
+
 void Raptor::showMinArrivalTimes() {
   std::cout << std::endl << "    Minimal arrival times:" << std::endl << std::endl;
 
@@ -344,3 +353,4 @@ void Raptor::showJourney(const std::vector<JourneyStep> &journey) {
   }
 
 }
+

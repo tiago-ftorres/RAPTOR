@@ -68,11 +68,10 @@ private:
 
   void handleFootpaths();
 
-  // Reconstruct all journeys
-  std::vector<std::vector<JourneyStep>> reconstructJourneys();
-
+  // Reconstruct journey at current round k
   std::vector<JourneyStep> reconstructJourney();
 
+  bool isValidJourney(std::vector<JourneyStep> journey) const;
 };
 
 #endif //RAPTOR_RAPTOR_H
