@@ -5,7 +5,6 @@
 #ifndef RAPTOR_UTILS_H
 #define RAPTOR_UTILS_H
 
-
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
@@ -14,6 +13,7 @@
 #include <vector>
 
 #include "Constants.h"
+#include "DateTime.h"
 
 class Utils {
 public:
@@ -27,6 +27,8 @@ public:
 
   static int timeToSeconds(const std::string &timeStr);
 
+  static int timeToSeconds(const Time &time);
+
   static std::vector<std::string> split(const std::string &str, char delimiter);
 
   static std::string getFirstWord(const std::string &str);
@@ -34,6 +36,10 @@ public:
   static std::string trim(const std::string &str);
 
   static bool isNumber(const std::string &str);
+
+  static int daysInMonth(int year, int month);
+
+  static bool dateWithinRange(const Date &date, const std::string &start_date, const std::string &end_date);
 };
 
 #endif //RAPTOR_UTILS_H

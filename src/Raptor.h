@@ -15,6 +15,7 @@
 
 class Raptor {
 public:
+
   Raptor(const std::unordered_map<std::string, Agency> &agencies_,
          const std::unordered_map<std::string, Calendar> &calendars_,
          const std::unordered_map<std::string, Stop> &stops,
@@ -65,6 +66,8 @@ private:
 
   bool
   isValidTrip(const std::pair<std::string, std::string> &route_key, const StopTime &stop_time);
+
+  bool isServiceActive(const Calendar &calendar, const Date &date) const;
 
   void traverseTrip(std::string &et_id, std::string &pi_stop_id);
 

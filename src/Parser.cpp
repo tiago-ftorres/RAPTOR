@@ -75,7 +75,6 @@ void Parser::parseCalendars() {
     if (tokens.size() != fields.size())
       throw std::runtime_error("Mismatched number of tokens and fields");
 
-
     Calendar calendar;
 
     for (size_t i = 0; i < fields.size(); ++i)

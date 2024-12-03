@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <optional>
 
+#include "../DateTime.h"
+
 class Stop;
 
 struct Footpath {
@@ -18,7 +20,8 @@ struct Footpath {
 struct Query {
   std::string source_id;
   std::string target_id;
-  std::string departure_time;
+  Date date;
+  Time departure_time;
 };
 
 struct StopInfo {

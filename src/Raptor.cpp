@@ -1,13 +1,14 @@
 
 #include "Raptor.h"
 
-Raptor::Raptor(const std::unordered_map<std::string, Agency> &agencies_,
-               const std::unordered_map<std::string, Calendar> &calendars_,
+
+Raptor::Raptor(const std::unordered_map<std::string, Agency> &agencies,
+               const std::unordered_map<std::string, Calendar> &calendars,
                const std::unordered_map<std::string, Stop> &stops,
                const std::unordered_map<std::pair<std::string, std::string>, Route, pair_hash> &routes,
                const std::unordered_map<std::string, Trip> &trips,
                const std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash> &stop_times)
-        : stops_(stops), routes_(routes), trips_(trips), stop_times_(stop_times) {
+        : agencies_(agencies), calendars_(calendars), stops_(stops), routes_(routes), trips_(trips), stop_times_(stop_times) {
   k = 1;
 
   std::cout << "Raptor initialized with "
@@ -117,7 +118,10 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys() {
 void Raptor::initializeAlgorithm() {
   std::cout << "Finding journeys from " << stops_[query_.source_id].getField("stop_name") << " to "
             << stops_[query_.target_id].getField("stop_name")
-            << " departing at " << query_.departure_time << std::endl << std::endl;
+            << " departing " << query_.date.day << "/" << query_.date.month << "/" << query_.date.year
+            << " at " << std::setw(2) << std::setfill('0') << query_.departure_time.hours
+            << ":" << std::setw(2) << std::setfill('0') << query_.departure_time.minutes
+            << std::endl << std::endl;
 
   min_arrival_time.clear();
   prev_marked_stops.clear();
@@ -208,7 +212,6 @@ Raptor::findEarliestTrip(const std::string &pi_stop_id, const std::pair<std::str
   for (const auto &stop_time_key: stops_[pi_stop_id].getStopTimesKeys()) {
     const StopTime &stop_time = stop_times_.at(stop_time_key);
 
-    // Check if the stop_time is from a trip that belongs to the route being traversed
     if (isValidTrip(route_key, stop_time))
       return stop_time.getField("trip_id"); // We can return because stop_times is ordered
   }
@@ -224,12 +227,46 @@ bool Raptor::isValidTrip(const std::pair<std::string, std::string> &route_key,
 
   auto [route_id, direction_id] = route_key;
 
-  return ((trip.getField("route_id") == route_id) &&
-          (trip.getField("direction_id") == direction_id) &&
-          (Utils::timeToSeconds(stop_time.getField("departure_time")) >=
+  // Check if the service is active on the query date
+  const Calendar &calendar = calendars_.at(trip.getField("service_id"));
+  if (!isServiceActive(calendar, query_.date))
+    return false;
+
+  // Check if the stop_time is from a trip that belongs to the route being traversed
+  if ((trip.getField("route_id") != route_id) || (trip.getField("direction_id") != direction_id))
+    return false;
+
+  // Check if the time is valid
+  return ((Utils::timeToSeconds(stop_time.getField("departure_time")) >=
            min_arrival_time[stop_time.getField("stop_id")][k - 1].min_arrival_time) &&
           (Utils::timeToSeconds(stop_time.getField("departure_time")) <
            min_arrival_time[query_.target_id][k].min_arrival_time));
+}
+
+bool Raptor::isServiceActive(const Calendar &calendar, const Date &date) const {
+
+  // Check if the date is within the calendar's start and end dates
+  if (!Utils::dateWithinRange(date, calendar.getField("start_date"), calendar.getField("end_date")))
+    return false;
+
+  // Check if the day of the week is active
+  std::tm time_info = {};
+  time_info.tm_year = query_.date.year - 1900;
+  time_info.tm_mon = query_.date.month - 1;
+  time_info.tm_mday = query_.date.day;
+  std::mktime(&time_info);
+  int weekday = time_info.tm_wday; // 0 = sunday, 1 = monday, etc.
+
+  switch (weekday) {
+    case 0: return std::stoi(calendar.getField("sunday"));
+    case 1: return std::stoi(calendar.getField("monday"));
+    case 2: return std::stoi(calendar.getField("tuesday"));
+    case 3: return std::stoi(calendar.getField("wednesday"));
+    case 4: return std::stoi(calendar.getField("thursday"));
+    case 5: return std::stoi(calendar.getField("friday"));
+    case 6: return std::stoi(calendar.getField("saturday"));
+    default: return false;
+  }
 }
 
 // TODO: create a struct for stop_time_key
@@ -243,7 +280,8 @@ void Raptor::traverseTrip(std::string &et_id, std::string &pi_stop_id) {
                                  });
 
   // Traverse remaining stops on the trip to update arrival times
-  for (auto next_stop_time_key = std::next(et_stop_it); next_stop_time_key != et.getStopTimesKeys().end(); ++next_stop_time_key) {
+  for (auto next_stop_time_key = std::next(et_stop_it);
+       next_stop_time_key != et.getStopTimesKeys().end(); ++next_stop_time_key) {
 
     auto [trip_id, next_stop_id] = *next_stop_time_key;
     StopTime &next_stop_time = stop_times_[*next_stop_time_key];

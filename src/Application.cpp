@@ -36,19 +36,19 @@ void Application::run() {
     stop_times.insert(dirStopTimes.begin(), dirStopTimes.end());
   }
 
-  Raptor raptor(agencies, calendars, stops, routes, trips, stop_times);
+  raptor_ = Raptor(agencies, calendars, stops, routes, trips, stop_times);
 
   std::string command;
   showCommands();
 
   while (true) {
-    std::cout << "\nType a command: ";
+    std::cout << std::endl << "Type a command: ";
     std::getline(std::cin, command);
 
     std::string trimmedCommand = Utils::trim(command);
 
     if (trimmedCommand == "query") {
-      handleQuery(raptor);
+      handleQuery();
     } else if (trimmedCommand == "help") {
       showCommands();
     } else if (trimmedCommand == "quit") {
@@ -69,71 +69,19 @@ void Application::run() {
 //  std::cout << "              query SAL2 IPO5 14:00:00" << std::endl; // STCP Salgueiros to IPO
 //  std::cout << "              query MAIA3 PARR3 5:55:55" << std::endl; // STCP Maia to Arrabida
 
-void Application::handleQuery(Raptor &raptor) {
+void Application::handleQuery() {
 
-  std::string source, target, departure_time;
+  std::string source = getSource();
+  std::string target = getTarget();
+  Date date = getDate();
+  Time departure_time = getDepartureTime();
 
-  while (true) {
-    std::cout << "Enter source stop id: ";
-    std::getline(std::cin, source);
-    source = Utils::trim(source);
-
-    if (raptor.getStops().find(source) != raptor.getStops().end()) break;
-    else
-      std::cout << "Invalid source stop id. Please try again. Example: 5753 for Metro or SAL2 for STCP." << std::endl;
-  }
-
-  while (true) {
-    std::cout << "Enter target stop id: ";
-    std::getline(std::cin, target);
-    target = Utils::trim(target);
-
-    if (raptor.getStops().find(target) != raptor.getStops().end()) break;
-    else
-      std::cout << "Invalid target stop id. Please try again. Example: 5753 for Metro or SAL2 for STCP." << std::endl;
-  }
-
-  std::string input;
-
-  // Ask for hours
-  int hours;
-  while (true) {
-    std::cout << "Enter hours (0-23): ";
-    std::getline(std::cin, input);
-    input = Utils::trim(input);
-    if (Utils::isNumber(input)) {
-      hours = std::stoi(input);
-      if (hours >= 0 && hours <= 23) break;
-    }
-    std::cout << "Invalid hours. Please enter a valid hour between 0 and 23.\n";
-  }
-
-  // Ask for minutes
-  int minutes;
-  while (true) {
-    std::cout << "Enter minutes (0-59): ";
-    std::getline(std::cin, input);
-    input = Utils::trim(input);
-    if (Utils::isNumber(input)) {
-      minutes = std::stoi(input);
-      if (minutes >= 0 && minutes <= 59) break;
-    }
-    std::cout << "Invalid minutes. Please enter valid minutes between 0 and 59.\n";
-  }
-
-  std::ostringstream oss;
-  oss << std::setw(2) << std::setfill('0') << hours << ":"
-      << std::setw(2) << std::setfill('0') << minutes << ":00";
-  departure_time = oss.str();
-
-//  departure_time = std::to_string(hours) + ":" + std::to_string(minutes) + ":00";
-
-  Query query = {source, target, departure_time};
-  raptor.setQuery(query);
+  Query query = {source, target, date, departure_time};
+  raptor_->setQuery(query);
 
   auto start_time = std::chrono::high_resolution_clock::now();
 
-  std::vector<std::vector<JourneyStep>> journeys = raptor.findJourneys();
+  std::vector<std::vector<JourneyStep>> journeys = raptor_->findJourneys();
 
   auto end_time = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
@@ -153,37 +101,6 @@ void Application::handleQuery(Raptor &raptor) {
       Raptor::showJourney(journey);
     }
   }
-
-//  std::cout << "Footpath duration from CCB1 to PAL4: "
-//            << raptor.getStops().at("CCB1").getFootpaths().at("PAL4").duration << " seconds." << std::endl;
-//  std::cout << "Footpath duration from PAL4 to CVLO: "
-//            << raptor.getStops().at("PAL4").getFootpaths().at("CVLO").duration << " seconds." << std::endl;
-//  std::cout << "Sum: " << raptor.getStops().at("CCB1").getFootpaths().at("PAL4").duration +
-//                          raptor.getStops().at("PAL4").getFootpaths().at("CVLO").duration << " seconds." << std::endl;
-//  std::cout << "Footpath duration from CCB1 to CVLO: "
-//            << raptor.getStops().at("CCB1").getFootpaths().at("CVLO").duration << " seconds." << std::endl << std::endl;
-//
-//  std::cout << "Footpath duration from MTT2 to BJ1: " << raptor.getStops().at("MTT2").getFootpaths().at("BJ1").duration
-//            << " seconds." << std::endl;
-//  std::cout << "Footpath duration from BJ1 to CVLO: " << raptor.getStops().at("BJ1").getFootpaths().at("CVLO").duration
-//            << " seconds." << std::endl;
-//  std::cout << "Sum: " << raptor.getStops().at("MTT2").getFootpaths().at("BJ1").duration +
-//                          raptor.getStops().at("BJ1").getFootpaths().at("CVLO").duration << " seconds." << std::endl;
-//  std::cout << "Footpath duration from MTT2 to CVLO: "
-//            << raptor.getStops().at("MTT2").getFootpaths().at("CVLO").duration << " seconds." << std::endl << std::endl;
-//
-//  std::cout << "Footpath duration from CAZ to LIMA2: " << raptor.getStops().at("CAZ").getFootpaths().at("LIMA2").duration
-//            << " seconds." << std::endl;
-//  std::cout << "Footpath duration from LIMA2 to PSOC1: " << raptor.getStops().at("LIMA2").getFootpaths().at("PSOC1").duration
-//            << " seconds." << std::endl;
-//  std::cout << "Footpath duration from PSOC1 to CVLO: " << raptor.getStops().at("PSOC1").getFootpaths().at("CVLO").duration
-//            << " seconds." << std::endl;
-//  std::cout << "Sum: " << raptor.getStops().at("CAZ").getFootpaths().at("LIMA2").duration +
-//                          raptor.getStops().at("LIMA2").getFootpaths().at("PSOC1").duration +
-//                          raptor.getStops().at("PSOC1").getFootpaths().at("CVLO").duration << " seconds." << std::endl;
-//  std::cout << "Footpath duration from CAZ to CVLO: "
-//            << raptor.getStops().at("CAZ").getFootpaths().at("CVLO").duration << " seconds." << std::endl << std::endl;
-
 }
 
 void Application::showCommands() {
@@ -200,4 +117,130 @@ void Application::showCommands() {
 //  std::cout << "              query MAIA3 PARR3 5:55:55" << std::endl; // STCP Maia to Arrabida
   std::cout << std::left << std::setw(30) << " 2. help " << " Shows available commands. " << std::endl;
   std::cout << " 3. quit " << std::endl;
+}
+
+std::string Application::getSource() {
+  std::string source;
+  while (true) {
+    std::cout << "Enter source stop id: ";
+    std::getline(std::cin, source);
+    source = Utils::trim(source);
+
+    if (raptor_->getStops().find(source) != raptor_->getStops().end())
+      break;
+    else
+      std::cout << "Invalid source stop id. Please try again. Example: 5753 for Metro or SAL2 for STCP." << std::endl;
+  }
+
+  return source;
+}
+
+std::string Application::getTarget() {
+  std::string target;
+  while (true) {
+    std::cout << "Enter target stop id: ";
+    std::getline(std::cin, target);
+    target = Utils::trim(target);
+
+    if (raptor_->getStops().find(target) != raptor_->getStops().end())
+      break;
+    else
+      std::cout << "Invalid target stop id. Please try again. Example: 5753 for Metro or SAL2 for STCP." << std::endl;
+  }
+
+  return target;
+}
+
+Date Application::getDate(){
+  int year = getYear();
+  int month = getMonth();
+  int day = getDay(year, month);
+  return {year, month, day};
+}
+
+int Application::getYear() {
+  std::string input;
+  int year;
+  while (true) {
+    std::cout << "Enter year (e.g., 2024): ";
+    std::getline(std::cin, input);
+    input = Utils::trim(input);
+    if (Utils::isNumber(input)) {
+      year = std::stoi(input);
+      break;
+    }
+    std::cout << "Invalid year. Please enter a valid year in number format." << std::endl;
+  }
+  return year;
+}
+
+int Application::getMonth() {
+  std::string input;
+  int month;
+  while (true) {
+    std::cout << "Enter month (1-12): ";
+    std::getline(std::cin, input);
+    input = Utils::trim(input);
+    if (Utils::isNumber(input)) {
+      month = std::stoi(input);
+      if (month >= 1 && month <= 12) break;
+    }
+    std::cout << "Invalid month. Please enter a valid month between 1 and 12." << std::endl;
+  }
+  return month;
+}
+
+int Application::getDay(int year, int month) {
+  std::string input;
+  int day;
+  while (true) {
+    std::cout << "Enter day (1-31): ";
+    std::getline(std::cin, input);
+    input = Utils::trim(input);
+    if (Utils::isNumber(input)) {
+      day = std::stoi(input);
+      if (day >= 1 && day <= Utils::daysInMonth(year, month)) break;
+    }
+    std::cout << "Invalid day. Please enter a valid day for this month." << std::endl;
+  }
+  return 0;
+}
+
+Time Application::getDepartureTime() {
+  int hours = getHours();
+  int minutes = getMinutes();
+
+  return {hours, minutes, 0};
+}
+
+int Application::getHours() {
+  std::string input;
+  int hours;
+  while (true) {
+    std::cout << "Enter hours (0-23): ";
+    std::getline(std::cin, input);
+    input = Utils::trim(input);
+    if (Utils::isNumber(input)) {
+      hours = std::stoi(input);
+      if (hours >= 0 && hours <= 23) break;
+    }
+    std::cout << "Invalid hours. Please enter a valid hour between 0 and 23." << std::endl;
+  }
+  return hours;
+}
+
+int Application::getMinutes() {
+  std::string input;
+  int minutes;
+  while (true) {
+    std::cout << "Enter minutes (0-59): ";
+    std::getline(std::cin, input);
+    input = Utils::trim(input);
+    if (Utils::isNumber(input)) {
+      minutes = std::stoi(input);
+      if (minutes >= 0 && minutes <= 59) break;
+    }
+    std::cout << "Invalid minutes. Please enter valid minutes between 0 and 59." << std::endl;
+  }
+  return minutes;
 }

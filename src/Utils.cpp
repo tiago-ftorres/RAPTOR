@@ -55,6 +55,10 @@ int Utils::timeToSeconds(const std::string &timeStr) {
   return hours * 3600 + minutes * 60 + seconds;
 }
 
+int Utils::timeToSeconds(const Time &time) {
+  return time.hours * 3600 + time.minutes * 60 + time.seconds;
+}
+
 std::vector<std::string> Utils::split(const std::string &str, char delimiter) {
   std::vector<std::string> tokens;
   std::string token;
@@ -85,6 +89,35 @@ std::string Utils::trim(const std::string &str) {
 
 bool Utils::isNumber(const std::string &str) {
   return std::ranges::all_of(str, [](char c) { return std::isdigit(c); });
+}
+
+int Utils::daysInMonth(int year, int month) {
+  static const int daysInMonths[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+  if (month == 2 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))) {
+    return 29; // February in a leap year
+  }
+  return daysInMonths[month - 1];
+}
+
+bool Utils::dateWithinRange(const Date &date, const std::string &start_date, const std::string &end_date) {
+  // Convert strings YYYYMMDD to Date objects
+  Date start = {std::stoi(start_date.substr(0, 4)), std::stoi(start_date.substr(4, 2)),
+                std::stoi(start_date.substr(6, 2))};
+  Date end = {std::stoi(end_date.substr(0, 4)), std::stoi(end_date.substr(4, 2)), std::stoi(end_date.substr(6, 2))};
+
+  // Check if the date is earlier than the start date
+  if ((date.year < start.year)
+      || (date.year == start.year && date.month < start.month)
+      || (date.year == start.year && date.month == start.month && date.day < start.day))
+    return false;
+
+  // Check if the date is later than the end date
+  if ((date.year > end.year)
+      || (date.year == end.year && date.month > end.month)
+      || (date.year == end.year && date.month == end.month && date.day > end.day))
+    return false;
+
+  return true;
 }
 
 

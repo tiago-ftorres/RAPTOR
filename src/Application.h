@@ -16,11 +16,30 @@ public:
   void run();
 
 private:
-  static void handleQuery(Raptor &raptor);
+  std::vector<std::string> inputDirectories;
+  std::optional<Raptor> raptor_;
+
+  void handleQuery();
 
   static void showCommands();
 
-  std::vector<std::string> inputDirectories;
+  std::string getSource();
+
+  std::string getTarget();
+
+  static Date getDate();
+
+  static int getYear();
+
+  static int getMonth();
+
+  static int getDay(int year, int month);
+
+  static Time getDepartureTime();
+
+  static int getHours();
+
+  static int getMinutes();
 };
 
 #endif //RAPTOR_APPLICATION_H

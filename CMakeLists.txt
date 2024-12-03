@@ -33,4 +33,5 @@ add_executable(raptor
         src/NetworkObjects/GTFSObjects/Calendar.h
         src/NetworkObjects/GTFSObjects/StopTime.cpp
         src/NetworkObjects/GTFSObjects/StopTime.h
-        src/Constants.h)
+        src/Constants.h
+        src/DateTime.h)
