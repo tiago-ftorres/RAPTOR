@@ -141,8 +141,9 @@ void Parser::parseRoutes() {
     // Iterate through all existing (route_id, direction_id) pairs in routes_
     for (auto &[key, r]: routes_) {
       // if key.route_id == route.route_id
-      if (key.first == route.getField("route_id")) {
-        route.setField("direction_id", key.second);
+      auto [route_id, direction_id] = key;
+      if (route_id == route.getField("route_id")) {
+        route.setField("direction_id", direction_id);
         routes_[key] = route;
       }
     }

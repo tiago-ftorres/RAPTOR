@@ -222,8 +222,10 @@ bool Raptor::isValidTrip(const std::pair<std::string, std::string> &route_key,
   const std::string &trip_id = stop_time.getField("trip_id");
   const Trip &trip = trips_[trip_id];
 
-  return ((trip.getField("route_id") == route_key.first) &&
-          (trip.getField("direction_id") == route_key.second) &&
+  auto [route_id, direction_id] = route_key;
+
+  return ((trip.getField("route_id") == route_id) &&
+          (trip.getField("direction_id") == direction_id) &&
           (Utils::timeToSeconds(stop_time.getField("departure_time")) >=
            min_arrival_time[stop_time.getField("stop_id")][k - 1].min_arrival_time) &&
           (Utils::timeToSeconds(stop_time.getField("departure_time")) <
@@ -243,7 +245,7 @@ void Raptor::traverseTrip(std::string &et_id, std::string &pi_stop_id) {
   // Traverse remaining stops on the trip to update arrival times
   for (auto next_stop_time_key = std::next(et_stop_it); next_stop_time_key != et.getStopTimesKeys().end(); ++next_stop_time_key) {
 
-    std::string next_stop_id = (*next_stop_time_key).second;
+    auto [trip_id, next_stop_id] = *next_stop_time_key;
     StopTime &next_stop_time = stop_times_[*next_stop_time_key];
 
     // Access arrival time at next_stop_id for trip et_id
