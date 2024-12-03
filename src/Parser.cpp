@@ -2,23 +2,25 @@
 #include "Parser.h"
 
 Parser::Parser(std::string directory) : inputDirectory(std::move(directory)) {
+  std::cout << "Parsing GTFS data from " << inputDirectory << "..." << std::endl;
+
   parseAgencies();
-  std::cout << "Agencies numbers: " << agencies_.size() << std::endl;
+  std::cout << agencies_.size() << " agencies, ";
 
   parseCalendars();
-  std::cout << "Calendars number: " << calendars_.size() << std::endl;
+  std::cout << calendars_.size() << " calendars, ";
 
   parseTrips();
-  std::cout << "Trips number: " << trips_.size() << std::endl;
+  std::cout << trips_.size() << " trips, ";
 
   parseRoutes();
-  std::cout << "Routes number: " << routes_.size() << std::endl;
+  std::cout << routes_.size() << " routes, ";
 
   parseStops();
-  std::cout << "Stops number: " << stops_.size() << std::endl;
+  std::cout << stops_.size() << " stops and ";
 
   parseStopTimes();
-  std::cout << "Stop Times number: " << stop_times_.size() << std::endl;
+  std::cout << stop_times_.size() << " stop times parsed." << std::endl;
 
   associateData();
   std::cout << "Data associated." << std::endl;
@@ -205,82 +207,69 @@ void Parser::parseStopTimes() {
 }
 
 void Parser::associateData() {
-  // Initialize footpaths
-  std::cout << "Initializing footpaths..." << std::endl;
-  auto start_time = std::chrono::high_resolution_clock::now();
-
-  // Avoid duplicating calculations for both sides
-  for (auto it1 = stops_.begin(); it1 != stops_.end(); ++it1) {
-    const std::string &id1 = it1->first;
-    Stop &stop1 = it1->second;
-
-    // Start the inner loop from the next element
-    for (auto it2 = std::next(it1); it2 != stops_.end(); ++it2) {
-      const std::string &id2 = it2->first;
-      Stop &stop2 = it2->second;
-
-      // Calculate duration between the two stops
-      int duration = Utils::getDuration(
-              stop1.getField("stop_lat"), stop1.getField("stop_lon"),
-              stop2.getField("stop_lat"), stop2.getField("stop_lon"));
-
-      // Add footpaths in both directions
-      stop1.addFootpath(id2, duration);
-      stop2.addFootpath(id1, duration);
-    }
-  }
-
-  auto end_time = std::chrono::high_resolution_clock::now();
-
-  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
-
-  std::cout << "Footpaths initialized in " << duration << " ms ("
-            << duration / 1000 << " seconds)." << std::endl;
-
   // Associate stop_times to trips
-  for (auto &[key, stop_time]: stop_times_) {
-    auto &[trip_id, stop_id] = key;
-    trips_[trip_id].addStopTime(&stop_time);
+  for (const auto &[key, stop_time]: stop_times_) {
+    const auto &[trip_id, stop_id] = key;
+    trips_[trip_id].addStopTimeKey(key);
   }
 
   // Sort each trip's stop_times
   for (auto &[id, trip]: trips_)
-    trip.sortStopTimes();
+    trip.sortStopTimes([&](const std::pair<std::string, std::string> &a, const std::pair<std::string, std::string> &b) {
+      const StopTime &stopTimeA = stop_times_.at(a);
+      const StopTime &stopTimeB = stop_times_.at(b);
+
+      int seqA = std::stoi(stopTimeA.getField("stop_sequence"));
+      int seqB = std::stoi(stopTimeB.getField("stop_sequence"));
+
+      return seqA < seqB;
+    });
 
   // Associate trips to routes
   for (auto &[id, trip]: trips_) {
     auto route_key = std::make_pair(trip.getField("route_id"), trip.getField("direction_id"));
-    routes_[route_key].addTrip(&trip);
+    routes_[route_key].addTripId(id);
   }
 
   // Sort each route's trip by earliest to latest arrival time
   for (auto &[id, route]: routes_)
-    route.sortTrips();
+    route.sortTrips([&](const std::string &a, const std::string &b) {
+      const Trip &tripA = trips_.at(a);
+      const Trip &tripB = trips_.at(b);
+
+      const StopTime &stopTimeA = stop_times_.at(tripA.getStopTimesKeys().front());
+      const StopTime &stopTimeB = stop_times_.at(tripB.getStopTimesKeys().front());
+
+      int timeA = Utils::timeToSeconds(stopTimeA.getField("arrival_time"));
+      int timeB = Utils::timeToSeconds(stopTimeB.getField("arrival_time"));
+
+      return timeA < timeB;
+    });
 
   // Associate stops to routes
   for (auto &[key, route]: routes_) {
     // If there is no trip associated to this route, skip the route
-    if (route.getTrips().empty()) continue;
+    if (route.getTripsIds().empty()) continue;
 
     // Find the route's trip that has the most stops
-    Trip *largest_trip = route.getTrips()[0];
-    for (size_t i = 1; i < route.getTrips().size(); i++) {
-      Trip *trip = route.getTrips()[i];
-      if (trip->getStopTimes().size() > largest_trip->getStopTimes().size()) {
+    Trip &largest_trip = trips_[route.getTripsIds()[0]];
+    for (size_t i = 1; i < route.getTripsIds().size(); i++) {
+      Trip &trip = trips_[route.getTripsIds()[i]];
+      if (trip.getStopTimesKeys().size() > largest_trip.getStopTimesKeys().size()) {
         largest_trip = trip;
       }
     }
 
     // A route stops' order will be the same as the routes' largest_trip stops' order, because it has the most stops
-    for (const auto &stop_time: largest_trip->getStopTimes()) {
-      route.addStop(&stops_[stop_time->getField("stop_id")]);
+    for (const auto &[trip_id, stop_id]: largest_trip.getStopTimesKeys()) {
+      route.addStopId(stop_id);
     }
   }
 
   for (auto &[key, stop_time]: stop_times_) {
     auto &[trip_id, stop_id] = key;
     // Associate stop_times to stops
-    stops_[stop_id].addStopTime(&stop_time);
+    stops_[stop_id].addStopTimeKey(key);
 
     // Associate routes to stops
     stops_[stop_id].addRouteKey(
@@ -289,7 +278,16 @@ void Parser::associateData() {
 
   // Sort each stop's stop_times by earliest to latest departure time
   for (auto &[id, stop]: stops_)
-    stop.sortStopTimes();
+    stop.sortStopTimes([&](const std::pair<std::string, std::string> &a, const std::pair<std::string, std::string> &b) {
+      const StopTime &stopTimeA = stop_times_.at(a);
+      const StopTime &stopTimeB = stop_times_.at(b);
+
+      int timeA = Utils::timeToSeconds(stopTimeA.getField("departure_time"));
+      int timeB = Utils::timeToSeconds(stopTimeB.getField("departure_time"));
+
+      return timeA < timeB;
+    });
+
 
 }
 

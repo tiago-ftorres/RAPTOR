@@ -205,4 +205,95 @@ step  trip        stop    (name)         dep_time  duration  -> stop       (name
 4     804_0_U_12  HSJ9    HOSP.          16:15:00  00:05:00  ARS4          AREOSA         16:20:00
 
 
-Type a command:
+
+Type a command:query
+ Enter source stop id:TAN
+ Enter target stop id:CALE
+ Enter hours (0-23):14
+ Enter minutes (0-59):44
+ Finding journeys f
+rom TV. ALDEIA NOVA to R.CAMPO ALEGRE departing at 14:44:00
+
+Marked 1666 stops during round 1
+Reconstructing journey at k 1
+Found journey with 1 steps.
+step  trip        stop    (name)         dep_time  duration  -> stop       (name)         arr_time
+1     footpath    TAN     TV.            14:44:00  01:34:05  CALE          R.CAMPO        16:18:05
+
+Marked 433 stops during round 2
+Reconstructing journey at k 2
+Found journey with 3 steps.
+step  trip        stop    (name)         dep_time  duration  -> stop       (name)         arr_time
+1     footpath    TAN     TV.            14:44:00  01:04:29  ALX2          ALEIXO         15:48:29
+
+2     207_1_S_84  ALX2    ALEIXO         15:48:54  00:03:04  FCUP2         FACULDADE      15:51:58
+
+3     503_1_U_52  FCUP2   FACULDADE      16:04:13  00:07:16  CALE          R.CAMPO        16:11:29
+
+Marked 345 stops during round 3
+Reconstructing journey at k 3
+Found journey with 3 steps.
+step  trip        stop    (name)         dep_time  duration  -> stop       (name)         arr_time
+1     footpath    TAN     TV.            14:44:00  00:05:02  NZ2           NAZAR├âES      14:49:02
+
+2     906_1_U_32  NZ2     NAZAR├âES      14:53:30  00:20:06  AEC2          ALAM.EMPRESA   15:13:36
+
+3     footpath    AEC2    ALAM.EMPRESA   15:13:36  00:23:29  CALE          R.CAMPO        15:37:05
+
+Marked 123 stops during round 4
+Reconstructing journey at k 4
+Found journey with 4 steps.
+step  trip        stop    (name)         dep_time  duration  -> stop       (name)         arr_time
+1     footpath    TAN     TV.            14:44:00  00:05:02  NZ2           NAZAR├âES      14:49:02
+
+2     906_1_U_32  NZ2     NAZAR├âES      14:53:30  00:18:30  LGM2          LGO.           15:12:00
+
+3     902_1_D_41  LGM2    LGO.           15:16:00  00:14:06  1BS3          BOAVISTA       15:30:06
+
+4     footpath    1BS3    BOAVISTA       15:30:06  00:02:19  CALE          R.CAMPO        15:32:25
+
+Marked 85 stops during round 5
+Marked 20 stops during round 6
+Marked 7  stops during round 7
+Marked 0  stops during round 8
+Took 7167 ms (7 seconds) to look for journeys.
+Found 4 journey(s)! =)
+
+Journey 1 (01:34:05):
+
+step  trip        stop    (name)         dep_time  duration  -> stop       (name)         arr_time
+1     footpath    TAN     TV.            14:44:00  01:34:05  CALE          R.CAMPO        16:18:05
+
+
+Journey 2 (01:27:29):
+
+step  trip        stop    (name)         dep_time  duration  -> stop       (name)         arr_time
+1     footpath    TAN     TV.            14:44:00  01:04:29  ALX2          ALEIXO         15:48:29
+
+2     207_1_S_84  ALX2    ALEIXO         15:48:54  00:03:04  FCUP2         FACULDADE      15:51:58
+
+3     503_1_U_52  FCUP2   FACULDADE      16:04:13  00:07:16  CALE          R.CAMPO        16:11:29
+
+
+Journey 3 (00:53:05):
+
+step  trip        stop    (name)         dep_time  duration  -> stop       (name)         arr_time
+1     footpath    TAN     TV.            14:44:00  00:05:02  NZ2           NAZAR├âES      14:49:02
+
+2     906_1_U_32  NZ2     NAZAR├âES      14:53:30  00:20:06  AEC2          ALAM.EMPRESA   15:13:36
+
+3     footpath    AEC2    ALAM.EMPRESA   15:13:36  00:23:29  CALE          R.CAMPO        15:37:05
+
+
+Journey 4 (00:48:25):
+
+step  trip        stop    (name)         dep_time  duration  -> stop       (name)         arr_time
+1     footpath    TAN     TV.            14:44:00  00:05:02  NZ2           NAZAR├âES      14:49:02
+
+2     906_1_U_32  NZ2     NAZAR├âES      14:53:30  00:18:30  LGM2          LGO.           15:12:00
+
+3     902_1_D_41  LGM2    LGO.           15:16:00  00:14:06  1BS3          BOAVISTA       15:30:06
+
+4     footpath    1BS3    BOAVISTA       15:30:06  00:02:19  CALE          R.CAMPO        15:32:25
+
+

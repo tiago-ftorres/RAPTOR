@@ -11,7 +11,7 @@
 
 class Application {
 public:
-  explicit Application(std::string inputDirectory);
+  explicit Application(std::vector<std::string> inputDirectories);
 
   void run();
 
@@ -20,7 +20,7 @@ private:
 
   static void showCommands();
 
-  std::string inputDirectory;
+  std::vector<std::string> inputDirectories;
 };
 
 #endif //RAPTOR_APPLICATION_H

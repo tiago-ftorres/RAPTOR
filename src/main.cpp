@@ -3,16 +3,26 @@
 
 int main(int argc, char *argv[]) {
 
-  std::string inputDirectory;
+  std::vector<std::string> inputDirectories;
 
   if (argc >= 2) {
-    inputDirectory = argv[1];
+    for (int i = 1; i < argc; ++i) {
+      inputDirectories.emplace_back(argv[i]);
+    }
   } else {
-    std::cout << "GTFS Input Directory: ";
-    std::getline(std::cin, inputDirectory);
+    std::string input;
+    std::cout << "Enter GTFS Input Directories (one per line). Type 'done' to finish, or enter a blank line: " << std::endl;
+
+    while (true) {
+      std::getline(std::cin, input);
+
+      if (input == "done" || input.empty()) break;
+      inputDirectories.push_back(input);
+    }
+
   }
 
-  Application application(inputDirectory);
+  Application application(inputDirectories);
   application.run();
 
   return 0;

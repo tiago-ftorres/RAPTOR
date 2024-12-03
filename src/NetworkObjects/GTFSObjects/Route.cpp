@@ -2,28 +2,26 @@
 // Created by maria on 11/20/2024.
 //
 #include "Route.h"
+#include <iostream>
 
-void Route::addTrip(Trip *trip) {
-  trips.push_back(trip);
+void Route::addTripId(const std::string& trip_id) {
+  trips_ids.push_back(trip_id);
 }
 
-void Route::addStop(Stop *stop) {
-  stops.push_back(stop);
+void Route::addStopId(const std::string& stop_id) {
+  stops_ids.push_back(stop_id);
 }
 
-void Route::sortTrips() {
-  std::sort(trips.begin(), trips.end(), [&](const Trip* a, const Trip* b) {
-    return Utils::timeToSeconds(a->getStopTimes().front()->getField("arrival_time")) <
-           Utils::timeToSeconds(b->getStopTimes().front()->getField("arrival_time"));
-  });
+void Route::sortTrips(const std::function<bool(const std::string &, const std::string &)> &comparator) {
+  std::sort(trips_ids.begin(), trips_ids.end(), comparator);
 }
 
-const std::vector<Trip *>& Route::getTrips() const {
-  return trips;
+const std::vector<std::string> &Route::getTripsIds() const {
+  return trips_ids;
 }
 
-const std::vector<Stop *>& Route::getStops() const {
-  return stops;
+const std::vector<std::string> &Route::getStopsIds() const {
+  return stops_ids;
 }
 
 

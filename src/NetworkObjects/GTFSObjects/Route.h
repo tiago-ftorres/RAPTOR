@@ -6,24 +6,22 @@
 #define RAPTOR_ROUTE_H
 
 #include "GTFSObject.h"
-#include "Trip.h"
-#include "Stop.h"
 
 class Route : public GTFSObject {
 public:
-  void addTrip(Trip* trip);
+  void addTripId(const std::string& trip_id);
 
-  void addStop(Stop* stop);
+  void addStopId(const std::string& stop_id);
 
-  const std::vector<Trip*>& getTrips() const;
+  const std::vector<std::string>& getTripsIds() const;
 
-  const std::vector<Stop*>& getStops() const;
+  const std::vector<std::string>& getStopsIds() const;
 
-  void sortTrips();
+  void sortTrips(const std::function<bool(const std::string &, const std::string &)> &comparator);
 
 private:
-  std::vector<Trip*> trips; // Sorted by earliest to latest arrival time
-  std::vector<Stop*> stops; // Sorted by stop_sequence
+  std::vector<std::string> trips_ids; // Sorted by earliest to latest arrival time
+  std::vector<std::string> stops_ids; // Sorted by stop_sequence
 };
 
 #endif //RAPTOR_ROUTE_H

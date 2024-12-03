@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <string>
 #include <stdexcept>
+#include <functional>
 
 #include "../../Utils.h"
 
@@ -19,8 +20,10 @@ public:
   // Get a field value
   virtual const std::string& getField(const std::string& field) const;
 
+  const std::unordered_map<std::string, std::string> &getFields() const;
 protected:
   std::unordered_map<std::string, std::string> fields; // Dynamic fields
+
 };
 
 

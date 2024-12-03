@@ -16,3 +16,8 @@ const std::string &GTFSObject::getField(const std::string &field) const {
   }
   return it->second;
 }
+
+const std::unordered_map<std::string, std::string> &GTFSObject::getFields() const {
+  return fields;
+}
+

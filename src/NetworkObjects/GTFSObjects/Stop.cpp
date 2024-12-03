@@ -4,8 +4,8 @@
 
 #include "Stop.h"
 
-void Stop::addStopTime(StopTime *stopTime) {
-  stop_times.push_back(stopTime);
+void Stop::addStopTimeKey(const std::pair<std::string, std::string> &stop_time_key) {
+  stop_times_keys.push_back(stop_time_key);
 }
 
 void Stop::addRouteKey(const std::pair<std::string, std::string> &route_key) {
@@ -16,8 +16,8 @@ void Stop::addFootpath(const std::string &other_id, int &duration) {
   footpaths[other_id] = {other_id, duration};
 }
 
-const std::vector<StopTime *> &Stop::getStopTimes() const {
-  return stop_times;
+const std::vector<std::pair<std::string, std::string>> &Stop::getStopTimesKeys() const {
+  return stop_times_keys;
 }
 
 const std::vector<std::pair<std::string, std::string>> &Stop::getRouteKeys() const {
@@ -27,10 +27,9 @@ const std::vector<std::pair<std::string, std::string>> &Stop::getRouteKeys() con
 const std::unordered_map<std::string, Footpath> &Stop::getFootpaths() const {
   return footpaths;
 }
-
-void Stop::sortStopTimes() {
-  std::sort(stop_times.begin(), stop_times.end(), [&](const StopTime *a, const StopTime *b) {
-    return Utils::timeToSeconds(a->getField("departure_time")) < Utils::timeToSeconds(b->getField("departure_time"));
-  });
+// TODO: map with costumo comparator instead of vector
+void Stop::sortStopTimes(const std::function<bool(const std::pair<std::string, std::string>&,
+                                                  const std::pair<std::string, std::string>&)>& comparator) {
+  std::sort(stop_times_keys.begin(), stop_times_keys.end(), comparator);
 }
 

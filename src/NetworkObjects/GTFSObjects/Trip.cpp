@@ -4,18 +4,15 @@
 
 #include "Trip.h"
 
-void Trip::addStopTime(StopTime *stopTime) {
-  stop_times.push_back(stopTime);
+void Trip::addStopTimeKey(const std::pair<std::string, std::string> &stop_time_key) {
+  stop_times_keys.push_back(stop_time_key);
 }
 
-const std::vector<StopTime *> &Trip::getStopTimes() const {
-  return stop_times;
+const std::vector<std::pair<std::string, std::string>> &Trip::getStopTimesKeys() const {
+  return stop_times_keys;
 }
 
-void Trip::sortStopTimes() {
-  std::sort(stop_times.begin(), stop_times.end(), [](const StopTime* a, const StopTime* b) {
-      int seq_a = std::stoi(a->getField("stop_sequence"));
-      int seq_b = std::stoi(b->getField("stop_sequence"));
-      return seq_a < seq_b;
-    });
+void Trip::sortStopTimes(const std::function<bool(const std::pair<std::string, std::string>&,
+                                                  const std::pair<std::string, std::string>&)>& comparator) {
+  std::sort(stop_times_keys.begin(), stop_times_keys.end(), comparator);
 }

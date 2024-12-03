@@ -31,7 +31,7 @@ public:
   void showMinArrivalTimes();
 
   // Prints a journey`s steps
-  static void showJourney(const std::vector<JourneyStep>& journey);
+  static void showJourney(const std::vector<JourneyStep> &journey);
 
   const std::unordered_map<std::string, Stop> &getStops() const;
 
@@ -50,6 +50,8 @@ private:
   std::unordered_set<std::string> marked_stops;
   int k;
 
+  void initializeFootpaths();
+
   void initializeAlgorithm();
 
   std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, nested_pair_hash>
@@ -62,7 +64,7 @@ private:
   findEarliestTrip(const std::string &pi_stop_id, const std::pair<std::string, std::string> &route_key);
 
   bool
-  isValidTrip(const std::string &trip_id, const std::pair<std::string, std::string> &route_key, StopTime *stop_time);
+  isValidTrip(const std::pair<std::string, std::string> &route_key, const StopTime &stop_time);
 
   void traverseTrip(std::string &et_id, std::string &pi_stop_id);
 
@@ -72,6 +74,7 @@ private:
   std::vector<JourneyStep> reconstructJourney();
 
   bool isValidJourney(std::vector<JourneyStep> journey) const;
+
 };
 
 #endif //RAPTOR_RAPTOR_H

@@ -3,18 +3,38 @@
 //
 #include "Application.h"
 
-Application::Application(std::string inputDirectory)
-        : inputDirectory(std::move(inputDirectory)) {}
+Application::Application(std::vector<std::string> inputDirectories)
+        : inputDirectories(std::move(inputDirectories)) {}
 
 void Application::run() {
-  Parser parser(inputDirectory);
+  std::unordered_map<std::string, Agency> agencies;
+  std::unordered_map<std::string, Calendar> calendars;
+  std::unordered_map<std::string, Trip> trips;
+  std::unordered_map<std::pair<std::string, std::string>, Route, pair_hash> routes;
+  std::unordered_map<std::string, Stop> stops;
+  std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash> stop_times;
 
-  std::unordered_map<std::string, Agency> agencies = parser.getAgencies();
-  std::unordered_map<std::string, Calendar> calendars = parser.getCalendars();
-  std::unordered_map<std::string, Trip> trips = parser.getTrips();
-  std::unordered_map<std::pair<std::string, std::string>, Route, pair_hash> routes = parser.getRoutes();
-  std::unordered_map<std::string, Stop> stops = parser.getStops();
-  std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash> stop_times = parser.getStopTimes();
+  for (const auto &dir: inputDirectories) {
+    Parser parser(dir);
+
+    auto dirAgencies = parser.getAgencies();
+    agencies.insert(dirAgencies.begin(), dirAgencies.end());
+
+    auto dirCalendars = parser.getCalendars();
+    calendars.insert(dirCalendars.begin(), dirCalendars.end());
+
+    auto dirTrips = parser.getTrips();
+    trips.insert(dirTrips.begin(), dirTrips.end());
+
+    auto dirRoutes = parser.getRoutes();
+    routes.insert(dirRoutes.begin(), dirRoutes.end());
+
+    auto dirStops = parser.getStops();
+    stops.insert(dirStops.begin(), dirStops.end());
+
+    auto dirStopTimes = parser.getStopTimes();
+    stop_times.insert(dirStopTimes.begin(), dirStopTimes.end());
+  }
 
   Raptor raptor(agencies, calendars, stops, routes, trips, stop_times);
 
@@ -118,7 +138,8 @@ void Application::handleQuery(Raptor &raptor) {
   auto end_time = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
 
-  std::cout << "Took " << duration << " ms (" << std::round(duration / 1000.0) << " seconds) to look for journeys." << std::endl;
+  std::cout << "Took " << duration << " ms (" << std::round(static_cast<double>(duration) / 1000.0) << " seconds) to look for journeys."
+            << std::endl;
 
   if (journeys.empty()) std::cout << "No journey found :/" << std::endl;
   else {
@@ -127,7 +148,8 @@ void Application::handleQuery(Raptor &raptor) {
     for (int i = 0; i < journeys.size(); i++) {
       const std::vector<JourneyStep> &journey = journeys[i];
       int journey_duration = journey.back().arrival_time - journey.front().departure_time;
-      std::cout << std::endl << "Journey " << i + 1 << " (" << Utils::secondsToTime(journey_duration) << "): " << std::endl << std::endl;
+      std::cout << std::endl << "Journey " << i + 1 << " (" << Utils::secondsToTime(journey_duration) << "): "
+                << std::endl << std::endl;
       Raptor::showJourney(journey);
     }
   }
