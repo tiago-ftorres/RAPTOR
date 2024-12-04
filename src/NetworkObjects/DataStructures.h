@@ -6,7 +6,6 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <algorithm>
-#include <optional>
 
 #include "../DateTime.h"
 
@@ -25,9 +24,10 @@ struct Query {
 };
 
 struct StopInfo {
-  int min_arrival_time{};
+  std::optional<int> min_arrival_time; // if unreachable, will be std::nullopt
   std::optional<std::string> parent_trip_id; // if footpath, will be std::nullopt
   std::optional<std::string> parent_stop_id; // if first stop, will be std::nullopt
+  std::optional<Day> day; // if unreachable, will be std::nullopt
 };
 
 struct JourneyStep {

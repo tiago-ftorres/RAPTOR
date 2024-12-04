@@ -23,7 +23,7 @@ public:
   static int getDuration(const std::string &string_lat1, const std::string &string_lon1,
                          const std::string &string_lat2, const std::string &string_lon2);
 
-  static std::string secondsToTime(int seconds);
+  static std::string secondsToTime(std::optional<int> seconds);
 
   static int timeToSeconds(const std::string &timeStr);
 
@@ -40,6 +40,8 @@ public:
   static int daysInMonth(int year, int month);
 
   static bool dateWithinRange(const Date &date, const std::string &start_date, const std::string &end_date);
+
+  static Date addOneDay(Date date);
 };
 
 #endif //RAPTOR_UTILS_H

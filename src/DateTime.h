@@ -5,10 +5,17 @@
 #ifndef RAPTOR_DATETIME_H
 #define RAPTOR_DATETIME_H
 
+#include <optional>
+
 struct Date {
   int year;
   int month;
   int day;
+};
+
+enum class Day {
+  CurrentDay,
+  NextDay
 };
 
 struct Time {

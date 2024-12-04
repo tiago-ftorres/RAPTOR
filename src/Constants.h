@@ -5,8 +5,6 @@
 #ifndef RAPTOR_CONSTANTS_H
 #define RAPTOR_CONSTANTS_H
 
-#include <limits>
-
-static constexpr int INF = std::numeric_limits<int>::max();
+static constexpr int MIDNIGHT = 24 * 3600;
 
 #endif //RAPTOR_CONSTANTS_H

@@ -167,9 +167,9 @@ int Application::getYear() {
     input = Utils::trim(input);
     if (Utils::isNumber(input)) {
       year = std::stoi(input);
-      break;
+      if (year > 1900) break;
     }
-    std::cout << "Invalid year. Please enter a valid year in number format." << std::endl;
+    std::cout << "Invalid year. Please enter a valid year in number format, greater than 1900." << std::endl;
   }
   return year;
 }

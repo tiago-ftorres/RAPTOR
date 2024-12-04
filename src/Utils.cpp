@@ -30,13 +30,15 @@ int Utils::getDuration(const std::string &string_lat1, const std::string &string
   return static_cast<int>(std::round((distance / average_speed) * 60 * 60)); // Seconds
 }
 
-std::string Utils::secondsToTime(int seconds) {
+std::string Utils::secondsToTime(std::optional<int> seconds) {
 
-  if (seconds == INF) return "INF";
+  if (!seconds.has_value()) return "INF";
 
-  int hours = seconds / 3600 % 24;
-  int minutes = (seconds % 3600) / 60;
-  int secs = seconds % 60;
+  int seconds_value = seconds.value();
+
+  int hours = seconds_value / 3600 % 24;
+  int minutes = (seconds_value % 3600) / 60;
+  int secs = seconds_value % 60;
 
   std::ostringstream oss;
   oss << std::setw(2) << std::setfill('0') << hours << ":"
@@ -118,6 +120,18 @@ bool Utils::dateWithinRange(const Date &date, const std::string &start_date, con
     return false;
 
   return true;
+}
+
+Date Utils::addOneDay(Date date) {
+  std::tm time_info = {};
+  time_info.tm_year = date.year - 1900;
+  time_info.tm_mon = date.month - 1;
+  time_info.tm_mday = date.day + 1; // Add one day
+
+  std::mktime(&time_info); // Normalize the date
+  Date new_date = {time_info.tm_year + 1900, time_info.tm_mon + 1, time_info.tm_mday};
+
+  return new_date;
 }
 
 
