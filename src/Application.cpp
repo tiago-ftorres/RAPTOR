@@ -203,7 +203,7 @@ int Application::getDay(int year, int month) {
     }
     std::cout << "Invalid day. Please enter a valid day for this month." << std::endl;
   }
-  return 0;
+  return day;
 }
 
 Time Application::getDepartureTime() {

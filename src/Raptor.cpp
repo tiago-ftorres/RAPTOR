@@ -8,7 +8,8 @@ Raptor::Raptor(const std::unordered_map<std::string, Agency> &agencies,
                const std::unordered_map<std::pair<std::string, std::string>, Route, pair_hash> &routes,
                const std::unordered_map<std::string, Trip> &trips,
                const std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash> &stop_times)
-        : agencies_(agencies), calendars_(calendars), stops_(stops), routes_(routes), trips_(trips), stop_times_(stop_times) {
+        : agencies_(agencies), calendars_(calendars), stops_(stops), routes_(routes), trips_(trips),
+          stop_times_(stop_times) {
   k = 1;
 
   std::cout << "Raptor initialized with "
@@ -79,7 +80,7 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys() {
     // Accumulate routes serving marked stops from previous round
     // ((route_id, direction_id), stop_id)
     std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, nested_pair_hash> routes_stops_set = accumulateRoutesServingStops();
-    std::cout << "Accumulated " << std::setw(2) << routes_stops_set.size() << " routes serving stops." << std::endl;
+    std::cout << "Accumulated " << std::setfill(' ') << std::setw(2) << routes_stops_set.size() << " routes serving stops." << std::endl;
 
     // 2nd: Traverse each route
     traverseRoutes(routes_stops_set);
@@ -116,12 +117,14 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys() {
 }
 
 void Raptor::initializeAlgorithm() {
-  std::cout << "Finding journeys from " << stops_[query_.source_id].getField("stop_name") << " to "
-            << stops_[query_.target_id].getField("stop_name")
+  std::ostringstream time_oss;
+  time_oss << std::setw(2) << std::setfill('0') << query_.departure_time.hours << ":"
+      << std::setw(2) << std::setfill('0') << query_.departure_time.minutes << ":00";
+
+  std::cout << "Finding journeys from " << stops_[query_.source_id].getField("stop_name")
+            << " to " << stops_[query_.target_id].getField("stop_name")
             << " departing " << query_.date.day << "/" << query_.date.month << "/" << query_.date.year
-            << " at " << std::setw(2) << std::setfill('0') << query_.departure_time.hours
-            << ":" << std::setw(2) << std::setfill('0') << query_.departure_time.minutes
-            << std::endl << std::endl;
+            << " at " << time_oss.str() << std::endl << std::endl;
 
   min_arrival_time.clear();
   prev_marked_stops.clear();
@@ -168,7 +171,7 @@ Raptor::accumulateRoutesServingStops() {
         }
       }
 
-      if (!already_has_point)  // The route does not have a point in the list
+      if (!already_has_point)   // The route does not have a point in the list
         routes_stops_set.insert({route_key, marked_stop_id});
     }
   }
@@ -258,14 +261,22 @@ bool Raptor::isServiceActive(const Calendar &calendar, const Date &date) const {
   int weekday = time_info.tm_wday; // 0 = sunday, 1 = monday, etc.
 
   switch (weekday) {
-    case 0: return std::stoi(calendar.getField("sunday"));
-    case 1: return std::stoi(calendar.getField("monday"));
-    case 2: return std::stoi(calendar.getField("tuesday"));
-    case 3: return std::stoi(calendar.getField("wednesday"));
-    case 4: return std::stoi(calendar.getField("thursday"));
-    case 5: return std::stoi(calendar.getField("friday"));
-    case 6: return std::stoi(calendar.getField("saturday"));
-    default: return false;
+    case 0:
+      return std::stoi(calendar.getField("sunday"));
+    case 1:
+      return std::stoi(calendar.getField("monday"));
+    case 2:
+      return std::stoi(calendar.getField("tuesday"));
+    case 3:
+      return std::stoi(calendar.getField("wednesday"));
+    case 4:
+      return std::stoi(calendar.getField("thursday"));
+    case 5:
+      return std::stoi(calendar.getField("friday"));
+    case 6:
+      return std::stoi(calendar.getField("saturday"));
+    default:
+      return false;
   }
 }
 
