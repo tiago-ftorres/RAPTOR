@@ -7,10 +7,13 @@
 
 #include <optional>
 
+constexpr const char* weekdays_names[] = {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
+
 struct Date {
   int year;
   int month;
   int day;
+  int weekday; // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
 };
 
 enum class Day {

@@ -61,22 +61,26 @@ void Application::run() {
   }
 }
 
-//std::cout << "     example: query 5777 5776 22:00:00" << std::endl;
-//  std::cout << "              query 5775 5813 03:00:33" << std::endl;
-//  std::cout << "              query 5746 5756 12:22:33" << std::endl;
-//  std::cout << "              query 5753 5782 19:44:00" << std::endl;
-//  std::cout << "              query 5726 5739 06:44:00" << std::endl; // Metro Trindade to Lidador
-//  std::cout << "              query SAL2 IPO5 14:00:00" << std::endl; // STCP Salgueiros to IPO
-//  std::cout << "              query MAIA3 PARR3 5:55:55" << std::endl; // STCP Maia to Arrabida
+void Application::showCommands() {
+  std::cout << std::endl << "Available commands:" << std::endl;
+
+  std::cout << std::left << std::setw(30) << " 1. query " << " Runs RAPTOR algorithm." << std::endl;
+  std::cout << std::left << std::setw(30) << " 2. help " << " Shows available commands. " << std::endl;
+
+  std::cout << " 3. quit " << std::endl;
+}
+
+//               query 5777 5776 22:00:00 20240909,20241231
+//               query 5775 5813 2024 11-11 11:11
+//               query 5746 5756 2024 5/5 05:05
+//               query 5753 5782 19:44:00
+//               query 5726 5739 06:44:00 // Metro Trindade to Lidador
+
+//               query SAL2 IPO5 14:00:00 20221226,20241231
+//               query MAIA3 PARR3 5:55:55 // STCP Maia to Arrabida
 
 void Application::handleQuery() {
-
-  std::string source = getSource();
-  std::string target = getTarget();
-  Date date = getDate();
-  Time departure_time = getDepartureTime();
-
-  Query query = {source, target, date, departure_time};
+  Query query =  getQuery();
   raptor_->setQuery(query);
 
   auto start_time = std::chrono::high_resolution_clock::now();
@@ -103,20 +107,13 @@ void Application::handleQuery() {
   }
 }
 
-void Application::showCommands() {
-  std::cout << std::endl << "Available commands:" << std::endl;
+Query Application::getQuery() {
+  std::string source = getSource();
+  std::string target = getTarget();
+  Date date = getDate();
+  Time departure_time = getDepartureTime();
 
-
-  std::cout << std::left << std::setw(30) << " 1. query " << " Runs RAPTOR algorithm." << std::endl;
-//  std::cout << "     example: query 5777 5776 22:00:00" << std::endl;
-//  std::cout << "              query 5775 5813 03:00:33" << std::endl;
-//  std::cout << "              query 5746 5756 12:22:33" << std::endl;
-//  std::cout << "              query 5753 5782 19:44:00" << std::endl;
-//  std::cout << "              query 5726 5739 06:44:00" << std::endl; // Metro Trindade to Lidador
-//  std::cout << "              query SAL2 IPO5 14:00:00" << std::endl; // STCP Salgueiros to IPO
-//  std::cout << "              query MAIA3 PARR3 5:55:55" << std::endl; // STCP Maia to Arrabida
-  std::cout << std::left << std::setw(30) << " 2. help " << " Shows available commands. " << std::endl;
-  std::cout << " 3. quit " << std::endl;
+  return {source, target, date, departure_time};
 }
 
 std::string Application::getSource() {
@@ -155,7 +152,14 @@ Date Application::getDate(){
   int year = getYear();
   int month = getMonth();
   int day = getDay(year, month);
-  return {year, month, day};
+
+  std::tm time_info = {};
+  time_info.tm_year = year - 1900;
+  time_info.tm_mon = month - 1;
+  time_info.tm_mday = day;
+  std::mktime(&time_info);
+
+  return {year, month, day, time_info.tm_wday};
 }
 
 int Application::getYear() {

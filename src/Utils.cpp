@@ -90,7 +90,7 @@ std::string Utils::trim(const std::string &str) {
 
 
 bool Utils::isNumber(const std::string &str) {
-  return std::ranges::all_of(str, [](char c) { return std::isdigit(c); });
+  return !str.empty() && std::ranges::all_of(str, [](char c) { return std::isdigit(c); });
 }
 
 int Utils::daysInMonth(int year, int month) {
@@ -134,4 +134,7 @@ Date Utils::addOneDay(Date date) {
   return new_date;
 }
 
+std::string Utils::dayToString(Day day) {
+  return (day == Day::CurrentDay) ? "current day" : "next day";
+}
 

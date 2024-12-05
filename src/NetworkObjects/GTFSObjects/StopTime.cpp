@@ -3,3 +3,19 @@
 //
 
 #include "StopTime.h"
+
+void StopTime::setArrivalSeconds(int seconds){
+  arrival_seconds = seconds;
+}
+
+void StopTime::setDepartureSeconds(int seconds){
+  departure_seconds = seconds;
+}
+
+int StopTime::getArrivalSeconds() const {
+  return arrival_seconds;
+}
+
+int StopTime::getDepartureSeconds() const {
+  return departure_seconds;
+}

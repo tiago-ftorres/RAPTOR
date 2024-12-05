@@ -43,7 +43,7 @@ private:
   std::unordered_map<std::pair<std::string, std::string>, StopTime, pair_hash> stop_times_; // key is (trip_id, stop_id)
 
   Query query_;
-  std::unordered_map<std::string, std::vector<StopInfo>> min_arrival_time; // each stop_id has a vector of min_arrival time for each k
+  std::unordered_map<std::string, std::vector<StopInfo>> arrivals_; // each stop_id has a vector of StopInfo (arrival time) for each k
   std::unordered_set<std::string> prev_marked_stops;
   std::unordered_set<std::string> marked_stops;
   int k;
@@ -72,11 +72,13 @@ private:
 
   bool isTripActive(const std::string& trip_id, Day day);
 
-  bool isServiceActive(const Calendar &calendar, const Date &date) const;
+  static bool isServiceActive(const Calendar &calendar, const Date &date) ;
 
   void traverseTrip(std::string &et_id, std::string &pi_stop_id);
 
   void handleFootpaths();
+
+  static bool isFootpath(const StopInfo &stop_info);
 
   static bool arrivesEarlier(int secondsA, std::optional<int> secondsB);
 

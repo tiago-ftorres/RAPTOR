@@ -8,7 +8,19 @@
 #include "GTFSObject.h"
 
 class StopTime : public GTFSObject {
+public:
 
+  void setArrivalSeconds(int seconds);
+
+  void setDepartureSeconds(int seconds);
+
+  int getArrivalSeconds() const;
+
+  int getDepartureSeconds() const;
+
+private:
+  int arrival_seconds{};
+  int departure_seconds{};
 };
 
 

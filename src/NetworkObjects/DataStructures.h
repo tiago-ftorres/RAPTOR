@@ -24,7 +24,7 @@ struct Query {
 };
 
 struct StopInfo {
-  std::optional<int> min_arrival_time; // if unreachable, will be std::nullopt
+  std::optional<int> arrival_seconds; // if unreachable, will be std::nullopt
   std::optional<std::string> parent_trip_id; // if footpath, will be std::nullopt
   std::optional<std::string> parent_stop_id; // if first stop, will be std::nullopt
   std::optional<Day> day; // if unreachable, will be std::nullopt

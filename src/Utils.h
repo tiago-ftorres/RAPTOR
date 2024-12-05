@@ -42,6 +42,8 @@ public:
   static bool dateWithinRange(const Date &date, const std::string &start_date, const std::string &end_date);
 
   static Date addOneDay(Date date);
+
+  static std::string dayToString(Day day);
 };
 
 #endif //RAPTOR_UTILS_H

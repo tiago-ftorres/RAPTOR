@@ -20,7 +20,7 @@ Parser::Parser(std::string directory) : inputDirectory(std::move(directory)) {
   std::cout << stops_.size() << " stops and ";
 
   parseStopTimes();
-  std::cout << stop_times_.size() << " stop times parsed." << std::endl;
+  std::cout << stop_times_.size() << " stop times parsed. ";
 
   associateData();
   std::cout << "Data associated." << std::endl;
@@ -201,6 +201,9 @@ void Parser::parseStopTimes() {
 
     for (size_t i = 0; i < fields.size(); ++i)
       stop_time.setField(fields[i], tokens[i]);
+
+    stop_time.setArrivalSeconds(Utils::timeToSeconds(stop_time.getField("arrival_time")));
+    stop_time.setDepartureSeconds(Utils::timeToSeconds(stop_time.getField("departure_time")));
 
     stop_times_[{stop_time.getField("trip_id"), stop_time.getField("stop_id")}] = stop_time;
   }

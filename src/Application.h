@@ -19,9 +19,11 @@ private:
   std::vector<std::string> inputDirectories;
   std::optional<Raptor> raptor_;
 
+  static void showCommands();
+
   void handleQuery();
 
-  static void showCommands();
+  Query getQuery();
 
   std::string getSource();
 
@@ -40,6 +42,7 @@ private:
   static int getHours();
 
   static int getMinutes();
+
 };
 
 #endif //RAPTOR_APPLICATION_H

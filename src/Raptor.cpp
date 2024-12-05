@@ -71,14 +71,15 @@ void Raptor::initializeAlgorithm() {
   std::cout << "Finding journeys from " << stops_[query_.source_id].getField("stop_name")
             << " to " << stops_[query_.target_id].getField("stop_name")
             << " departing " << query_.date.day << "/" << query_.date.month << "/" << query_.date.year
+            << " (" << weekdays_names[query_.date.weekday] << ") "
             << " at " << time_oss.str() << std::endl << std::endl;
 
-  min_arrival_time.clear();
+  arrivals_.clear();
   prev_marked_stops.clear();
   marked_stops.clear();
 
   for (const auto &[id, stop]: stops_)
-    min_arrival_time[id] = std::vector<StopInfo>(1, {std::nullopt, std::nullopt, std::nullopt, std::nullopt});
+    arrivals_[id] = std::vector<StopInfo>(1, {std::nullopt, std::nullopt, std::nullopt, std::nullopt});
 
   k = 0;
   setMinArrivalTime(query_.source_id,
@@ -95,10 +96,10 @@ void Raptor::initializeAlgorithm() {
 
 void Raptor::setMinArrivalTime(const std::string &stop_id, StopInfo stop_info) {
 
-  if (min_arrival_time[stop_id].size() <= k)
-    min_arrival_time[stop_id].resize(k + 1);
+  if (arrivals_[stop_id].size() <= k)
+    arrivals_[stop_id].resize(k + 1);
 
-  min_arrival_time[stop_id][k] = std::move(stop_info);
+  arrivals_[stop_id][k] = std::move(stop_info);
 
   // In case it passed midnight, fill tomorrow's active trips
   std::optional<Day> day = stop_info.day;
@@ -117,6 +118,8 @@ void Raptor::fillActiveTrips(Day day) {
       days_active_trips_ids_[day].insert(trip_id);
 
   }
+
+  std::cout << "Filled " << days_active_trips_ids_[day].size() << " active trips for " << Utils::dayToString(day)  << "." << std::endl;
 }
 
 std::vector<std::vector<JourneyStep>> Raptor::findJourneys() {
@@ -128,7 +131,7 @@ std::vector<std::vector<JourneyStep>> Raptor::findJourneys() {
 
     // 1st: set an upper bound for the current round
     for (const auto &[stop_id, stop]: stops_)
-      setMinArrivalTime(stop_id, min_arrival_time[stop_id][k - 1]);
+      setMinArrivalTime(stop_id, arrivals_[stop_id][k - 1]);
 
     prev_marked_stops = marked_stops;
     marked_stops.clear();
@@ -181,6 +184,7 @@ Raptor::accumulateRoutesServingStops() {
 
     // For each route r serving p
     for (const auto &route_key: stops_[marked_stop_id].getRouteKeys()) {
+      // TODO: avoid accumulating routes that do not have any active trip
 
       // Iterate over all stops in the route
       bool already_has_point = false;
@@ -252,7 +256,7 @@ Raptor::findEarliestTrip(const std::string &pi_stop_id, const std::pair<std::str
     const StopTime &stop_time = stop_times_.at(stop_time_key);
 
     if (isValidTrip(route_key, stop_time))
-      return stop_time.getField("trip_id"); // We can return because stop_times is ordered
+      return stop_time.getField("trip_id"); // We can return because a stop's stop_times is ordered
   }
 
   return std::nullopt;
@@ -262,7 +266,7 @@ bool Raptor::isValidTrip(const std::pair<std::string, std::string> &route_key,
                          const StopTime &stop_time) {
 
   const std::string &trip_id = stop_time.getField("trip_id");
-  std::optional<Day> stop_day = min_arrival_time[stop_time.getField("stop_id")][k - 1].day;
+  std::optional<Day> stop_day = arrivals_[stop_time.getField("stop_id")][k - 1].day;
 
   // If stop is still not reachable or if is today reachable, but trip is neither today nor tomorrow active
   if ((!stop_day.has_value() || stop_day.value() == Day::CurrentDay)
@@ -282,10 +286,17 @@ bool Raptor::isValidTrip(const std::pair<std::string, std::string> &route_key,
   if ((trip.getField("route_id") != route_id) || (trip.getField("direction_id") != direction_id))
     return false;
 
-  // Check if the time is valid
-  int departure_time_seconds = Utils::timeToSeconds(stop_time.getField("departure_time"));
-  if (departure_time_seconds < min_arrival_time[stop_time.getField("stop_id")][k - 1].min_arrival_time || // Required
-      departure_time_seconds >= min_arrival_time[query_.target_id][k].min_arrival_time)  // Pruning
+  // If the trip departs earlier than the stop's earliest arrival time, it is not possible to catch it
+  std::optional<int> stop_prev_arrival = arrivals_[stop_time.getField("stop_id")][k - 1].arrival_seconds;
+  if (!stop_prev_arrival.has_value()
+      || (stop_prev_arrival.has_value() &&
+          (stop_time.getDepartureSeconds() < stop_prev_arrival)))  // Required
+    return false;
+
+  // If the trip departs later than the target stop's earliest arrival time, prune it
+  std::optional<int> target_arrival = arrivals_[query_.target_id][k].arrival_seconds;
+  if (target_arrival.has_value() &&
+      (stop_time.getDepartureSeconds() >= target_arrival))  // Pruning
     return false;
 
   return true;
@@ -295,38 +306,14 @@ bool Raptor::isTripActive(const std::string &trip_id, Day day) {
   return days_active_trips_ids_[day].find(trip_id) != days_active_trips_ids_[day].end();
 }
 
-bool Raptor::isServiceActive(const Calendar &calendar, const Date &date) const {
+bool Raptor::isServiceActive(const Calendar &calendar, const Date &date) {
 
   // Check if the date is within the calendar's start and end dates
   if (!Utils::dateWithinRange(date, calendar.getField("start_date"), calendar.getField("end_date")))
     return false;
 
   // Check if the day of the week is active
-  std::tm time_info = {};
-  time_info.tm_year = query_.date.year - 1900;
-  time_info.tm_mon = query_.date.month - 1;
-  time_info.tm_mday = query_.date.day;
-  std::mktime(&time_info);
-  int weekday = time_info.tm_wday; // 0 = sunday, 1 = monday, etc.
-
-  switch (weekday) {
-    case 0:
-      return std::stoi(calendar.getField("sunday"));
-    case 1:
-      return std::stoi(calendar.getField("monday"));
-    case 2:
-      return std::stoi(calendar.getField("tuesday"));
-    case 3:
-      return std::stoi(calendar.getField("wednesday"));
-    case 4:
-      return std::stoi(calendar.getField("thursday"));
-    case 5:
-      return std::stoi(calendar.getField("friday"));
-    case 6:
-      return std::stoi(calendar.getField("saturday"));
-    default:
-      return false;
-  }
+  return std::stoi(calendar.getField(weekdays_names[date.weekday]));
 }
 
 // TODO: create a struct for stop_time_key
@@ -346,24 +333,25 @@ void Raptor::traverseTrip(std::string &et_id, std::string &pi_stop_id) {
     auto [trip_id, next_stop_id] = *next_stop_time_key;
     StopTime &next_stop_time = stop_times_[*next_stop_time_key];
 
-    // Access arrival time at next_stop_id for trip et_id
-    int arrival_time = Utils::timeToSeconds(next_stop_time.getField("arrival_time"));
+    // Access arrival seconds at next_stop_id for trip et_id
+    int arrival_seconds = next_stop_time.getArrivalSeconds();
 
     // If arrival time can be improved, update Tk(pj) using et
-    if (arrivesEarlier(arrival_time, min_arrival_time[next_stop_id][k].min_arrival_time)
-        && arrivesEarlier(arrival_time, min_arrival_time[query_.target_id][k].min_arrival_time)) { // Pruning
-
-//        std::cout << "Marking " << std::setw(10) << next_stop_id << et_id << " from " << std::setw(10) << pi_stop_id << " " << Utils::secondsToTime(arrival_time)
-//                << " < min(" << Utils::secondsToTime(min_arrival_time[next_stop_id][k].min_arrival_time) << ", " << Utils::secondsToTime(min_arrival_time[query_.target_id][k].min_arrival_time) << ")" << std::endl;
-      Day day = arrival_time > MIDNIGHT ? Day::NextDay : Day::CurrentDay;
-      setMinArrivalTime(next_stop_id, {arrival_time, et_id, pi_stop_id, day});
+    if (arrivesEarlier(arrival_seconds, arrivals_[next_stop_id][k].arrival_seconds)
+        && arrivesEarlier(arrival_seconds, arrivals_[query_.target_id][k].arrival_seconds)) { // Pruning
+//        std::cout << "Marking " << std::setw(10) << next_stop_id << et_id << " from " << std::setw(10) << pi_stop_id
+//                  << " " << Utils::secondsToTime(arrival_seconds)
+//                  << " < min(" << Utils::secondsToTime(arrivals_[next_stop_id][k].arrival_seconds) << ", "
+//                  << Utils::secondsToTime(arrivals_[query_.target_id][k].arrival_seconds) << ")" << std::endl;
+      Day day = arrival_seconds > MIDNIGHT ? Day::NextDay : Day::CurrentDay;
+      setMinArrivalTime(next_stop_id, {arrival_seconds, et_id, pi_stop_id, day});
 
       marked_stops.insert(next_stop_id); // Mark this stop for the next round
     }
 
     // Check if an earlier trip can be caught at stop i (because a quicker path was found in a previous round)
-    if ((min_arrival_time[next_stop_id][k - 1].parent_trip_id.has_value()) // Because we can instantly arrive at source
-        && (min_arrival_time[next_stop_id][k - 1].min_arrival_time < arrival_time))  // if Tk-1(pi) < Tarr(t, pi)
+    if ((arrivals_[next_stop_id][k - 1].parent_trip_id.has_value()) // Because we can instantly arrive at source
+        && (arrivals_[next_stop_id][k - 1].arrival_seconds < arrival_seconds))  // if Tk-1(pi) < Tarr(t, pi)
       break;
 
   } // end remaining stops on trip et_id
@@ -378,19 +366,24 @@ bool Raptor::arrivesEarlier(int secondsA, std::optional<int> secondsB) {
 void Raptor::handleFootpaths() {
   // For each previously marked stop p
   for (const auto &stop_id: prev_marked_stops) {
-    std::optional<int> p_prev_arrival = min_arrival_time[stop_id][k - 1].min_arrival_time;
+
+    // If parent step is a footpath, then do not check further footpaths, in order to avoid approximation errors
+    if (isFootpath(arrivals_[stop_id][k - 1])) continue;
+
+    std::optional<int> p_prev_arrival = arrivals_[stop_id][k - 1].arrival_seconds;
+
     // For each footpath (p, p')
     for (const auto &[dest_id, footpath]: stops_[stop_id].getFootpaths()) {
       int new_arrival = p_prev_arrival.value() + footpath.duration;
 
-      if (arrivesEarlier(new_arrival, min_arrival_time[dest_id][k].min_arrival_time)
-          && arrivesEarlier(new_arrival, min_arrival_time[query_.target_id][k].min_arrival_time)) {
+      if (arrivesEarlier(new_arrival, arrivals_[dest_id][k].arrival_seconds)
+          && arrivesEarlier(new_arrival, arrivals_[query_.target_id][k].arrival_seconds)) {
         // Only updates footpath if it goes to a stop that has not made any improvements
-//        std::cout << "Marking " << std::setw(10) << dest_id << "fp from " << std::setw(10) << stop_id
-//                  << " " << Utils::secondsToTime(min_arrival_time[stop_id][k].min_arrival_time) << " + "
-//                  << Utils::secondsToTime(footpath.duration) << " = " << Utils::secondsToTime(new_arrival)
-//                  << " < min(" << Utils::secondsToTime(min_arrival_time[dest_id][k].min_arrival_time) << ", "
-//                  << Utils::secondsToTime(min_arrival_time[query_.target_id][k].min_arrival_time) << ")" << std::endl;
+//          std::cout << "Marking " << std::setw(10) << dest_id << "fp from " << std::setw(10) << stop_id
+//                    << " " << Utils::secondsToTime(arrivals_[stop_id][k].arrival_seconds) << " + "
+//                    << Utils::secondsToTime(footpath.duration) << " = " << Utils::secondsToTime(new_arrival)
+//                    << " < min(" << Utils::secondsToTime(arrivals_[dest_id][k].arrival_seconds) << ", "
+//                    << Utils::secondsToTime(arrivals_[query_.target_id][k].arrival_seconds) << ")" << std::endl;
         Day day = new_arrival > MIDNIGHT ? Day::NextDay : Day::CurrentDay;
         setMinArrivalTime(dest_id, {new_arrival, std::nullopt, stop_id, day});
 
@@ -402,6 +395,10 @@ void Raptor::handleFootpaths() {
 
 }
 
+bool Raptor::isFootpath(const StopInfo &stop_info) {
+  return stop_info.parent_stop_id.has_value() && !stop_info.parent_trip_id.has_value();
+}
+
 std::vector<JourneyStep> Raptor::reconstructJourney() {
   std::vector<JourneyStep> journey;
   std::string current_stop_id = query_.target_id;
@@ -410,35 +407,34 @@ std::vector<JourneyStep> Raptor::reconstructJourney() {
 
   while (true) {
 
-    const std::optional<std::string> parent_trip_id_opt = min_arrival_time[current_stop_id][k].parent_trip_id;
-    const std::optional<std::string> parent_stop_id_opt = min_arrival_time[current_stop_id][k].parent_stop_id;
+    const std::optional<std::string> parent_trip_id_opt = arrivals_[current_stop_id][k].parent_trip_id;
+    const std::optional<std::string> parent_stop_id_opt = arrivals_[current_stop_id][k].parent_stop_id;
 
     if (!parent_stop_id_opt.has_value()) break;
 
     const std::string &parent_stop_id = parent_stop_id_opt.value();
 
-    int departure_time, duration, arrival_time;
+    int departure_seconds, duration, arrival_seconds;
     if (!parent_trip_id_opt.has_value()) { // Footpath
-      departure_time = min_arrival_time[parent_stop_id][k].min_arrival_time.value();
+      departure_seconds = arrivals_[parent_stop_id][k].arrival_seconds.value();
       duration = stops_[parent_stop_id].getFootpaths().at(current_stop_id).duration;
-      arrival_time = departure_time + duration;
+      arrival_seconds = departure_seconds + duration;
     } else { // Trip
       const std::string &parent_trip_id = parent_trip_id_opt.value();
-      departure_time = Utils::timeToSeconds(stop_times_[{parent_trip_id, parent_stop_id}].getField("departure_time"));
-      arrival_time = min_arrival_time[current_stop_id][k].min_arrival_time.value();
-      duration = arrival_time - departure_time;
+      departure_seconds = stop_times_[{parent_trip_id, parent_stop_id}].getDepartureSeconds();
+      arrival_seconds = arrivals_[current_stop_id][k].arrival_seconds.value();
+      duration = arrival_seconds - departure_seconds;
     }
 
     JourneyStep step = {parent_trip_id_opt, &stops_[parent_stop_id], &stops_[current_stop_id],
-                        departure_time, duration, arrival_time};
+                        departure_seconds, duration, arrival_seconds};
     journey.push_back(step);
+    std::cout << "Added step from " << parent_stop_id << " to " << current_stop_id << std::endl;
 
     // Update to the previous stop boarded
     current_stop_id = parent_stop_id;
-
-    // Make sure we only add valid journeys
-    if (current_stop_id == query_.source_id) break;
   }
+
   // Reverse the journey to obtain the correct sequence
   std::reverse(journey.begin(), journey.end());
 
@@ -450,9 +446,10 @@ bool Raptor::isValidJourney(std::vector<JourneyStep> journey) const {
       (journey.front().src_stop->getField("stop_id") != query_.source_id))
     return false;
 
-  for (size_t i = 0; i < journey.size() - 1; ++i)
-    if (!journey[i].trip_id.has_value() && !journey[i + 1].trip_id.has_value())
-      return false;
+  // TODO: will be possible to remove it?
+//  for (size_t i = 0; i < journey.size() - 1; ++i)
+//    if (!journey[i].trip_id.has_value() && !journey[i + 1].trip_id.has_value())
+//      return false;
 
   return true;
 }
