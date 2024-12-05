@@ -233,10 +233,9 @@ void Raptor::traverseRoutes(
       auto et_id = findEarliestTrip(pi_stop_id, route_key);
 
       // If a valid trip was found, traverse the trip
-      if (et_id.has_value()) {
-        std::cout << "Found et_id: " << et_id.value() << " for stop " << pi_stop_id << std::endl;
+      if (et_id.has_value())
         traverseTrip(et_id.value(), pi_stop_id);
-      } else continue; // No valid trip found for this stop
+      else continue; // No valid trip found for this stop
 
     } // end each stop pi on route
 
@@ -269,7 +268,6 @@ bool Raptor::isValidTrip(const std::pair<std::string, std::string> &route_key,
   if ((!stop_day.has_value() || stop_day.value() == Day::CurrentDay)
       && !isTripActive(trip_id, Day::CurrentDay)
       && !isTripActive(trip_id, Day::NextDay))
-    // TODO check why is trip being discarded
     return false;
 
   // If stop is reachable tomorrow, but trip is not tomorrow active
@@ -277,7 +275,6 @@ bool Raptor::isValidTrip(const std::pair<std::string, std::string> &route_key,
       && stop_day.value() == Day::NextDay
       && (!isTripActive(trip_id, Day::NextDay)))
     return false;
-
   const Trip &trip = trips_[trip_id];
   auto [route_id, direction_id] = route_key;
 
@@ -287,8 +284,8 @@ bool Raptor::isValidTrip(const std::pair<std::string, std::string> &route_key,
 
   // Check if the time is valid
   int departure_time_seconds = Utils::timeToSeconds(stop_time.getField("departure_time"));
-  if (departure_time_seconds >= min_arrival_time[stop_time.getField("stop_id")][k - 1].min_arrival_time ||
-      departure_time_seconds < min_arrival_time[query_.target_id][k].min_arrival_time)  // Pruning
+  if (departure_time_seconds < min_arrival_time[stop_time.getField("stop_id")][k - 1].min_arrival_time || // Required
+      departure_time_seconds >= min_arrival_time[query_.target_id][k].min_arrival_time)  // Pruning
     return false;
 
   return true;
