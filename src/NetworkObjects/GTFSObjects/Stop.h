@@ -20,7 +20,7 @@ public:
 
   const std::unordered_set<std::pair<std::string, std::string>, pair_hash> &getRouteKeys() const;
 
-  const std::unordered_map<std::string, Footpath> &getFootpaths() const;
+  const std::unordered_map<std::string, int> &getFootpaths() const;
 
   void sortStopTimes(const std::function<bool(const std::pair<std::string, std::string> &,
                                               const std::pair<std::string, std::string> &)> &comparator);
@@ -28,7 +28,7 @@ public:
 private:
   std::vector<std::pair<std::string, std::string>> stop_times_keys; // Sorted by earliest to latest departure time
   std::unordered_set<std::pair<std::string, std::string>, pair_hash> routes_keys; // (route_id, direction_id)
-  std::unordered_map<std::string, Footpath> footpaths;
+  std::unordered_map<std::string, int> footpaths;
 
 };
 

@@ -62,28 +62,33 @@ private:
   void traverseRoutes(
           std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, nested_pair_hash> routes_stops_set);
 
-  std::optional<std::string>
+  std::optional<std::pair<std::string, Day>>
   findEarliestTrip(const std::string &pi_stop_id, const std::pair<std::string, std::string> &route_key);
 
-  bool
+  // If trip is valid, returns also the earliest valid day
+  std::pair<bool, std::optional<Day>>
   isValidTrip(const std::pair<std::string, std::string> &route_key, const StopTime &stop_time);
 
-  static bool isServiceActive(const Calendar &calendar, const Date &date) ;
+  static bool isServiceActive(const Calendar &calendar, const Date &date);
 
-  void traverseTrip(std::string &et_id, std::string &pi_stop_id);
+  void traverseTrip(std::string &et_id, Day &et_day, std::string &pi_stop_id);
+
+  static bool earlier(int secondsA, std::optional<int> secondsB);
+
+  bool improvesArrivalTime(int arrival, const std::string &dest_id);
+
+  void markStop(const std::string &stop_id, int arrival,
+                const std::optional<std::string> &parent_trip_id, const std::optional<std::string> &parent_stop_id);
 
   void handleFootpaths();
 
   static bool isFootpath(const StopInfo &stop_info);
-
-  static bool arrivesEarlier(int secondsA, std::optional<int> secondsB);
 
   // Reconstruct journey at current round k
   std::vector<JourneyStep> reconstructJourney();
 
   bool isValidJourney(std::vector<JourneyStep> journey) const;
 
-  bool improvesArrivalTime(int arrival, const std::string& dest_id);
 };
 
 #endif //RAPTOR_RAPTOR_H

@@ -99,7 +99,7 @@ void Application::handleQuery() {
 
     for (int i = 0; i < journeys.size(); i++) {
       const std::vector<JourneyStep> &journey = journeys[i];
-      int journey_duration = journey.back().arrival_time - journey.front().departure_time;
+      int journey_duration = journey.back().arrival_secs - journey.front().departure_secs;
       std::cout << std::endl << "Journey " << i + 1 << " (" << Utils::secondsToTime(journey_duration) << "): "
                 << std::endl << std::endl;
       Raptor::showJourney(journey);
@@ -198,7 +198,7 @@ int Application::getDay(int year, int month) {
   std::string input;
   int day;
   while (true) {
-    std::cout << "Enter day (1-31): ";
+    std::cout << "Enter day (1-31):";
     std::getline(std::cin, input);
     input = Utils::trim(input);
     if (Utils::isNumber(input)) {

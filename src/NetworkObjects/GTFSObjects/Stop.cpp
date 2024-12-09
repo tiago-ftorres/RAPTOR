@@ -13,7 +13,7 @@ void Stop::addRouteKey(const std::pair<std::string, std::string> &route_key) {
 }
 
 void Stop::addFootpath(const std::string &other_id, int &duration) {
-  footpaths[other_id] = {other_id, duration};
+  footpaths[other_id] = duration;
 }
 
 const std::vector<std::pair<std::string, std::string>> &Stop::getStopTimesKeys() const {
@@ -24,9 +24,10 @@ const std::unordered_set<std::pair<std::string, std::string>, pair_hash> &Stop::
   return routes_keys;
 }
 
-const std::unordered_map<std::string, Footpath> &Stop::getFootpaths() const {
+const std::unordered_map<std::string, int> &Stop::getFootpaths() const {
   return footpaths;
 }
+
 // TODO: map with customized comparator instead of vector
 void Stop::sortStopTimes(const std::function<bool(const std::pair<std::string, std::string>&,
                                                   const std::pair<std::string, std::string>&)>& comparator) {

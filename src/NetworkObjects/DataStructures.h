@@ -11,11 +11,6 @@
 
 class Stop;
 
-struct Footpath {
-  std::string dest_id;
-  int duration;
-};
-
 struct Query {
   std::string source_id;
   std::string target_id;
@@ -35,9 +30,9 @@ struct JourneyStep {
   Stop *src_stop{};
   Stop *dest_stop{};
 
-  int departure_time{};
+  int departure_secs{};
   int duration{};
-  int arrival_time{};
+  int arrival_secs{};
 };
 
 struct pair_hash {
