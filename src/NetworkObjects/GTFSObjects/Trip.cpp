@@ -16,3 +16,11 @@ void Trip::sortStopTimes(const std::function<bool(const std::pair<std::string, s
                                                   const std::pair<std::string, std::string>&)>& comparator) {
   std::sort(stop_times_keys.begin(), stop_times_keys.end(), comparator);
 }
+
+bool Trip::isActive(Day day) const {
+  return active_days_.at(day);
+}
+
+void Trip::setActive(Day day, bool is_active) {
+  active_days_[day] = is_active;
+}

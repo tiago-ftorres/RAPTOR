@@ -16,8 +16,13 @@ public:
   void sortStopTimes(const std::function<bool(const std::pair<std::string, std::string> &,
                                               const std::pair<std::string, std::string> &)> &comparator);
 
+  void setActive(Day day, bool is_active);
+
+  bool isActive(Day day) const;
+
 private:
   std::vector<std::pair<std::string, std::string>> stop_times_keys; // Sorted by stop_times' sequence
+  std::unordered_map<Day, bool> active_days_; // Active days for this trip
 };
 
 

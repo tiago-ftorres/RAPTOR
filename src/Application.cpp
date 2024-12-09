@@ -77,7 +77,7 @@ void Application::showCommands() {
 //               query 5726 5739 06:44:00 // Metro Trindade to Lidador
 
 //               query SAL2 IPO5 14:00:00 20221226,20241231
-//               query MAIA3 PARR3 5:55:55 // STCP Maia to Arrabida
+//               query MAIA3 PARR3 5:55 STCP Maia to Arrabida
 
 void Application::handleQuery() {
   Query query =  getQuery();

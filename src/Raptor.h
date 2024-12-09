@@ -48,8 +48,6 @@ private:
   std::unordered_set<std::string> marked_stops;
   int k;
 
-  std::unordered_map<Day, std::unordered_set<std::string>> days_active_trips_ids_; // Active trips for today and tomorrow
-
   void initializeFootpaths();
 
   void initializeAlgorithm();
@@ -70,8 +68,6 @@ private:
   bool
   isValidTrip(const std::pair<std::string, std::string> &route_key, const StopTime &stop_time);
 
-  bool isTripActive(const std::string& trip_id, Day day);
-
   static bool isServiceActive(const Calendar &calendar, const Date &date) ;
 
   void traverseTrip(std::string &et_id, std::string &pi_stop_id);
@@ -87,6 +83,7 @@ private:
 
   bool isValidJourney(std::vector<JourneyStep> journey) const;
 
+  bool improvesArrivalTime(int arrival, const std::string& dest_id);
 };
 
 #endif //RAPTOR_RAPTOR_H

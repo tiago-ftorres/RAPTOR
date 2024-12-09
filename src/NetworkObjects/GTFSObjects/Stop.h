@@ -11,13 +11,14 @@
 class Stop : public GTFSObject {
 public:
   void addStopTimeKey(const std::pair<std::string, std::string> &stop_time_key); // key is (trip_id, stop_id)
+
   void addRouteKey(const std::pair<std::string, std::string> &route_key);
 
   void addFootpath(const std::string &other_id, int &duration);
 
   const std::vector<std::pair<std::string, std::string>> &getStopTimesKeys() const;
 
-  const std::vector<std::pair<std::string, std::string>> &getRouteKeys() const;
+  const std::unordered_set<std::pair<std::string, std::string>, pair_hash> &getRouteKeys() const;
 
   const std::unordered_map<std::string, Footpath> &getFootpaths() const;
 
@@ -26,7 +27,7 @@ public:
 
 private:
   std::vector<std::pair<std::string, std::string>> stop_times_keys; // Sorted by earliest to latest departure time
-  std::vector<std::pair<std::string, std::string>> routes_keys; // (route_id, direction_id)
+  std::unordered_set<std::pair<std::string, std::string>, pair_hash> routes_keys; // (route_id, direction_id)
   std::unordered_map<std::string, Footpath> footpaths;
 
 };
