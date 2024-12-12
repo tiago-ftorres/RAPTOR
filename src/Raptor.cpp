@@ -118,16 +118,12 @@ std::vector<Journey> Raptor::findJourneys() {
   std::vector<Journey> journeys;
 
   initializeAlgorithm();
-//  std::cout << "ftpth tcrz2 sct2" << Utils::secondsToTime(stops_["TCRZ2"].getFootpaths().at("SCT2")) << std::endl;
-//  std::cout << "ftpth tcrz2 mtcr2" << Utils::secondsToTime(stops_["TCRZ2"].getFootpaths().at("MTCR2")) << std::endl;
 
   while (true) {
 
     std::cout << std::endl << "Round " << k << std::endl << std::endl;
 
-    // 1st: set an upper bound for the current round
-    for (const auto &[stop_id, stop]: stops_)
-      setMinArrivalTime(stop_id, arrivals_[stop_id][k - 1]);
+    setUpperBound();
 
     prev_marked_stops = marked_stops;
     marked_stops.clear();
@@ -180,6 +176,11 @@ std::vector<Journey> Raptor::findJourneys() {
   return journeys;
 }
 
+void Raptor::setUpperBound() {
+  for (const auto &[stop_id, stop]: stops_)
+    setMinArrivalTime(stop_id, arrivals_[stop_id][k - 1]);
+}
+
 std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, nested_pair_hash>
 Raptor::accumulateRoutesServingStops() {
   std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, nested_pair_hash> routes_stops_set;
@@ -230,10 +231,6 @@ void Raptor::traverseRoutes(
   while (route_stop != routes_stops_set.end()) {
     const auto &[route_key, p_stop_id] = *route_stop;
     const Route &route = routes_[route_key];
-
-    if (p_stop_id == "5777") {
-      std::cout << "route " << route_key.first << " " << route_key.second << std::endl;
-    }
 
     auto stop_it = std::find_if(route.getStopsIds().begin(), route.getStopsIds().end(),
                                 [&](const std::string &s_id) {
@@ -345,10 +342,6 @@ bool Raptor::isServiceActive(const Calendar &calendar, const Date &date) {
 void Raptor::traverseTrip(std::string &et_id, Day &et_day, std::string &pi_stop_id) {
   Trip et = trips_.at(et_id);
 
-  if (pi_stop_id == "5777") {
-    std::cout << "traversing trip " << et_id << " " << Utils::dayToString(et_day) << std::endl;
-  }
-
   auto et_stop_it = std::find_if(et.getStopTimesKeys().begin(), et.getStopTimesKeys().end(),
                                  [&](const std::pair<std::string, std::string> &st_key) {
                                    return st_key.second == pi_stop_id;
@@ -395,14 +388,12 @@ void Raptor::markStop(const std::string &stop_id, int arrival,
   setMinArrivalTime(stop_id, {arrival, parent_trip_id, parent_stop_id, day});
   marked_stops.insert(stop_id);
 
-//  if ((stop_id == query_.target_id) || (stop_id == "MTCR2")) {
+//  if ((stop_id == query_.target_id)) {
 //    std::string day_str = Utils::dayToString(day);
 //    std::cout << "Marking " << stop_id << " at " << Utils::secondsToTime(arrival) << day_str <<
-//              " ptrip " << parent_trip_id.value_or("none") << " from stop " << parent_stop_id.value_or("none");
-//    if (parent_stop_id.has_value())
-//      std::cout << " in which we arrive at "
-//                << Utils::secondsToTime(arrivals_[parent_stop_id.value()][k].arrival_seconds.value());
-//
+//              " ptrip " << parent_trip_id.value_or("foot") << " from stop "
+//              << parent_stop_id.value_or("none") << " in which we arrive at "
+//              << Utils::secondsToTime(arrivals_[parent_stop_id.value()][k].arrival_seconds.value());
 //    std::cout << std::endl;
 //  }
 }
@@ -419,16 +410,13 @@ void Raptor::handleFootpaths() {
     // For each footpath (p, p')
     for (const auto &[dest_id, duration]: stops_[stop_id].getFootpaths()) {
       int new_arrival = p_prev_arrival.value() + duration;
+      if (dest_id == query_.target_id && stop_id == "OTH1")
+        std::cout << "from " << stop_id << " to " << dest_id << " with duration " << Utils::secondsToTime(duration)
+                  << " departing at " << Utils::secondsToTime(p_prev_arrival.value())
+                  << " and arriving at " << Utils::secondsToTime(new_arrival) << std::endl;
 
-      if (improvesArrivalTime(new_arrival, dest_id)) {
-        // Only updates footpath if it goes to a stop that has not made any improvements
-//          std::cout << "Marking " << std::setw(10) << dest_id << "fp from " << std::setw(10) << stop_id
-//                    << " " << Utils::secondsToTime(arrivals_[stop_id][k].arrival_seconds) << " + "
-//                    << Utils::secondsToTime(footpath.duration) << " = " << Utils::secondsToTime(new_arrival)
-//                    << " < min(" << Utils::secondsToTime(arrivals_[dest_id][k].arrival_seconds) << ", "
-//                    << Utils::secondsToTime(arrivals_[query_.target_id][k].arrival_seconds) << ")" << std::endl;
+      if (improvesArrivalTime(new_arrival, dest_id))
         markStop(dest_id, new_arrival, std::nullopt, stop_id);
-      }
 
     } // end each footpath (p, p')
   } // end each marked stop p
@@ -456,15 +444,21 @@ Journey Raptor::reconstructJourney() {
 
     int departure_seconds, duration, arrival_seconds;
     if (!parent_trip_id_opt.has_value()) { // Footpath
-      departure_seconds = arrivals_[parent_stop_id][k].arrival_seconds.value();
+      arrival_seconds = arrivals_[current_stop_id][k].arrival_seconds.value();
       duration = stops_[parent_stop_id].getFootpaths().at(current_stop_id);
-      arrival_seconds = departure_seconds + duration;
+      departure_seconds = arrival_seconds - duration;
+
+      if (current_stop_id == query_.target_id)
+        std::cout << "Footpath from " << parent_stop_id << " to " << current_stop_id << " with duration "
+                  << Utils::secondsToTime(duration) << " departing at " << Utils::secondsToTime(departure_seconds)
+                  << " and arriving at " << Utils::secondsToTime(arrival_seconds) << std::endl;
+
     } else { // Trip
       const std::string &parent_trip_id = parent_trip_id_opt.value();
       std::string route_id = trips_[parent_trip_id].getField("route_id");
 
       std::string agency_id;
-      for (const auto& [key, route] : routes_) {
+      for (const auto &[key, route]: routes_) {
         // Check if the first part of the key (route_id) matches
         if (key.first == route_id) {
           agency_id = route.getField("agency_id");
@@ -483,7 +477,6 @@ Journey Raptor::reconstructJourney() {
                         departure_seconds, day, duration, arrival_seconds};
 
     journey.steps.push_back(step);
-    std::cout << "Added step from " << parent_stop_id << " to " << current_stop_id << std::endl;
 
     // Update to the previous stop boarded
     current_stop_id = parent_stop_id;
@@ -522,10 +515,10 @@ void Raptor::showJourney(const Journey &journey) {
 
   // Print the header row
   std::cout << std::setw(5) << "step" << std::setw(8) << "day"
-            << std::setw(8) << "stop " << std::setw(14) << "(name)" << std::setw(10) << "dep_time "
+            << std::setw(10) << "dep_time " << std::setw(8) << "stop " << std::setw(14) << "(name)"
             << std::setw(10) << "duration "
             << std::setw(8) << "-> stop " << std::setw(14) << "(name)" << std::setw(9) << "arr_time "
-            << std::setw(13) << " trip "
+            << std::setw(14) << " trip "
             << std::setw(7) << "agency" << std::endl;
 
   // Print the journey steps
@@ -537,17 +530,17 @@ void Raptor::showJourney(const Journey &journey) {
     std::string day = Utils::dayToString(step.day);
     std::cout << std::setw(8) << day;
 
-    std::cout << std::setw(8) << step.src_stop->getField("stop_id")
+    std::cout << std::setw(10) << Utils::secondsToTime(step.departure_secs)
+              << std::setw(8) << step.src_stop->getField("stop_id")
               << std::setw(14) << Utils::getFirstWord(step.src_stop->getField("stop_name"))
-              << std::setw(10) << Utils::secondsToTime(step.departure_secs)
               << std::setw(10) << Utils::secondsToTime(step.duration)
               << std::setw(8) << step.dest_stop->getField("stop_id")
               << std::setw(14) << Utils::getFirstWord(step.dest_stop->getField("stop_name"))
               << std::setw(10) << Utils::secondsToTime(step.arrival_secs);
 
     if (step.trip_id.has_value()) {
-      std::cout << std::setw(12) << step.trip_id.value();
-      std::cout << std::setw(7) << step.agency_name.value();
+      std::cout << std::setw(13) << step.trip_id.value();
+      std::cout << std::setw(7) << Utils::getFirstWord(step.agency_name.value());
     } else
       std::cout << std::setw(12) << "footpath";
 

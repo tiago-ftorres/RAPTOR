@@ -19,6 +19,7 @@ private:
   std::vector<std::string> inputDirectories;
   std::optional<Raptor> raptor_;
 
+  void initializeRaptor();
   static void showCommands();
 
   void handleQuery();

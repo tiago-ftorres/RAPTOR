@@ -16,6 +16,8 @@
 class Raptor {
 public:
 
+  Raptor() = default;
+
   Raptor(const std::unordered_map<std::string, Agency> &agencies_,
          const std::unordered_map<std::string, Calendar> &calendars_,
          const std::unordered_map<std::string, Stop> &stops,
@@ -48,7 +50,7 @@ private:
   std::unordered_map<std::string, std::vector<StopInfo>> arrivals_; // each stop_id has a vector of StopInfo (arrival time) for each k
   std::unordered_set<std::string> prev_marked_stops;
   std::unordered_set<std::string> marked_stops;
-  int k;
+  int k{};
 
   void initializeFootpaths();
 
@@ -57,6 +59,8 @@ private:
   void setMinArrivalTime(const std::string &stop_id, StopInfo stop_info);
 
   void fillActiveTrips(Day day);
+
+  void setUpperBound();
 
   std::unordered_set<std::pair<std::pair<std::string, std::string>, std::string>, nested_pair_hash>
   accumulateRoutesServingStops();

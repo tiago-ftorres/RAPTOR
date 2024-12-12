@@ -18,9 +18,12 @@ public:
   virtual void setField(const std::string& field, const std::string& value);
 
   // Get a field value
-  virtual const std::string& getField(const std::string& field) const;
+  virtual std::string getField(const std::string& field) const;
 
   const std::unordered_map<std::string, std::string> &getFields() const;
+
+  bool hasField(const std::string& field) const;
+
 protected:
   std::unordered_map<std::string, std::string> fields; // Dynamic fields
 

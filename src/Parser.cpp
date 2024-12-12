@@ -137,6 +137,10 @@ void Parser::parseRoutes() {
     for (size_t i = 0; i < fields.size(); ++i)
       route.setField(fields[i], tokens[i]);
 
+    // If there is only one agency, agency_id field is optional
+    if (!route.hasField("agency_id"))
+      route.setField("agency_id", agencies_.begin()->second.getField("agency_id"));
+
     // Iterate through all existing (route_id, direction_id) pairs in routes_
     for (auto &[key, r]: routes_) {
       // if key.route_id == route.route_id

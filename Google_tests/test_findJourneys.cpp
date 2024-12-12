@@ -38,11 +38,10 @@ void loadData(
 
 class RaptorTests : public ::testing::Test {
 protected:
-  // This will hold the Raptor instance
-  Raptor raptor;
+  static Raptor raptor; // Shared instance
 
   // This will be run before each test
-  void SetUp() override {
+  static void SetUpTestSuite() {
     // Initialize the input directories and query
     std::vector<std::string> inputDirectories = {std::string(DATASET_PATH) + "/Porto/stcp/GTFS/",
                                                  std::string(DATASET_PATH) + "/Porto/metro/GTFS/"};
@@ -56,19 +55,15 @@ protected:
 
     loadData(inputDirectories, agencies, calendars, trips, routes, stops, stop_times);
 
-    Raptor raptor(agencies, calendars, stops, routes, trips, stop_times);
-
+    raptor = Raptor(agencies, calendars, stops, routes, trips, stop_times);
   }
 
-  // This can be overridden if any teardown/cleanup is needed after tests
-  void TearDown() override {
-    // Any necessary cleanup here
-  }
 };
 
-// Example Test Case 1
+Raptor RaptorTests::raptor;
+
 TEST_F(RaptorTests, ValidJourneyQuery) {
-  Query query = {"5777", "5776", {2024, 10, 15}, {22, 30, 0}}; // Source, Target, Date, Departure Time
+  Query query = {"5777", "5776", {2024, 10, 15}, {22, 30, 0}};
 
   raptor.setQuery(query);  // Set a new query
   auto journeys = raptor.findJourneys();
@@ -79,9 +74,20 @@ TEST_F(RaptorTests, ValidJourneyQuery) {
   }
 }
 
-// Example Test Case 2
 TEST_F(RaptorTests, from5777_toOTH2_day) {
-  Query query = {"5777", "OTH2", {2024, 10, 15}, {11, 30, 0}}; // Source, Target, Date, Departure Time
+  Query query = {"5777", "OTH2", {2024, 10, 15}, {11, 30, 0}};
+
+  raptor.setQuery(query);
+  auto journeys = raptor.findJourneys();
+
+  ASSERT_FALSE(journeys.empty());  // Ensure journeys are found
+  for (auto &journey: journeys) {
+    ASSERT_TRUE(raptor.isValidJourney(journey));  // Verify the journey is valid
+  }
+}
+
+TEST_F(RaptorTests, from5777_toOTH2_later) {
+  Query query = {"5777", "OTH2", {2024, 10, 15}, {22, 30, 0}};
 
   raptor.setQuery(query);  // Set a new query
   auto journeys = raptor.findJourneys();
@@ -92,9 +98,9 @@ TEST_F(RaptorTests, from5777_toOTH2_day) {
   }
 }
 
-// Example Test Case 3
+
 TEST_F(RaptorTests, from5777_toOTH2_night) {
-  Query query = {"5777", "OTH2", {2024, 10, 15}, {22, 30, 0}}; // Source, Target, Date, Departure Time
+  Query query = {"5777", "OTH2", {2024, 10, 15}, {23, 35, 0}};
 
   raptor.setQuery(query);  // Set a new query
   auto journeys = raptor.findJourneys();
@@ -105,7 +111,6 @@ TEST_F(RaptorTests, from5777_toOTH2_night) {
   }
 }
 
-// Example Test Case 4
 TEST_F(RaptorTests, MultiDayJourney) {
   Query query = {"TCRZ2", "SCT2", {2024, 12, 9}, {23, 40, 0}}; // Across days
 

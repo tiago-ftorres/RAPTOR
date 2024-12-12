@@ -7,6 +7,32 @@ Application::Application(std::vector<std::string> inputDirectories)
         : inputDirectories(std::move(inputDirectories)) {}
 
 void Application::run() {
+
+  initializeRaptor();
+
+  std::string command;
+  showCommands();
+
+  while (true) {
+    std::cout << std::endl << "Type a command: ";
+    std::getline(std::cin, command);
+
+    std::string trimmedCommand = Utils::trim(command);
+
+    if (trimmedCommand == "query") {
+      handleQuery();
+    } else if (trimmedCommand == "help") {
+      showCommands();
+    } else if (trimmedCommand == "quit") {
+      std::cout << "Quitting program..." << std::endl;
+      break;
+    } else {
+      std::cout << "Invalid command. :/" << std::endl;
+      showCommands();
+    }
+  }
+}
+void Application::initializeRaptor(){
   std::unordered_map<std::string, Agency> agencies;
   std::unordered_map<std::string, Calendar> calendars;
   std::unordered_map<std::string, Trip> trips;
@@ -37,28 +63,6 @@ void Application::run() {
   }
 
   raptor_ = Raptor(agencies, calendars, stops, routes, trips, stop_times);
-
-  std::string command;
-  showCommands();
-
-  while (true) {
-    std::cout << std::endl << "Type a command: ";
-    std::getline(std::cin, command);
-
-    std::string trimmedCommand = Utils::trim(command);
-
-    if (trimmedCommand == "query") {
-      handleQuery();
-    } else if (trimmedCommand == "help") {
-      showCommands();
-    } else if (trimmedCommand == "quit") {
-      std::cout << "Quitting program..." << std::endl;
-      break;
-    } else {
-      std::cout << "Invalid command. :/" << std::endl;
-      showCommands();
-    }
-  }
 }
 
 void Application::showCommands() {
