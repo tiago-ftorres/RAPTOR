@@ -26,12 +26,14 @@ public:
   void setQuery(const Query &query);
 
   // Returns all Pareto-optimal journeys
-  std::vector<std::vector<JourneyStep>> findJourneys();
+  std::vector<Journey> findJourneys();
 
   // Prints a journey`s steps
-  static void showJourney(const std::vector<JourneyStep> &journey);
+  static void showJourney(const Journey &journey);
 
   const std::unordered_map<std::string, Stop> &getStops() const;
+
+  bool isValidJourney(Journey journey) const;
 
 private:
 
@@ -65,9 +67,7 @@ private:
   std::optional<std::pair<std::string, Day>>
   findEarliestTrip(const std::string &pi_stop_id, const std::pair<std::string, std::string> &route_key);
 
-  // If trip is valid, returns also the earliest valid day
-  std::pair<bool, std::optional<Day>>
-  isValidTrip(const std::pair<std::string, std::string> &route_key, const StopTime &stop_time);
+  bool isValidTrip(const std::pair<std::string, std::string> &route_key, const StopTime &stop_time, const Day &day);
 
   static bool isServiceActive(const Calendar &calendar, const Date &date);
 
@@ -85,10 +85,11 @@ private:
   static bool isFootpath(const StopInfo &stop_info);
 
   // Reconstruct journey at current round k
-  std::vector<JourneyStep> reconstructJourney();
+  Journey reconstructJourney();
 
-  bool isValidJourney(std::vector<JourneyStep> journey) const;
+  static std::vector<Journey> keepParetoOptimalJourneys(const std::vector<Journey> &journeys);
 
+  static bool dominates(const Journey &journey1, const Journey &journey2);
 };
 
 #endif //RAPTOR_RAPTOR_H

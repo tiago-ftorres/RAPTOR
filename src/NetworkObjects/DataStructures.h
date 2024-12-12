@@ -27,12 +27,25 @@ struct StopInfo {
 
 struct JourneyStep {
   std::optional<std::string> trip_id; // if footpath, will be std::nullopt
+  std::optional<std::string> agency_name; // if footpath, will be std::nullopt
   Stop *src_stop{};
   Stop *dest_stop{};
 
   int departure_secs{};
+  Day day{};
   int duration{};
   int arrival_secs{};
+};
+
+struct Journey {
+  std::vector<JourneyStep> steps;
+  int departure_secs;
+  Day departure_day;
+
+  int arrival_secs;
+  Day arrival_day;
+
+  int duration;
 };
 
 struct pair_hash {

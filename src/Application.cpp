@@ -85,7 +85,7 @@ void Application::handleQuery() {
 
   auto start_time = std::chrono::high_resolution_clock::now();
 
-  std::vector<std::vector<JourneyStep>> journeys = raptor_->findJourneys();
+  std::vector<Journey> journeys = raptor_->findJourneys();
 
   auto end_time = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
@@ -98,8 +98,8 @@ void Application::handleQuery() {
     std::cout << "Found " << journeys.size() << " journey(s)! =) " << std::endl;
 
     for (int i = 0; i < journeys.size(); i++) {
-      const std::vector<JourneyStep> &journey = journeys[i];
-      int journey_duration = journey.back().arrival_secs - journey.front().departure_secs;
+      const Journey &journey = journeys[i];
+      int journey_duration = journey.duration;
       std::cout << std::endl << "Journey " << i + 1 << " (" << Utils::secondsToTime(journey_duration) << "): "
                 << std::endl << std::endl;
       Raptor::showJourney(journey);
@@ -119,7 +119,7 @@ Query Application::getQuery() {
 std::string Application::getSource() {
   std::string source;
   while (true) {
-    std::cout << "Enter source stop id: ";
+    std::cout << "Source stop id: ";
     std::getline(std::cin, source);
     source = Utils::trim(source);
 
@@ -135,7 +135,7 @@ std::string Application::getSource() {
 std::string Application::getTarget() {
   std::string target;
   while (true) {
-    std::cout << "Enter target stop id: ";
+    std::cout << "Target stop id: ";
     std::getline(std::cin, target);
     target = Utils::trim(target);
 
@@ -166,7 +166,7 @@ int Application::getYear() {
   std::string input;
   int year;
   while (true) {
-    std::cout << "Enter year (e.g., 2024): ";
+    std::cout << "Year (e.g., 2024): ";
     std::getline(std::cin, input);
     input = Utils::trim(input);
     if (Utils::isNumber(input)) {
@@ -182,7 +182,7 @@ int Application::getMonth() {
   std::string input;
   int month;
   while (true) {
-    std::cout << "Enter month (1-12): ";
+    std::cout << "Month (1-12): ";
     std::getline(std::cin, input);
     input = Utils::trim(input);
     if (Utils::isNumber(input)) {
@@ -198,7 +198,7 @@ int Application::getDay(int year, int month) {
   std::string input;
   int day;
   while (true) {
-    std::cout << "Enter day (1-31):";
+    std::cout << "Day:  ";
     std::getline(std::cin, input);
     input = Utils::trim(input);
     if (Utils::isNumber(input)) {
@@ -221,7 +221,7 @@ int Application::getHours() {
   std::string input;
   int hours;
   while (true) {
-    std::cout << "Enter hours (0-23): ";
+    std::cout << "Hours (0-23): ";
     std::getline(std::cin, input);
     input = Utils::trim(input);
     if (Utils::isNumber(input)) {
@@ -237,7 +237,7 @@ int Application::getMinutes() {
   std::string input;
   int minutes;
   while (true) {
-    std::cout << "Enter minutes (0-59): ";
+    std::cout << "Minutes (0-59): ";
     std::getline(std::cin, input);
     input = Utils::trim(input);
     if (Utils::isNumber(input)) {

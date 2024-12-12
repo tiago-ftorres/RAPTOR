@@ -135,6 +135,6 @@ Date Utils::addOneDay(Date date) {
 }
 
 std::string Utils::dayToString(Day day) {
-  return (day == Day::CurrentDay) ? "current day" : "next day";
+  return (day == Day::CurrentDay) ? "current" : "next";
 }
 
