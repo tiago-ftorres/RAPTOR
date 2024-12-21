@@ -16,3 +16,7 @@ cmake-build-*/
 
 # Ignore executables
 raptor
+
+# Ignore Doxygen documentation
+/html/
+/latex/

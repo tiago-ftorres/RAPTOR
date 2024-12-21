@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 
 include_directories(.)
 
-add_subdirectory(Google_tests)
+add_subdirectory(tests)
 
 add_library(raptor_lib
         src/Parser.cpp
