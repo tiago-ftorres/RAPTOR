@@ -20,19 +20,20 @@ git submodule update --init --recursive
  - **g++ (C++20)**
  - **CMake 3.22 or later**
 
-3. **Build the Project**: Run the following commands in a UNIX-like terminal:
-    ```bash
-    mkdir build
-    cd build
-    cmake ..
-    make
-    ```
+3. **Build the Program**:
+Run the following commands in a UNIX-like terminal:
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
 
 ### Running the Program
+
 You can run the program by executing one of the following commands in the terminal:
 
 ```bash
-Copy code
 ./RAPTOR ../datasets/Porto/metro/GTFS/ ../datasets/Porto/stcp/GTFS/
 ./RAPTOR ../datasets/Porto/metro/GTFS/
 ./RAPTOR ../datasets/Porto/stcp/GTFS/
@@ -41,6 +42,19 @@ Copy code
 You can specify the path to the GTFS directories directly in the command line.
 
 If no path is provided, the program will prompt you to enter the directory path.
+
+### Running the Tests
+You can run the tests by using the following command:
+
+```bash
+./tests/TESTS
+```
+
+From the tests folder, to automatically run all tests, you can run the command:
+
+```bash 
+ctest
+```
 
 ### Project Structure
 - **src/**: Contains the main RAPTOR algorithm implementation and supporting code.

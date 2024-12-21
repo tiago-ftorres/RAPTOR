@@ -5,16 +5,20 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
+enable_testing()
+
 # Include the Google Test submodule
 add_subdirectory(lib)
-include_directories(${CMAKE_SOURCE_DIR}/Google_tests/lib/googletest/include)
+include_directories(${CMAKE_SOURCE_DIR}/tests/lib/googletest/include)
 
 # Add an executable target for tests
-add_executable(Google_Tests_run
+add_executable(TESTS
         findJourneys.cpp # Add test files
 )
 
 # Link Google Test libraries and project files
-target_link_libraries(Google_Tests_run gtest gtest_main raptor_lib)
+target_link_libraries(TESTS gtest gtest_main raptor_lib)
 
-target_compile_definitions(Google_Tests_run PRIVATE DATASET_PATH="${CMAKE_SOURCE_DIR}/datasets")
+target_compile_definitions(TESTS PRIVATE DATASET_PATH="${CMAKE_SOURCE_DIR}/datasets")
+
+add_test(NAME GoogleTests COMMAND TESTS)
