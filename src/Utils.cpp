@@ -90,8 +90,8 @@ std::string Utils::getFirstWord(const std::string &str) {
 }
 
 void Utils::clean(std::string &input) {
-  size_t first = input.find_first_not_of(" \t");
-  size_t last = input.find_last_not_of(" \t");
+  size_t first = input.find_first_not_of(" \t\n\r");
+  size_t last = input.find_last_not_of(" \t\n\r");
   input = (first == std::string::npos) ? "" : input.substr(first, (last - first + 1));
 }
 

@@ -42,6 +42,7 @@ void Parser::parseAgencies() {
 
   std::string line;
   std::getline(file, line);
+  Utils::clean(line);
   std::vector<std::string> fields = Utils::split(line, ',');
 
   while (std::getline(file, line)) {
@@ -70,6 +71,7 @@ void Parser::parseCalendars() {
 
   std::string line;
   std::getline(file, line);
+  Utils::clean(line);
   std::vector<std::string> fields = Utils::split(line, ',');
 
   while (std::getline(file, line)) {
@@ -99,6 +101,7 @@ void Parser::parseTrips() {
 
   std::string line;
   std::getline(file, line);
+  Utils::clean(line);
   std::vector<std::string> fields = Utils::split(line, ',');
 
   while (std::getline(file, line)) {
@@ -128,6 +131,7 @@ void Parser::parseRoutes() {
 
   std::string line;
   std::getline(file, line);
+  Utils::clean(line);
   std::vector<std::string> fields = Utils::split(line, ',');
 
   while (std::getline(file, line)) {
@@ -169,6 +173,7 @@ void Parser::parseStops() {
 
   std::string line;
   std::getline(file, line);
+  Utils::clean(line);
   std::vector<std::string> fields = Utils::split(line, ',');
 
   while (std::getline(file, line)) {
@@ -196,6 +201,7 @@ void Parser::parseStopTimes() {
 
   std::string line;
   std::getline(file, line);
+  Utils::clean(line);
   std::vector<std::string> fields = Utils::split(line, ',');
 
   while (std::getline(file, line)) {

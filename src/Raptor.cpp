@@ -166,19 +166,15 @@ std::vector<Journey> Raptor::findJourneys() {
     k++;
   }
 
-  std::cout << "Before filtering: " << journeys.size() << " journeys." << std::endl;
-  for (const auto &journey: journeys) {
-    showJourney(journey);
-  }
+  size_t before_filtering = journeys.size();
 
   // Keep only pareto-optimal journeys
-  journeys = keepParetoOptimalJourneys(journeys);
+  keepParetoOptimal(journeys);
 
-  std::cout << "After filtering: " << journeys.size() << " journeys." << std::endl;
-  for (const auto &journey: journeys) {
-    showJourney(journey);
-  }
+  size_t after_filtering = journeys.size();
 
+  if (before_filtering > after_filtering)
+    std::cout << "Discarded " << before_filtering - after_filtering << " journeys." << std::endl;
   return journeys;
 }
 
@@ -198,7 +194,6 @@ Raptor::accumulateRoutesServingStops() {
 
     // For each route r serving p
     for (const auto &route_key: stops_[marked_stop_id].getRouteKeys()) {
-      // TODO: avoid accumulating routes that do not have any active trip
 
       // Iterate over all stops in the route
       bool already_has_point = false;
@@ -224,6 +219,7 @@ Raptor::accumulateRoutesServingStops() {
 
       if (!already_has_point)    // The route does not have a point in the list
         routes_stops_set.insert({route_key, marked_stop_id});
+      // TODO: avoid accumulating routes that do not have any active trip
     }
   }
 
@@ -454,11 +450,6 @@ Journey Raptor::reconstructJourney() {
       duration = stops_[parent_stop_id].getFootpaths().at(current_stop_id);
       departure_seconds = arrival_seconds - duration;
 
-      if (current_stop_id == query_.target_id)
-        std::cout << "Footpath from " << parent_stop_id << " to " << current_stop_id << " with duration "
-                  << Utils::secondsToTime(duration) << " departing at " << Utils::secondsToTime(departure_seconds)
-                  << " and arriving at " << Utils::secondsToTime(arrival_seconds) << std::endl;
-
     } else { // Trip
       const std::string &parent_trip_id = parent_trip_id_opt.value();
       std::string route_id = trips_[parent_trip_id].getField("route_id");
@@ -553,39 +544,27 @@ void Raptor::showJourney(const Journey &journey) {
 
     std::cout << std::endl << std::endl;
   }
-
 }
 
-std::vector<Journey> Raptor::keepParetoOptimalJourneys(const std::vector<Journey> &journeys) {
-  std::vector<Journey> pareto_optimal_journeys;
+bool Raptor::isDominatedByAny(const std::vector<Journey> &journeys, const Journey &journey) {
+  return std::ranges::any_of(journeys, [&journey](const Journey &otherJourney) {
+    return dominates(otherJourney, journey);
+  });
+}
 
-  // If two journeys have the same number of steps, keep the one with the earliest arrival time
-  // If a journey has more steps but worse arrival time, discard it
-  for (const Journey &journey: journeys) {
-    bool isDominated = false;
-
-    for (const Journey &otherJourney: journeys) {
-      if (dominates(otherJourney, journey)) {
-        isDominated = true;
-        break;
-      }
-    }
-
-    if (!isDominated)
-      pareto_optimal_journeys.push_back(journey);
-  }
-
-  return pareto_optimal_journeys;
+void Raptor::keepParetoOptimal(std::vector<Journey> &journeys) {
+  journeys.erase(std::remove_if(journeys.begin(), journeys.end(),
+                                [&journeys](const Journey &journey) {
+                                  return isDominatedByAny(journeys, journey);
+                                }),
+                 journeys.end());
 }
 
 bool Raptor::dominates(const Journey &journey1, const Journey &journey2) {
-  // Shorter durations and fewer transfers are preferred
+  // If two journeys have the same number of steps, keep the one with the earliest arrival time
+  // If a journey has more steps but not better arrival time, discard it
   return ((journey1.duration < journey2.duration
            && journey1.steps.size() <= journey2.steps.size())
           || (journey1.steps.size() < journey2.steps.size()
               && journey1.duration <= journey2.duration));
 }
-
-
-
-

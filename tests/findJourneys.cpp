@@ -98,11 +98,11 @@ Raptor RaptorTests::raptor;
  */
 TEST_F(RaptorTests, ValidJourneyQuery) {
   Query query = {"5777", "5776", {2024, 10, 15}, {22, 30, 0}};
-
   raptor.setQuery(query);
+
   auto journeys = raptor.findJourneys();
 
-  ASSERT_FALSE(journeys.empty());  // Ensure journeys are found
+  ASSERT_FALSE(journeys.empty());
   ASSERT_TRUE(journeys.size() == 1);  // Ensure only one journey is found
   ASSERT_TRUE(raptor.isValidJourney(journeys.front()));
 }
@@ -113,11 +113,11 @@ TEST_F(RaptorTests, ValidJourneyQuery) {
  */
 TEST_F(RaptorTests, from5777_toOTH2_day) {
   Query query = {"5777", "OTH2", {2024, 10, 15}, {11, 30, 0}};
-
   raptor.setQuery(query);
+
   auto journeys = raptor.findJourneys();
 
-  ASSERT_FALSE(journeys.empty());  // Ensure journeys are found
+  ASSERT_FALSE(journeys.empty());
   for (auto &journey: journeys)
     ASSERT_TRUE(raptor.isValidJourney(journey));
 }
@@ -128,11 +128,11 @@ TEST_F(RaptorTests, from5777_toOTH2_day) {
  */
 TEST_F(RaptorTests, from5777_toOTH2_later) {
   Query query = {"5777", "OTH2", {2024, 10, 15}, {22, 30, 0}};
-
   raptor.setQuery(query);
+
   auto journeys = raptor.findJourneys();
 
-  ASSERT_FALSE(journeys.empty());  // Ensure journeys are found
+  ASSERT_FALSE(journeys.empty());
   for (auto &journey: journeys)
     ASSERT_TRUE(raptor.isValidJourney(journey));
 }
@@ -143,11 +143,11 @@ TEST_F(RaptorTests, from5777_toOTH2_later) {
  */
 TEST_F(RaptorTests, from5777_toOTH2_night) {
   Query query = {"5777", "OTH2", {2024, 10, 15}, {23, 35, 0}};
-
   raptor.setQuery(query);
+
   auto journeys = raptor.findJourneys();
 
-  ASSERT_FALSE(journeys.empty());  // Ensure journeys are found
+  ASSERT_FALSE(journeys.empty());
   for (auto &journey: journeys)
     ASSERT_TRUE(raptor.isValidJourney(journey));
 }
@@ -158,11 +158,11 @@ TEST_F(RaptorTests, from5777_toOTH2_night) {
  */
 TEST_F(RaptorTests, MultiDayJourney) {
   Query query = {"TCRZ2", "SCT2", {2024, 12, 9}, {23, 40, 0}}; // Across days
-
   raptor.setQuery(query);
+
   auto journeys = raptor.findJourneys();
 
-  ASSERT_FALSE(journeys.empty());  // Ensure journeys are found
+  ASSERT_FALSE(journeys.empty());
   for (auto &journey: journeys)
     ASSERT_TRUE(raptor.isValidJourney(journey));
 
@@ -176,8 +176,8 @@ TEST_F(RaptorTests, MultiDayJourney) {
  */
 TEST_F(RaptorTests, SameStartAndEndStop) {
   Query query = {"5777", "5777", {2024, 12, 10}, {9, 0, 0}};
-
   raptor.setQuery(query);
+
   auto journeys = raptor.findJourneys();
 
   ASSERT_TRUE(journeys.empty());  // No journey should be found
@@ -189,13 +189,27 @@ TEST_F(RaptorTests, SameStartAndEndStop) {
  */
 TEST_F(RaptorTests, JourneySpanningWeekend) { // TODO: k=5, 7 steps
   Query query = {"TSL2", "LGEQ1", {2024, 12, 13}, {23, 0, 0}};  // Friday to Saturday
-
   raptor.setQuery(query);
+
   auto journeys = raptor.findJourneys();
 
-  ASSERT_FALSE(journeys.empty());  // Ensure journeys are found
+  ASSERT_FALSE(journeys.empty());
   for (auto &journey: journeys) {
     ASSERT_TRUE(raptor.isValidJourney(journey));  // Validate weekend service
   }
 }
 
+/**
+  * @test from5717_toPREC2
+  * @brief Tests a query for a journey between stops 5717 and PREC2.
+  */
+TEST_F(RaptorTests, from5717_toPREC2) {
+  Query query = {"5717", "PREC2", {2024, 10, 20}, {20, 20, 0}};
+  raptor.setQuery(query);
+
+  auto journeys = raptor.findJourneys();
+
+  ASSERT_FALSE(journeys.empty());
+  for (auto &journey: journeys)
+    ASSERT_TRUE(raptor.isValidJourney(journey));
+}

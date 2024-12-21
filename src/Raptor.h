@@ -252,12 +252,21 @@ private:
   Journey reconstructJourney();
 
   /**
+   * Checks if a given journey is dominated by any other journey in the list.
+   *
+   * @param journeys A list of all journeys to compare against.
+   * @param journey The journey to check.
+   * @return True if the journey is dominated, otherwise false.
+   */
+  static bool isDominatedByAny(const std::vector<Journey> &journeys, const Journey &journey);
+
+  /**
    * @brief Keeps the Pareto-optimal journeys from a list of journeys.
    *
    * @param[in] journeys The list of journeys to be filtered.
    * @return A list of Pareto-optimal journeys.
    */
-  static std::vector<Journey> keepParetoOptimalJourneys(const std::vector<Journey> &journeys);
+  static void keepParetoOptimal(std::vector<Journey> &journeys);
 
   /**
    * @brief Compares two journeys to check if one dominates the other.
