@@ -1,5 +1,5 @@
-# 'Google_tests' is the subproject name
-project(Google_tests)
+# 'tests' is the subproject name
+project(tests)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -11,7 +11,7 @@ include_directories(${CMAKE_SOURCE_DIR}/Google_tests/lib/googletest/include)
 
 # Add an executable target for tests
 add_executable(Google_Tests_run
-        test_findJourneys.cpp # Add test files
+        findJourneys.cpp # Add test files
 )
 
 # Link Google Test libraries and project files
