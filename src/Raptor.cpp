@@ -1,8 +1,14 @@
-
+/**
+ * @file Raptor.cpp
+ * @brief Raptor class implementation
+ *
+ * This file contains the implementation of the Raptor class, which represents
+ * the Round-Based Public Transit Routing algorithm, for journey planning.
+ *
+ * @autor Maria
+ * @date 10/28/2024
+ */
 #include "Raptor.h"
-
-#include <utility>
-
 
 Raptor::Raptor(const std::unordered_map<std::string, Agency> &agencies,
                const std::unordered_map<std::string, Calendar> &calendars,

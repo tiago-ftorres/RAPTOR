@@ -1,6 +1,13 @@
-//
-// Created by maria on 11/20/2024.
-//
+/**
+ * @file Stop.cpp
+ * @brief Stop class implementation
+ *
+ * This file contains the implementation of the Stop class, which represents
+ * a stop in the GTFS dataset.
+ *
+ * @autor Maria
+ * @date 11/20/2024
+ */
 
 #include "Stop.h"
 

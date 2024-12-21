@@ -1,6 +1,13 @@
-//
-// Created by maria on 10/28/2024.
-//
+/**
+ * @file Utils.cpp
+ * @brief Provides utility functions for the RAPTOR application.
+ *
+ * This file contains utility functions for the RAPTOR application,
+ * including functions for calculating distances, durations, and time conversions.
+ *
+ * @author Maria
+ * @date 10/28/2024
+ */
 
 #include "Utils.h"
 
@@ -82,10 +89,10 @@ std::string Utils::getFirstWord(const std::string &str) {
   return str.substr(0, str.find(' '));
 }
 
-std::string Utils::trim(const std::string &str) {
-  size_t first = str.find_first_not_of(" \t");
-  size_t last = str.find_last_not_of(" \t");
-  return (first == std::string::npos) ? "" : str.substr(first, (last - first + 1));
+void Utils::clean(std::string &input) {
+  size_t first = input.find_first_not_of(" \t");
+  size_t last = input.find_last_not_of(" \t");
+  input = (first == std::string::npos) ? "" : input.substr(first, (last - first + 1));
 }
 
 

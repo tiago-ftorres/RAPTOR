@@ -1,6 +1,13 @@
-//
-// Created by maria on 11/20/2024.
-//
+/**
+ * @file StopTime.cpp
+ * @brief StopTime class implementation
+ *
+ * This file contains the implementation of the StopTime class, which represents
+ * a stop time in the GTFS dataset.
+ *
+ * @autor Maria
+ * @date 11/20/2024
+ */
 
 #include "StopTime.h"
 

@@ -1,6 +1,13 @@
-//
-// Created by maria on 11/11/2024.
-//
+/**
+ * @file Application.cpp
+ * @brief Application class implementation
+ *
+ * This file contains the implementation of the Application class, which manages
+ * the initialization and execution of the RAPTOR application.
+ *
+ * @autor Maria
+ * @date 11/11/2024
+ */
 #include "Application.h"
 
 Application::Application(std::vector<std::string> inputDirectories)
@@ -17,13 +24,13 @@ void Application::run() {
     std::cout << std::endl << "Type a command: ";
     std::getline(std::cin, command);
 
-    std::string trimmedCommand = Utils::trim(command);
+    Utils::clean(command);
 
-    if (trimmedCommand == "query") {
+    if (command == "query") {
       handleQuery();
-    } else if (trimmedCommand == "help") {
+    } else if (command == "help") {
       showCommands();
-    } else if (trimmedCommand == "quit") {
+    } else if (command == "quit") {
       std::cout << "Quitting program..." << std::endl;
       break;
     } else {
@@ -125,7 +132,7 @@ std::string Application::getSource() {
   while (true) {
     std::cout << "Source stop id: ";
     std::getline(std::cin, source);
-    source = Utils::trim(source);
+    Utils::clean(source);
 
     if (raptor_->getStops().find(source) != raptor_->getStops().end())
       break;
@@ -141,7 +148,7 @@ std::string Application::getTarget() {
   while (true) {
     std::cout << "Target stop id: ";
     std::getline(std::cin, target);
-    target = Utils::trim(target);
+    Utils::clean(target);
 
     if (raptor_->getStops().find(target) != raptor_->getStops().end())
       break;
@@ -172,7 +179,8 @@ int Application::getYear() {
   while (true) {
     std::cout << "Year (e.g., 2024): ";
     std::getline(std::cin, input);
-    input = Utils::trim(input);
+    Utils::clean(input);
+
     if (Utils::isNumber(input)) {
       year = std::stoi(input);
       if (year > 1900) break;
@@ -188,7 +196,7 @@ int Application::getMonth() {
   while (true) {
     std::cout << "Month (1-12): ";
     std::getline(std::cin, input);
-    input = Utils::trim(input);
+    Utils::clean(input);
     if (Utils::isNumber(input)) {
       month = std::stoi(input);
       if (month >= 1 && month <= 12) break;
@@ -204,7 +212,7 @@ int Application::getDay(int year, int month) {
   while (true) {
     std::cout << "Day:  ";
     std::getline(std::cin, input);
-    input = Utils::trim(input);
+    Utils::clean(input);
     if (Utils::isNumber(input)) {
       day = std::stoi(input);
       if (day >= 1 && day <= Utils::daysInMonth(year, month)) break;
@@ -227,7 +235,8 @@ int Application::getHours() {
   while (true) {
     std::cout << "Hours (0-23): ";
     std::getline(std::cin, input);
-    input = Utils::trim(input);
+    Utils::clean(input);
+
     if (Utils::isNumber(input)) {
       hours = std::stoi(input);
       if (hours >= 0 && hours <= 23) break;
@@ -243,7 +252,8 @@ int Application::getMinutes() {
   while (true) {
     std::cout << "Minutes (0-59): ";
     std::getline(std::cin, input);
-    input = Utils::trim(input);
+    Utils::clean(input);
+
     if (Utils::isNumber(input)) {
       minutes = std::stoi(input);
       if (minutes >= 0 && minutes <= 59) break;

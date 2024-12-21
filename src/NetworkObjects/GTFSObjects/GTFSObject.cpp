@@ -1,6 +1,13 @@
-//
-// Created by maria on 11/20/2024.
-//
+/**
+ * @file GTFSObject.cpp
+ * @brief Implements the GTFSObject class.
+ *
+ * This file contains the implementation of the GTFSObject class, which represents
+ * a generic GTFS object.
+ *
+ * @autor Maria
+ * @date 11/20/2024
+ */
 
 #include "GTFSObject.h"
 

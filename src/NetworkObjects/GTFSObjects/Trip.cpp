@@ -1,6 +1,13 @@
-//
-// Created by maria on 11/20/2024.
-//
+/**
+ * @file Trip.cpp
+ * @brief Trip class implementation
+ *
+ * This file contains the implementation of the Trip class, which represents
+ * a trip in the GTFS dataset.
+ *
+ * @autor Maria
+ * @date 11/20/2024
+ */
 
 #include "Trip.h"
 

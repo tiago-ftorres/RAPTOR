@@ -1,6 +1,14 @@
-//
-// Created by maria on 11/20/2024.
-//
+/**
+ * @file Route.cpp
+ * @brief Route class implementation
+ *
+ * This file contains the implementation of the Route class, which represents
+ * a route in the GTFS dataset.
+ *
+ * @autor Maria
+ * @date 11/20/2024
+ */
+
 #include "Route.h"
 #include <iostream>
 

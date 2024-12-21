@@ -1,3 +1,10 @@
+/**
+ * @file Parser.cpp
+ * @brief Implementation of the Parser class
+ *
+ * This file contains the implementation of the Parser class,
+ * which is responsible for parsing GTFS data.
+ */
 
 #include "Parser.h"
 
@@ -38,7 +45,7 @@ void Parser::parseAgencies() {
   std::vector<std::string> fields = Utils::split(line, ',');
 
   while (std::getline(file, line)) {
-    cleanLine(line);
+    Utils::clean(line);
 
     if (line.empty()) continue;
 
@@ -66,7 +73,7 @@ void Parser::parseCalendars() {
   std::vector<std::string> fields = Utils::split(line, ',');
 
   while (std::getline(file, line)) {
-    cleanLine(line);
+    Utils::clean(line);
 
     if (line.empty()) continue;
 
@@ -95,7 +102,7 @@ void Parser::parseTrips() {
   std::vector<std::string> fields = Utils::split(line, ',');
 
   while (std::getline(file, line)) {
-    cleanLine(line);
+    Utils::clean(line);
 
     if (line.empty()) continue;
 
@@ -124,7 +131,7 @@ void Parser::parseRoutes() {
   std::vector<std::string> fields = Utils::split(line, ',');
 
   while (std::getline(file, line)) {
-    cleanLine(line);
+    Utils::clean(line);
 
     if (line.empty()) continue;
 
@@ -165,7 +172,7 @@ void Parser::parseStops() {
   std::vector<std::string> fields = Utils::split(line, ',');
 
   while (std::getline(file, line)) {
-    cleanLine(line);
+    Utils::clean(line);
 
     if (line.empty()) continue;
 
@@ -192,7 +199,7 @@ void Parser::parseStopTimes() {
   std::vector<std::string> fields = Utils::split(line, ',');
 
   while (std::getline(file, line)) {
-    cleanLine(line);
+    Utils::clean(line);
 
     if (line.empty()) continue;
 
@@ -296,11 +303,6 @@ void Parser::associateData() {
     });
 
 
-}
-
-void Parser::cleanLine(std::string &line) {
-  line.erase(line.find_last_not_of(" \t\n\r\f\v") + 1);
-  line.erase(0, line.find_first_not_of(" \t\n\r\f\v"));
 }
 
 std::unordered_map<std::string, Agency> Parser::getAgencies() {

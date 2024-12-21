@@ -13,7 +13,6 @@ add_library(raptor_lib
         src/Raptor.cpp
         src/Utils.cpp
         src/Application.cpp
-        src/Constants.h
         src/DateTime.h
         src/NetworkObjects/DataStructures.h
         src/NetworkObjects/GTFSObjects/Route.cpp
