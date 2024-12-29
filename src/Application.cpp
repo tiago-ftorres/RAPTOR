@@ -81,24 +81,14 @@ void Application::showCommands() {
   std::cout << " 3. quit " << std::endl;
 }
 
-//               query 5777 5776 22:00:00 20240909,20241231
-//               query 5775 5813 2024 11-11 11:11
-//               query 5746 5756 2024 5/5 05:05
-//               query 5753 5782 19:44:00
-//               query 5726 5739 06:44:00 // Metro Trindade to Lidador
-
-//               query SAL2 IPO5 14:00:00 20221226,20241231
-//               query MAIA3 PARR3 5:55 STCP Maia to Arrabida
-
 void Application::handleQuery() {
   Query query =  getQuery();
   raptor_->setQuery(query);
 
   auto start_time = std::chrono::high_resolution_clock::now();
-
   std::vector<Journey> journeys = raptor_->findJourneys();
-
   auto end_time = std::chrono::high_resolution_clock::now();
+
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
 
   std::cout << "Took " << duration << " ms (" << std::round(static_cast<double>(duration) / 1000.0) << " seconds) to look for journeys."
@@ -107,7 +97,6 @@ void Application::handleQuery() {
   if (journeys.empty()) std::cout << "No journey found :/" << std::endl;
   else {
     std::cout << "Found " << journeys.size() << " journey(s)! =) " << std::endl;
-
     for (int i = 0; i < journeys.size(); i++) {
       const Journey &journey = journeys[i];
       int journey_duration = journey.duration;

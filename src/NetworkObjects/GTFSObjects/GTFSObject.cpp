@@ -29,5 +29,3 @@ const std::unordered_map<std::string, std::string> &GTFSObject::getFields() cons
 bool GTFSObject::hasField(const std::string& field) const {
   return fields.find(field) != fields.end();
 }
-
-

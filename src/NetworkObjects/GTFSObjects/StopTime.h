@@ -57,5 +57,4 @@ private:
   int departure_seconds{}; ///< Departure time in seconds from midnight.
 };
 
-
 #endif //RAPTOR_STOPTIME_H

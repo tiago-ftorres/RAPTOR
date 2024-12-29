@@ -64,5 +64,4 @@ private:
   std::unordered_map<Day, bool> active_days_; ///< Map of active days for the trip
 };
 
-
 #endif //RAPTOR_TRIP_H

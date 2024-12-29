@@ -2,8 +2,8 @@
 This project implements the Round-Based Public Transit Routing (RAPTOR) algorithm, 
 enabling efficient public transport route searches based on GTFS data.
 
-### Setting up the Project Environment
-1. **Clone the Repository**: To clone the repository, use the following command:
+### Setting up the Project Environment in a UNIX-like terminal
+1. **Clone the Repository**
     ```bash 
     git clone --recurse-submodules git@github.com:mariaarabelo/RAPTOR.git
     ```
@@ -16,12 +16,26 @@ If you already cloned the repository without this flag, you can initialize submo
 git submodule update --init --recursive
 ```
     
-2. **Install Dependencies**:
- - **g++ (C++20)**
+2. **Install Dependencies**
+ - **g++ 10.0 (for C++20)**
+
+```bash 
+sudo apt update
+sudo apt install g++ -y
+g++ --version
+```
  - **CMake 3.22 or later**
 
-3. **Build the Program**:
-Run the following commands in a UNIX-like terminal:
+```bash 
+sudo apt update
+sudo apt install -y software-properties-common
+sudo apt-add-repository -y ppa:deadsnakes/ppa
+sudo apt install cmake -y
+cmake --version
+```
+
+3. **Build the Program**
+
 ```bash
 mkdir build
 cd build

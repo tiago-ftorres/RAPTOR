@@ -6,8 +6,6 @@
  * for handling and manipulating temporal data.
  */
 
-// Created by maria on 12/3/2024.
-
 #ifndef RAPTOR_DATETIME_H
 #define RAPTOR_DATETIME_H
 

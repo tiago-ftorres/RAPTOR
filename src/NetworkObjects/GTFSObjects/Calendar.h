@@ -28,5 +28,4 @@ class Calendar : public GTFSObject  {
 
 };
 
-
 #endif //RAPTOR_CALENDAR_H

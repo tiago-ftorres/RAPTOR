@@ -61,5 +61,4 @@ protected:
 
 };
 
-
 #endif //RAPTOR_GTFSOBJECT_H

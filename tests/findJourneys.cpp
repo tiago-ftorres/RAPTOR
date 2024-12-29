@@ -12,6 +12,16 @@
 #include "gtest/gtest.h"
 #include "./src/Raptor.h"
 
+// TODO test
+//               query 5777 5776 22:00:00 20240909,20241231
+//               query 5775 5813 2024 11-11 11:11
+//               query 5746 5756 2024 5/5 05:05
+//               query 5753 5782 19:44:00
+//               query 5726 5739 06:44:00 // Metro Trindade to Lidador
+//               query SAL2 IPO5 14:00:00 20221226,20241231
+//               query MAIA3 PARR3 5:55 STCP Maia to Arrabida
+
+
 /**
  * @brief Loads data from GTFS files into in-memory data structures.
  *
