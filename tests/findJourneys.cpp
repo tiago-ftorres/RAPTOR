@@ -12,16 +12,6 @@
 #include "gtest/gtest.h"
 #include "./src/Raptor.h"
 
-// TODO test
-//               query 5777 5776 22:00:00 20240909,20241231
-//               query 5775 5813 2024 11-11 11:11
-//               query 5746 5756 2024 5/5 05:05
-//               query 5753 5782 19:44:00
-//               query 5726 5739 06:44:00 // Metro Trindade to Lidador
-//               query SAL2 IPO5 14:00:00 20221226,20241231
-//               query MAIA3 PARR3 5:55 STCP Maia to Arrabida
-
-
 /**
  * @brief Loads data from GTFS files into in-memory data structures.
  *
@@ -133,6 +123,111 @@ TEST_F(RaptorTests, from5777_toOTH2_day) {
 }
 
 /**
+ * @test fromELVG1_to5733
+ * @brief Tests a journey from stop ELVG1 to 5733 at 14:00 on 2024-11-20.
+ */
+TEST_F(RaptorTests, fromELVG1_to5733) {
+  Query query = {"ELVG1", "5733", {2024, 11, 20}, {14, 0, 0}};
+  raptor.setQuery(query);
+
+  auto journeys = raptor.findJourneys();
+
+  ASSERT_FALSE(journeys.empty());
+  for (auto &journey: journeys)
+    ASSERT_TRUE(raptor.isValidJourney(journey));
+}
+
+/**
+ * @test fromMAIA3_toPARR3
+ * @brief Tests a journey from stop MAIA3 (STCP Maia) to PARR3 (Arrabida) at 05:55.
+ */
+TEST_F(RaptorTests, fromMAIA3_toPARR3) {
+  Query query = {"MAIA3", "PARR3", {2024, 10, 15}, {5, 55, 0}};
+  raptor.setQuery(query);
+
+  auto journeys = raptor.findJourneys();
+
+  ASSERT_FALSE(journeys.empty());
+  for (auto &journey: journeys)
+    ASSERT_TRUE(raptor.isValidJourney(journey));
+}
+
+/**
+ * @test fromSAL2_toIPO5
+ * @brief Tests a journey from stop SAL2 to IPO5 at 14:00 on 2024-12-11.
+ */
+TEST_F(RaptorTests, fromSAL2_toIPO5) {
+  Query query = {"SAL2", "IPO5", {2024, 12, 11}, {14, 0, 0}};
+  raptor.setQuery(query);
+
+  auto journeys = raptor.findJourneys();
+
+  ASSERT_FALSE(journeys.empty());
+  for (auto &journey: journeys)
+    ASSERT_TRUE(raptor.isValidJourney(journey));
+}
+
+/**
+ * @test from5726_to5739
+ * @brief Tests a journey from stop 5726 (Metro Trindade) to 5739 (Lidador) at 06:44.
+ */
+TEST_F(RaptorTests, from5726_to5739) {
+  Query query = {"5726", "5739", {2024, 10, 15}, {6, 44, 0}};
+  raptor.setQuery(query);
+
+  auto journeys = raptor.findJourneys();
+
+  ASSERT_FALSE(journeys.empty());
+  for (auto &journey: journeys)
+    ASSERT_TRUE(raptor.isValidJourney(journey));
+}
+
+/**
+ * @test from5746_to5756
+ * @brief Tests a journey from stop 5746 to 5756 at 05:05.
+ */
+TEST_F(RaptorTests, from5746_to5756) {
+  Query query = {"5746", "5756", {2024, 5, 5}, {5, 5, 0}};
+  raptor.setQuery(query);
+
+  auto journeys = raptor.findJourneys();
+
+  ASSERT_FALSE(journeys.empty());
+  for (auto &journey: journeys)
+    ASSERT_TRUE(raptor.isValidJourney(journey));
+}
+
+/**
+ * @test From5753To5782
+ * @brief Tests a journey from stop 5753 to 5782 at 19:44.
+ */
+TEST_F(RaptorTests, From5753To5782) {
+  Query query = {"5753", "5782", {2024, 10, 15}, {19, 44, 0}};
+  raptor.setQuery(query);
+
+  auto journeys = raptor.findJourneys();
+
+  ASSERT_FALSE(journeys.empty());
+  for (auto &journey: journeys)
+    ASSERT_TRUE(raptor.isValidJourney(journey));
+}
+
+/**
+ * @test From5775To5813
+ * @brief Tests a journey from stop 5775 to 5813 on 2024-11-11 at 11:11.
+ */
+TEST_F(RaptorTests, From5775To5813) {
+  Query query = {"5775", "5813", {2024, 11, 11}, {11, 11, 0}};
+  raptor.setQuery(query);
+
+  auto journeys = raptor.findJourneys();
+
+  ASSERT_FALSE(journeys.empty());
+  for (auto &journey: journeys)
+    ASSERT_TRUE(raptor.isValidJourney(journey));
+}
+
+/**
  * @test from5777_toOTH2_later
  * @brief Tests a query for a journey later in the evening between stops 5777 and OTH2.
  */
@@ -178,7 +273,6 @@ TEST_F(RaptorTests, MultiDayJourney) {
 
   ASSERT_EQ(journeys.back().arrival_day, Day::NextDay);  // Verify journey spans into the next day
 }
-
 
 /**
  * @test SameStartAndEndStop
