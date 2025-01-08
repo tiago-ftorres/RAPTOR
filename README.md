@@ -69,6 +69,12 @@ From the tests folder, to automatically run all tests, you can run the command:
 ```bash 
 ctest
 ```
+### Generate Doxygen documentation
+To generate the Doxygen documentation, you can run the following command:
+
+```bash
+doxygen Doxyfile
+```
 
 ### Project Structure
 - **src/**: Contains the main RAPTOR algorithm implementation and supporting code.
