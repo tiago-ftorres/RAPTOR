@@ -1,0 +1,6 @@
+<map id="Raptor" name="Raptor">
+<area shape="rect" id="node1" title="Implements the RAPTOR algorithm for finding Pareto&#45;optimal journeys." alt="" coords="68,184,133,211"/>
+<area shape="rect" id="node2" href="$structQuery.html" title="Represents a transit query." alt="" coords="70,95,131,121"/>
+<area shape="rect" id="node3" href="$structTime.html" title="Represents a specific time of day in hours, minutes, and seconds." alt="" coords="5,5,60,32"/>
+<area shape="rect" id="node4" href="$structDate.html" title="Represents a specific date in the Gregorian calendar." alt="" coords="142,5,195,32"/>
+</map>

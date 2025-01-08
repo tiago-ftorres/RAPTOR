@@ -1,0 +1,11 @@
+<map id="src/NetworkObjects/GTFSObjects/Trip.h" name="src/NetworkObjects/GTFSObjects/Trip.h">
+<area shape="rect" id="node1" title="Defines the Trip class, representing a trip in the GTFS dataset." alt="" coords="88,5,237,47"/>
+<area shape="rect" id="node2" href="$Trip_8cpp.html" title="Trip class implementation." alt="" coords="5,95,168,136"/>
+<area shape="rect" id="node3" href="$Parser_8h.html" title="Provides the Parser class for parsing GTFS data files." alt="" coords="192,102,288,129"/>
+<area shape="rect" id="node4" href="$Parser_8cpp.html" title="Implementation of the Parser class." alt="" coords="121,184,231,211"/>
+<area shape="rect" id="node5" href="$Raptor_8h.html" title="Defines the Raptor class for finding Pareto&#45;optimal journeys in a transit network." alt="" coords="256,184,355,211"/>
+<area shape="rect" id="node6" href="$Application_8h.html" title="Defines the Application class, which manages the initialization and execution of the RAPTOR applicati..." alt="" coords="167,259,297,285"/>
+<area shape="rect" id="node9" href="$Raptor_8cpp.html" title="Raptor class implementation." alt="" coords="321,259,436,285"/>
+<area shape="rect" id="node7" href="$Application_8cpp.html" title="Application class implementation." alt="" coords="85,333,230,360"/>
+<area shape="rect" id="node8" href="$main_8cpp.html" title="Entry point for the RAPTOR application." alt="" coords="254,333,359,360"/>
+</map>

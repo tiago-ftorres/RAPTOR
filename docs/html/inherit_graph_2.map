@@ -1,0 +1,9 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classGTFSObject.html" title="Represents a generic GTFS object." alt="" coords="5,132,103,159"/>
+<area shape="rect" id="node2" href="$classAgency.html" title="Represents a transit agency in the GTFS data." alt="" coords="157,5,228,32"/>
+<area shape="rect" id="node3" href="$classCalendar.html" title="Represents active weekdays for calendar in the GTFS data." alt="" coords="153,56,233,83"/>
+<area shape="rect" id="node4" href="$classRoute.html" title="Represents a route in the GTFS data." alt="" coords="163,107,223,133"/>
+<area shape="rect" id="node5" href="$classStop.html" title="Represents a stop in the GTFS data." alt="" coords="167,157,218,184"/>
+<area shape="rect" id="node6" href="$classStopTime.html" title="Represents a stop time in the GTFS data." alt="" coords="151,208,235,235"/>
+<area shape="rect" id="node7" href="$classTrip.html" title="Represents a trip in the GTFS data." alt="" coords="170,259,215,285"/>
+</map>

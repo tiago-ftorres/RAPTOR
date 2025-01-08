@@ -1,0 +1,52 @@
+\hypertarget{main_8cpp}{}\doxysection{src/main.cpp File Reference}
+\label{main_8cpp}\index{src/main.cpp@{src/main.cpp}}
+
+
+Entry point for the RAPTOR application.  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include \char`\"{}Application.\+h\char`\"{}}\newline
+Include dependency graph for main.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Main function for the RAPTOR application. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Entry point for the RAPTOR application. 
+
+This file initializes the application, parses input directories, and starts the main event loop for processing user queries. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97}\label{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{main.cpp@{main.cpp}!main@{main}}
+\index{main@{main}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Main function for the RAPTOR application. 
+
+This function parses command-\/line arguments or prompts the user for GTFS input directories, initializes the application, and starts the interactive event loop.
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & Number of command-\/line arguments. \\
+\hline
+{\em argv} & Array of command-\/line arguments. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Exit status of the application. 
+\end{DoxyReturn}

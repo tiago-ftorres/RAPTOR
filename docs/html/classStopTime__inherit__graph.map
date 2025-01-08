@@ -1,0 +1,4 @@
+<map id="StopTime" name="StopTime">
+<area shape="rect" id="node1" title="Represents a stop time in the GTFS data." alt="" coords="12,80,96,107"/>
+<area shape="rect" id="node2" href="$classGTFSObject.html" title="Represents a generic GTFS object." alt="" coords="5,5,103,32"/>
+</map>

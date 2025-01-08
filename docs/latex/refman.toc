@@ -1,0 +1,204 @@
+\@ifundefined {etoctocstyle}{\let \etoc@startlocaltoc \@gobble \let \etoc@settocdepth \@gobble \let \etoc@depthtag \@gobble \let \etoc@setlocaltop \@gobble }{}
+\contentsline {chapter}{\numberline {1}Hierarchical Index}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Class Hierarchy}{1}{section.1.1}%
+\contentsline {chapter}{\numberline {2}Class Index}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Class List}{3}{section.2.1}%
+\contentsline {chapter}{\numberline {3}File Index}{5}{chapter.3}%
+\contentsline {section}{\numberline {3.1}File List}{5}{section.3.1}%
+\contentsline {chapter}{\numberline {4}Class Documentation}{7}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Agency Class Reference}{7}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Detailed Description}{8}{subsection.4.1.1}%
+\contentsline {section}{\numberline {4.2}Application Class Reference}{8}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Detailed Description}{9}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Constructor \& Destructor Documentation}{9}{subsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.2.1}Application()}{9}{subsubsection.4.2.2.1}%
+\contentsline {subsection}{\numberline {4.2.3}Member Function Documentation}{10}{subsection.4.2.3}%
+\contentsline {subsubsection}{\numberline {4.2.3.1}getDate()}{10}{subsubsection.4.2.3.1}%
+\contentsline {subsubsection}{\numberline {4.2.3.2}getDay()}{10}{subsubsection.4.2.3.2}%
+\contentsline {subsubsection}{\numberline {4.2.3.3}getDepartureTime()}{10}{subsubsection.4.2.3.3}%
+\contentsline {subsubsection}{\numberline {4.2.3.4}getHours()}{11}{subsubsection.4.2.3.4}%
+\contentsline {subsubsection}{\numberline {4.2.3.5}getMinutes()}{11}{subsubsection.4.2.3.5}%
+\contentsline {subsubsection}{\numberline {4.2.3.6}getMonth()}{11}{subsubsection.4.2.3.6}%
+\contentsline {subsubsection}{\numberline {4.2.3.7}getQuery()}{11}{subsubsection.4.2.3.7}%
+\contentsline {subsubsection}{\numberline {4.2.3.8}getSource()}{12}{subsubsection.4.2.3.8}%
+\contentsline {subsubsection}{\numberline {4.2.3.9}getTarget()}{12}{subsubsection.4.2.3.9}%
+\contentsline {subsubsection}{\numberline {4.2.3.10}getYear()}{12}{subsubsection.4.2.3.10}%
+\contentsline {section}{\numberline {4.3}Calendar Class Reference}{13}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Detailed Description}{13}{subsection.4.3.1}%
+\contentsline {section}{\numberline {4.4}Date Struct Reference}{14}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Detailed Description}{14}{subsection.4.4.1}%
+\contentsline {section}{\numberline {4.5}GTFSObject Class Reference}{14}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Detailed Description}{15}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}Member Function Documentation}{15}{subsection.4.5.2}%
+\contentsline {subsubsection}{\numberline {4.5.2.1}getField()}{15}{subsubsection.4.5.2.1}%
+\contentsline {subsubsection}{\numberline {4.5.2.2}getFields()}{16}{subsubsection.4.5.2.2}%
+\contentsline {subsubsection}{\numberline {4.5.2.3}hasField()}{16}{subsubsection.4.5.2.3}%
+\contentsline {subsubsection}{\numberline {4.5.2.4}setField()}{16}{subsubsection.4.5.2.4}%
+\contentsline {section}{\numberline {4.6}Journey Struct Reference}{17}{section.4.6}%
+\contentsline {subsection}{\numberline {4.6.1}Detailed Description}{17}{subsection.4.6.1}%
+\contentsline {section}{\numberline {4.7}Journey\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Step Struct Reference}{17}{section.4.7}%
+\contentsline {subsection}{\numberline {4.7.1}Detailed Description}{18}{subsection.4.7.1}%
+\contentsline {section}{\numberline {4.8}nested\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}pair\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}hash Struct Reference}{19}{section.4.8}%
+\contentsline {subsection}{\numberline {4.8.1}Detailed Description}{19}{subsection.4.8.1}%
+\contentsline {subsection}{\numberline {4.8.2}Member Function Documentation}{19}{subsection.4.8.2}%
+\contentsline {subsubsection}{\numberline {4.8.2.1}operator()()}{19}{subsubsection.4.8.2.1}%
+\contentsline {section}{\numberline {4.9}pair\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}hash Struct Reference}{19}{section.4.9}%
+\contentsline {subsection}{\numberline {4.9.1}Detailed Description}{20}{subsection.4.9.1}%
+\contentsline {subsection}{\numberline {4.9.2}Member Function Documentation}{20}{subsection.4.9.2}%
+\contentsline {subsubsection}{\numberline {4.9.2.1}operator()()}{20}{subsubsection.4.9.2.1}%
+\contentsline {section}{\numberline {4.10}Parser Class Reference}{20}{section.4.10}%
+\contentsline {subsection}{\numberline {4.10.1}Detailed Description}{22}{subsection.4.10.1}%
+\contentsline {subsection}{\numberline {4.10.2}Constructor \& Destructor Documentation}{22}{subsection.4.10.2}%
+\contentsline {subsubsection}{\numberline {4.10.2.1}Parser()}{22}{subsubsection.4.10.2.1}%
+\contentsline {subsection}{\numberline {4.10.3}Member Function Documentation}{22}{subsection.4.10.3}%
+\contentsline {subsubsection}{\numberline {4.10.3.1}associateData()}{22}{subsubsection.4.10.3.1}%
+\contentsline {subsubsection}{\numberline {4.10.3.2}getAgencies()}{22}{subsubsection.4.10.3.2}%
+\contentsline {subsubsection}{\numberline {4.10.3.3}getCalendars()}{23}{subsubsection.4.10.3.3}%
+\contentsline {subsubsection}{\numberline {4.10.3.4}getRoutes()}{23}{subsubsection.4.10.3.4}%
+\contentsline {subsubsection}{\numberline {4.10.3.5}getStops()}{23}{subsubsection.4.10.3.5}%
+\contentsline {subsubsection}{\numberline {4.10.3.6}getStopTimes()}{23}{subsubsection.4.10.3.6}%
+\contentsline {subsubsection}{\numberline {4.10.3.7}getTrips()}{24}{subsubsection.4.10.3.7}%
+\contentsline {subsection}{\numberline {4.10.4}Member Data Documentation}{24}{subsection.4.10.4}%
+\contentsline {subsubsection}{\numberline {4.10.4.1}agencies\_}{24}{subsubsection.4.10.4.1}%
+\contentsline {subsubsection}{\numberline {4.10.4.2}inputDirectory}{24}{subsubsection.4.10.4.2}%
+\contentsline {section}{\numberline {4.11}Query Struct Reference}{24}{section.4.11}%
+\contentsline {subsection}{\numberline {4.11.1}Detailed Description}{25}{subsection.4.11.1}%
+\contentsline {section}{\numberline {4.12}Raptor Class Reference}{25}{section.4.12}%
+\contentsline {subsection}{\numberline {4.12.1}Detailed Description}{28}{subsection.4.12.1}%
+\contentsline {subsection}{\numberline {4.12.2}Constructor \& Destructor Documentation}{28}{subsection.4.12.2}%
+\contentsline {subsubsection}{\numberline {4.12.2.1}Raptor()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{28}{subsubsection.4.12.2.1}%
+\contentsline {subsubsection}{\numberline {4.12.2.2}Raptor()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{28}{subsubsection.4.12.2.2}%
+\contentsline {subsection}{\numberline {4.12.3}Member Function Documentation}{29}{subsection.4.12.3}%
+\contentsline {subsubsection}{\numberline {4.12.3.1}accumulateRoutesServingStops()}{29}{subsubsection.4.12.3.1}%
+\contentsline {subsubsection}{\numberline {4.12.3.2}dominates()}{29}{subsubsection.4.12.3.2}%
+\contentsline {subsubsection}{\numberline {4.12.3.3}earlier()}{29}{subsubsection.4.12.3.3}%
+\contentsline {subsubsection}{\numberline {4.12.3.4}fillActiveTrips()}{30}{subsubsection.4.12.3.4}%
+\contentsline {subsubsection}{\numberline {4.12.3.5}findEarliestTrip()}{30}{subsubsection.4.12.3.5}%
+\contentsline {subsubsection}{\numberline {4.12.3.6}findJourneys()}{30}{subsubsection.4.12.3.6}%
+\contentsline {subsubsection}{\numberline {4.12.3.7}getStops()}{31}{subsubsection.4.12.3.7}%
+\contentsline {subsubsection}{\numberline {4.12.3.8}improvesArrivalTime()}{31}{subsubsection.4.12.3.8}%
+\contentsline {subsubsection}{\numberline {4.12.3.9}isDominatedByAny()}{31}{subsubsection.4.12.3.9}%
+\contentsline {subsubsection}{\numberline {4.12.3.10}isFootpath()}{32}{subsubsection.4.12.3.10}%
+\contentsline {subsubsection}{\numberline {4.12.3.11}isServiceActive()}{32}{subsubsection.4.12.3.11}%
+\contentsline {subsubsection}{\numberline {4.12.3.12}isValidJourney()}{32}{subsubsection.4.12.3.12}%
+\contentsline {subsubsection}{\numberline {4.12.3.13}isValidTrip()}{33}{subsubsection.4.12.3.13}%
+\contentsline {subsubsection}{\numberline {4.12.3.14}keepParetoOptimal()}{33}{subsubsection.4.12.3.14}%
+\contentsline {subsubsection}{\numberline {4.12.3.15}markStop()}{33}{subsubsection.4.12.3.15}%
+\contentsline {subsubsection}{\numberline {4.12.3.16}reconstructJourney()}{34}{subsubsection.4.12.3.16}%
+\contentsline {subsubsection}{\numberline {4.12.3.17}setMinArrivalTime()}{34}{subsubsection.4.12.3.17}%
+\contentsline {subsubsection}{\numberline {4.12.3.18}setQuery()}{34}{subsubsection.4.12.3.18}%
+\contentsline {subsubsection}{\numberline {4.12.3.19}showJourney()}{35}{subsubsection.4.12.3.19}%
+\contentsline {subsubsection}{\numberline {4.12.3.20}traverseRoutes()}{35}{subsubsection.4.12.3.20}%
+\contentsline {subsubsection}{\numberline {4.12.3.21}traverseTrip()}{35}{subsubsection.4.12.3.21}%
+\contentsline {section}{\numberline {4.13}Raptor\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Tests Class Reference}{36}{section.4.13}%
+\contentsline {subsection}{\numberline {4.13.1}Detailed Description}{37}{subsection.4.13.1}%
+\contentsline {subsection}{\numberline {4.13.2}Member Function Documentation}{37}{subsection.4.13.2}%
+\contentsline {subsubsection}{\numberline {4.13.2.1}SetUpTestSuite()}{37}{subsubsection.4.13.2.1}%
+\contentsline {section}{\numberline {4.14}Route Class Reference}{38}{section.4.14}%
+\contentsline {subsection}{\numberline {4.14.1}Detailed Description}{39}{subsection.4.14.1}%
+\contentsline {subsection}{\numberline {4.14.2}Member Function Documentation}{39}{subsection.4.14.2}%
+\contentsline {subsubsection}{\numberline {4.14.2.1}addStopId()}{39}{subsubsection.4.14.2.1}%
+\contentsline {subsubsection}{\numberline {4.14.2.2}addTripId()}{39}{subsubsection.4.14.2.2}%
+\contentsline {subsubsection}{\numberline {4.14.2.3}getStopsIds()}{40}{subsubsection.4.14.2.3}%
+\contentsline {subsubsection}{\numberline {4.14.2.4}getTripsIds()}{40}{subsubsection.4.14.2.4}%
+\contentsline {subsubsection}{\numberline {4.14.2.5}sortTrips()}{40}{subsubsection.4.14.2.5}%
+\contentsline {section}{\numberline {4.15}Stop Class Reference}{40}{section.4.15}%
+\contentsline {subsection}{\numberline {4.15.1}Detailed Description}{42}{subsection.4.15.1}%
+\contentsline {subsection}{\numberline {4.15.2}Member Function Documentation}{42}{subsection.4.15.2}%
+\contentsline {subsubsection}{\numberline {4.15.2.1}addFootpath()}{42}{subsubsection.4.15.2.1}%
+\contentsline {subsubsection}{\numberline {4.15.2.2}addRouteKey()}{42}{subsubsection.4.15.2.2}%
+\contentsline {subsubsection}{\numberline {4.15.2.3}addStopTimeKey()}{43}{subsubsection.4.15.2.3}%
+\contentsline {subsubsection}{\numberline {4.15.2.4}getFootpaths()}{43}{subsubsection.4.15.2.4}%
+\contentsline {subsubsection}{\numberline {4.15.2.5}getRouteKeys()}{43}{subsubsection.4.15.2.5}%
+\contentsline {subsubsection}{\numberline {4.15.2.6}getStopTimesKeys()}{44}{subsubsection.4.15.2.6}%
+\contentsline {subsubsection}{\numberline {4.15.2.7}sortStopTimes()}{44}{subsubsection.4.15.2.7}%
+\contentsline {section}{\numberline {4.16}Stop\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Info Struct Reference}{44}{section.4.16}%
+\contentsline {subsection}{\numberline {4.16.1}Detailed Description}{45}{subsection.4.16.1}%
+\contentsline {section}{\numberline {4.17}Stop\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Time Class Reference}{45}{section.4.17}%
+\contentsline {subsection}{\numberline {4.17.1}Detailed Description}{46}{subsection.4.17.1}%
+\contentsline {subsection}{\numberline {4.17.2}Member Function Documentation}{46}{subsection.4.17.2}%
+\contentsline {subsubsection}{\numberline {4.17.2.1}getArrivalSeconds()}{46}{subsubsection.4.17.2.1}%
+\contentsline {subsubsection}{\numberline {4.17.2.2}getDepartureSeconds()}{47}{subsubsection.4.17.2.2}%
+\contentsline {subsubsection}{\numberline {4.17.2.3}setArrivalSeconds()}{47}{subsubsection.4.17.2.3}%
+\contentsline {subsubsection}{\numberline {4.17.2.4}setDepartureSeconds()}{47}{subsubsection.4.17.2.4}%
+\contentsline {section}{\numberline {4.18}Time Struct Reference}{47}{section.4.18}%
+\contentsline {subsection}{\numberline {4.18.1}Detailed Description}{48}{subsection.4.18.1}%
+\contentsline {section}{\numberline {4.19}Trip Class Reference}{48}{section.4.19}%
+\contentsline {subsection}{\numberline {4.19.1}Detailed Description}{49}{subsection.4.19.1}%
+\contentsline {subsection}{\numberline {4.19.2}Member Function Documentation}{49}{subsection.4.19.2}%
+\contentsline {subsubsection}{\numberline {4.19.2.1}addStopTimeKey()}{49}{subsubsection.4.19.2.1}%
+\contentsline {subsubsection}{\numberline {4.19.2.2}getStopTimesKeys()}{50}{subsubsection.4.19.2.2}%
+\contentsline {subsubsection}{\numberline {4.19.2.3}isActive()}{50}{subsubsection.4.19.2.3}%
+\contentsline {subsubsection}{\numberline {4.19.2.4}setActive()}{50}{subsubsection.4.19.2.4}%
+\contentsline {subsubsection}{\numberline {4.19.2.5}sortStopTimes()}{50}{subsubsection.4.19.2.5}%
+\contentsline {section}{\numberline {4.20}Utils Class Reference}{51}{section.4.20}%
+\contentsline {subsection}{\numberline {4.20.1}Detailed Description}{52}{subsection.4.20.1}%
+\contentsline {subsection}{\numberline {4.20.2}Member Function Documentation}{52}{subsection.4.20.2}%
+\contentsline {subsubsection}{\numberline {4.20.2.1}addOneDay()}{52}{subsubsection.4.20.2.1}%
+\contentsline {subsubsection}{\numberline {4.20.2.2}clean()}{52}{subsubsection.4.20.2.2}%
+\contentsline {subsubsection}{\numberline {4.20.2.3}dateWithinRange()}{53}{subsubsection.4.20.2.3}%
+\contentsline {subsubsection}{\numberline {4.20.2.4}daysInMonth()}{53}{subsubsection.4.20.2.4}%
+\contentsline {subsubsection}{\numberline {4.20.2.5}dayToString()}{53}{subsubsection.4.20.2.5}%
+\contentsline {subsubsection}{\numberline {4.20.2.6}getDuration()}{54}{subsubsection.4.20.2.6}%
+\contentsline {subsubsection}{\numberline {4.20.2.7}getFirstWord()}{54}{subsubsection.4.20.2.7}%
+\contentsline {subsubsection}{\numberline {4.20.2.8}isNumber()}{55}{subsubsection.4.20.2.8}%
+\contentsline {subsubsection}{\numberline {4.20.2.9}manhattan()}{55}{subsubsection.4.20.2.9}%
+\contentsline {subsubsection}{\numberline {4.20.2.10}secondsToTime()}{56}{subsubsection.4.20.2.10}%
+\contentsline {subsubsection}{\numberline {4.20.2.11}split()}{56}{subsubsection.4.20.2.11}%
+\contentsline {subsubsection}{\numberline {4.20.2.12}timeToSeconds()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{56}{subsubsection.4.20.2.12}%
+\contentsline {subsubsection}{\numberline {4.20.2.13}timeToSeconds()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{57}{subsubsection.4.20.2.13}%
+\contentsline {chapter}{\numberline {5}File Documentation}{59}{chapter.5}%
+\contentsline {section}{\numberline {5.1}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Application.cpp File Reference}{59}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Detailed Description}{59}{subsection.5.1.1}%
+\contentsline {section}{\numberline {5.2}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Application.h File Reference}{60}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Detailed Description}{60}{subsection.5.2.1}%
+\contentsline {section}{\numberline {5.3}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Date\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Time.h File Reference}{61}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Detailed Description}{62}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Enumeration Type Documentation}{62}{subsection.5.3.2}%
+\contentsline {subsubsection}{\numberline {5.3.2.1}Day}{62}{subsubsection.5.3.2.1}%
+\contentsline {section}{\numberline {5.4}src/main.cpp File Reference}{62}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Detailed Description}{63}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Function Documentation}{63}{subsection.5.4.2}%
+\contentsline {subsubsection}{\numberline {5.4.2.1}main()}{63}{subsubsection.5.4.2.1}%
+\contentsline {section}{\numberline {5.5}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Network\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Objects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Data\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Structures.h File Reference}{63}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Detailed Description}{65}{subsection.5.5.1}%
+\contentsline {section}{\numberline {5.6}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Network\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Objects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}GTFSObjects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Agency.cpp File Reference}{65}{section.5.6}%
+\contentsline {subsection}{\numberline {5.6.1}Detailed Description}{65}{subsection.5.6.1}%
+\contentsline {section}{\numberline {5.7}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Network\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Objects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}GTFSObjects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Agency.h File Reference}{66}{section.5.7}%
+\contentsline {subsection}{\numberline {5.7.1}Detailed Description}{67}{subsection.5.7.1}%
+\contentsline {section}{\numberline {5.8}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Network\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Objects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}GTFSObjects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Calendar.cpp File Reference}{67}{section.5.8}%
+\contentsline {subsection}{\numberline {5.8.1}Detailed Description}{67}{subsection.5.8.1}%
+\contentsline {section}{\numberline {5.9}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Network\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Objects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}GTFSObjects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Calendar.h File Reference}{68}{section.5.9}%
+\contentsline {subsection}{\numberline {5.9.1}Detailed Description}{69}{subsection.5.9.1}%
+\contentsline {section}{\numberline {5.10}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Network\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Objects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}GTFSObjects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}GTFSObject.cpp File Reference}{69}{section.5.10}%
+\contentsline {subsection}{\numberline {5.10.1}Detailed Description}{69}{subsection.5.10.1}%
+\contentsline {section}{\numberline {5.11}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Network\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Objects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}GTFSObjects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}GTFSObject.h File Reference}{70}{section.5.11}%
+\contentsline {subsection}{\numberline {5.11.1}Detailed Description}{70}{subsection.5.11.1}%
+\contentsline {section}{\numberline {5.12}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Network\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Objects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}GTFSObjects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Route.cpp File Reference}{71}{section.5.12}%
+\contentsline {subsection}{\numberline {5.12.1}Detailed Description}{71}{subsection.5.12.1}%
+\contentsline {section}{\numberline {5.13}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Network\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Objects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}GTFSObjects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Route.h File Reference}{71}{section.5.13}%
+\contentsline {subsection}{\numberline {5.13.1}Detailed Description}{73}{subsection.5.13.1}%
+\contentsline {section}{\numberline {5.14}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Network\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Objects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}GTFSObjects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Stop.cpp File Reference}{73}{section.5.14}%
+\contentsline {subsection}{\numberline {5.14.1}Detailed Description}{73}{subsection.5.14.1}%
+\contentsline {section}{\numberline {5.15}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Network\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Objects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}GTFSObjects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Stop.h File Reference}{74}{section.5.15}%
+\contentsline {subsection}{\numberline {5.15.1}Detailed Description}{75}{subsection.5.15.1}%
+\contentsline {section}{\numberline {5.16}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Network\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Objects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}GTFSObjects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Stop\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Time.cpp File Reference}{75}{section.5.16}%
+\contentsline {subsection}{\numberline {5.16.1}Detailed Description}{75}{subsection.5.16.1}%
+\contentsline {section}{\numberline {5.17}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Network\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Objects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}GTFSObjects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Stop\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Time.h File Reference}{76}{section.5.17}%
+\contentsline {subsection}{\numberline {5.17.1}Detailed Description}{77}{subsection.5.17.1}%
+\contentsline {section}{\numberline {5.18}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Network\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Objects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}GTFSObjects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Trip.cpp File Reference}{77}{section.5.18}%
+\contentsline {subsection}{\numberline {5.18.1}Detailed Description}{77}{subsection.5.18.1}%
+\contentsline {section}{\numberline {5.19}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Network\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Objects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}GTFSObjects/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Trip.h File Reference}{78}{section.5.19}%
+\contentsline {subsection}{\numberline {5.19.1}Detailed Description}{79}{subsection.5.19.1}%
+\contentsline {section}{\numberline {5.20}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Parser.cpp File Reference}{79}{section.5.20}%
+\contentsline {subsection}{\numberline {5.20.1}Detailed Description}{79}{subsection.5.20.1}%
+\contentsline {section}{\numberline {5.21}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Parser.h File Reference}{79}{section.5.21}%
+\contentsline {subsection}{\numberline {5.21.1}Detailed Description}{80}{subsection.5.21.1}%
+\contentsline {section}{\numberline {5.22}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Raptor.cpp File Reference}{81}{section.5.22}%
+\contentsline {subsection}{\numberline {5.22.1}Detailed Description}{81}{subsection.5.22.1}%
+\contentsline {section}{\numberline {5.23}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Raptor.h File Reference}{81}{section.5.23}%
+\contentsline {subsection}{\numberline {5.23.1}Detailed Description}{82}{subsection.5.23.1}%
+\contentsline {section}{\numberline {5.24}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Utils.cpp File Reference}{83}{section.5.24}%
+\contentsline {subsection}{\numberline {5.24.1}Detailed Description}{83}{subsection.5.24.1}%
+\contentsline {section}{\numberline {5.25}src/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Utils.h File Reference}{83}{section.5.25}%
+\contentsline {subsection}{\numberline {5.25.1}Detailed Description}{84}{subsection.5.25.1}%

@@ -1,0 +1,36 @@
+\hypertarget{structStopInfo}{}\doxysection{Stop\+Info Struct Reference}
+\label{structStopInfo}\index{StopInfo@{StopInfo}}
+
+
+Represents information about a transit stop during a journey.  
+
+
+
+
+{\ttfamily \#include $<$Data\+Structures.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structStopInfo_a869a91707731d41bb80f062e232bed4b}\label{structStopInfo_a869a91707731d41bb80f062e232bed4b}} 
+std\+::optional$<$ int $>$ \mbox{\hyperlink{structStopInfo_a869a91707731d41bb80f062e232bed4b}{arrival\+\_\+seconds}}
+\begin{DoxyCompactList}\small\item\em Arrival time in seconds, or {\ttfamily std\+::nullopt} if unreachable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structStopInfo_ac2eb84268326554a95517111fef4de40}\label{structStopInfo_ac2eb84268326554a95517111fef4de40}} 
+std\+::optional$<$ std\+::string $>$ \mbox{\hyperlink{structStopInfo_ac2eb84268326554a95517111fef4de40}{parent\+\_\+trip\+\_\+id}}
+\begin{DoxyCompactList}\small\item\em ID of the parent trip, or {\ttfamily std\+::nullopt} for footpaths. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structStopInfo_af7fee9c9255e5d5762a6a8e334686425}\label{structStopInfo_af7fee9c9255e5d5762a6a8e334686425}} 
+std\+::optional$<$ std\+::string $>$ \mbox{\hyperlink{structStopInfo_af7fee9c9255e5d5762a6a8e334686425}{parent\+\_\+stop\+\_\+id}}
+\begin{DoxyCompactList}\small\item\em ID of the parent stop, or {\ttfamily std\+::nullopt} for first stops. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structStopInfo_a5a40e11890e92c11654c1de8897028a6}\label{structStopInfo_a5a40e11890e92c11654c1de8897028a6}} 
+std\+::optional$<$ \mbox{\hyperlink{DateTime_8h_ac572d2be8b3c04018816ba1a6e75adad}{Day}} $>$ \mbox{\hyperlink{structStopInfo_a5a40e11890e92c11654c1de8897028a6}{day}}
+\begin{DoxyCompactList}\small\item\em Day of arrival, or {\ttfamily std\+::nullopt} if unreachable. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents information about a transit stop during a journey. 
+
+This structure holds details about a stop\textquotesingle{}s arrival time, the trip and stop it depends on, and the day of operation. Values are optional to handle cases where a stop is unreachable or is a starting point. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Network\+Objects/\mbox{\hyperlink{DataStructures_8h}{Data\+Structures.\+h}}\end{DoxyCompactItemize}

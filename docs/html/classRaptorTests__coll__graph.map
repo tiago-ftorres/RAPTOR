@@ -1,0 +1,8 @@
+<map id="RaptorTests" name="RaptorTests">
+<area shape="rect" id="node1" title="A test suite for validating the RAPTOR algorithm." alt="" coords="28,273,127,300"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,184,107,211"/>
+<area shape="rect" id="node3" href="$classRaptor.html" title="Implements the RAPTOR algorithm for finding Pareto&#45;optimal journeys." alt="" coords="131,184,197,211"/>
+<area shape="rect" id="node4" href="$structQuery.html" title="Represents a transit query." alt="" coords="133,95,195,121"/>
+<area shape="rect" id="node5" href="$structTime.html" title="Represents a specific time of day in hours, minutes, and seconds." alt="" coords="69,5,123,32"/>
+<area shape="rect" id="node6" href="$structDate.html" title="Represents a specific date in the Gregorian calendar." alt="" coords="205,5,259,32"/>
+</map>

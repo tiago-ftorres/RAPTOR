@@ -1,0 +1,50 @@
+\hypertarget{DataStructures_8h}{}\doxysection{src/\+Network\+Objects/\+Data\+Structures.h File Reference}
+\label{DataStructures_8h}\index{src/NetworkObjects/DataStructures.h@{src/NetworkObjects/DataStructures.h}}
+
+
+Defines core data structures and utility classes for the RAPTOR project.  
+
+
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+set$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include \char`\"{}../\+Date\+Time.\+h\char`\"{}}\newline
+Include dependency graph for Data\+Structures.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{DataStructures_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{DataStructures_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structQuery}{Query}}
+\begin{DoxyCompactList}\small\item\em Represents a transit query. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structStopInfo}{Stop\+Info}}
+\begin{DoxyCompactList}\small\item\em Represents information about a transit stop during a journey. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structJourneyStep}{Journey\+Step}}
+\begin{DoxyCompactList}\small\item\em Represents a single step in a journey. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structJourney}{Journey}}
+\begin{DoxyCompactList}\small\item\em Represents an entire journey consisting of multiple steps. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structpair__hash}{pair\+\_\+hash}}
+\begin{DoxyCompactList}\small\item\em Hash function for a pair of strings. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structnested__pair__hash}{nested\+\_\+pair\+\_\+hash}}
+\begin{DoxyCompactList}\small\item\em Hash function for nested pairs of strings. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Defines core data structures and utility classes for the RAPTOR project. 
+
+This header file includes declarations for structs like {\ttfamily \mbox{\hyperlink{structQuery}{Query}}}, {\ttfamily \mbox{\hyperlink{structStopInfo}{Stop\+Info}}}, {\ttfamily \mbox{\hyperlink{structJourneyStep}{Journey\+Step}}}, and {\ttfamily \mbox{\hyperlink{structJourney}{Journey}}}, which are used to represent transit queries, stop information, and journey details. It also provides hash functions for specific pair-\/based keys. 

@@ -1,0 +1,37 @@
+This project implements the Round-\/\+Based Public Transit Routing (RAPTOR) algorithm, enabling efficient public transport route searches based on GTFS data.\hypertarget{md_README_autotoc_md420}{}\doxysubsection{Prerequisites}\label{md_README_autotoc_md420}
+
+\begin{DoxyItemize}
+\item C++20 or later
+\end{DoxyItemize}
+
+To compile the project, use the following command in WSL\+:
+
+{\ttfamily  g++ -\/std=c++20 -\/o RAPTOR \textbackslash{} \mbox{\hyperlink{main_8cpp}{src/main.\+cpp}} \mbox{\hyperlink{Parser_8cpp}{src/\+Parser.\+cpp}} \mbox{\hyperlink{Raptor_8cpp}{src/\+Raptor.\+cpp}} \mbox{\hyperlink{Utils_8cpp}{src/\+Utils.\+cpp}} \mbox{\hyperlink{Application_8cpp}{src/\+Application.\+cpp}} \textbackslash{} \mbox{\hyperlink{Route_8cpp}{src/\+Network\+Objects/\+GTFSObjects/\+Route.\+cpp}} \mbox{\hyperlink{Trip_8cpp}{src/\+Network\+Objects/\+GTFSObjects/\+Trip.\+cpp}} \textbackslash{} \mbox{\hyperlink{Stop_8cpp}{src/\+Network\+Objects/\+GTFSObjects/\+Stop.\+cpp}} \mbox{\hyperlink{GTFSObject_8cpp}{src/\+Network\+Objects/\+GTFSObjects/\+GTFSObject.\+cpp}} \textbackslash{} \mbox{\hyperlink{Agency_8cpp}{src/\+Network\+Objects/\+GTFSObjects/\+Agency.\+cpp}} \mbox{\hyperlink{Calendar_8cpp}{src/\+Network\+Objects/\+GTFSObjects/\+Calendar.\+cpp}} \textbackslash{} \mbox{\hyperlink{StopTime_8cpp}{src/\+Network\+Objects/\+GTFSObjects/\+Stop\+Time.\+cpp}} }
+
+You can run the program by executing one of the following command in the terminal\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{``` ./RAPTOR ./datasets/Porto/sctp/GTFS/}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyItemize}
+\item You can specify the path to the GTFS directory directly in the command line.
+\item If no path is provided, the program will prompt you to enter the directory path.
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md421}{}\doxysubsection{Project Structure}\label{md_README_autotoc_md421}
+
+\begin{DoxyItemize}
+\item {\bfseries{src/}}\+: Contains the main RAPTOR algorithm implementation and supporting code.
+\item {\bfseries{datasets/}}\+: Directory for storing GTFS data.
+\end{DoxyItemize}
+
+This repository is developed as part of my internship at OPT (Optimizações e Planeamento de Transporte).\hypertarget{md_README_autotoc_md422}{}\doxysubsection{References}\label{md_README_autotoc_md422}
+
+\begin{DoxyItemize}
+\item Delling, Daniel, Thomas Pajor, Renato F. Werneck, “\+Round-\/based Public Transit Routing.\+” Microsoft Research (2012). \href{https://www.microsoft.com/en-us/research/wp-content/uploads/2012/01/raptor_alenex.pdf}{\texttt{ https\+://www.\+microsoft.\+com/en-\/us/research/wp-\/content/uploads/2012/01/raptor\+\_\+alenex.\+pdf}}
+\item GTFS Schedule Documentation (2024) \href{https://gtfs.org/documentation/schedule/reference/}{\texttt{ https\+://gtfs.\+org/documentation/schedule/reference/}}
+\item \mbox{\hyperlink{classRaptor}{Raptor}}, another journey planning algorithm (2018) \href{https://ljn.io/posts/raptor-journey-planning-algorithm}{\texttt{ https\+://ljn.\+io/posts/raptor-\/journey-\/planning-\/algorithm}} 
+\end{DoxyItemize}

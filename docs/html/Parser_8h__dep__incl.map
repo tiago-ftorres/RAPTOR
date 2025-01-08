@@ -1,0 +1,9 @@
+<map id="src/Parser.h" name="src/Parser.h">
+<area shape="rect" id="node1" title="Provides the Parser class for parsing GTFS data files." alt="" coords="113,5,209,32"/>
+<area shape="rect" id="node2" href="$Parser_8cpp.html" title="Implementation of the Parser class." alt="" coords="41,80,152,107"/>
+<area shape="rect" id="node3" href="$Raptor_8h.html" title="Defines the Raptor class for finding Pareto&#45;optimal journeys in a transit network." alt="" coords="177,80,275,107"/>
+<area shape="rect" id="node4" href="$Application_8h.html" title="Defines the Application class, which manages the initialization and execution of the RAPTOR applicati..." alt="" coords="87,155,218,181"/>
+<area shape="rect" id="node7" href="$Raptor_8cpp.html" title="Raptor class implementation." alt="" coords="242,155,357,181"/>
+<area shape="rect" id="node5" href="$Application_8cpp.html" title="Application class implementation." alt="" coords="5,229,151,256"/>
+<area shape="rect" id="node6" href="$main_8cpp.html" title="Entry point for the RAPTOR application." alt="" coords="175,229,280,256"/>
+</map>

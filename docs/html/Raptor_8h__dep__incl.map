@@ -1,0 +1,7 @@
+<map id="src/Raptor.h" name="src/Raptor.h">
+<area shape="rect" id="node1" title="Defines the Raptor class for finding Pareto&#45;optimal journeys in a transit network." alt="" coords="177,5,275,32"/>
+<area shape="rect" id="node2" href="$Application_8h.html" title="Defines the Application class, which manages the initialization and execution of the RAPTOR applicati..." alt="" coords="87,80,218,107"/>
+<area shape="rect" id="node5" href="$Raptor_8cpp.html" title="Raptor class implementation." alt="" coords="242,80,357,107"/>
+<area shape="rect" id="node3" href="$Application_8cpp.html" title="Application class implementation." alt="" coords="5,155,151,181"/>
+<area shape="rect" id="node4" href="$main_8cpp.html" title="Entry point for the RAPTOR application." alt="" coords="175,155,280,181"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="src/NetworkObjects/GTFSObjects/StopTime.h" name="src/NetworkObjects/GTFSObjects/StopTime.h">
+<area shape="rect" id="node1" title="Defines the StopTime class, representing a stop time in the GTFS dataset." alt="" coords="99,5,286,47"/>
+<area shape="rect" id="node2" href="$StopTime_8cpp.html" title="StopTime class implementation." alt="" coords="5,95,207,136"/>
+<area shape="rect" id="node3" href="$Parser_8h.html" title="Provides the Parser class for parsing GTFS data files." alt="" coords="231,102,327,129"/>
+<area shape="rect" id="node4" href="$Parser_8cpp.html" title="Implementation of the Parser class." alt="" coords="160,184,271,211"/>
+<area shape="rect" id="node5" href="$Raptor_8h.html" title="Defines the Raptor class for finding Pareto&#45;optimal journeys in a transit network." alt="" coords="295,184,394,211"/>
+<area shape="rect" id="node6" href="$Application_8h.html" title="Defines the Application class, which manages the initialization and execution of the RAPTOR applicati..." alt="" coords="206,259,337,285"/>
+<area shape="rect" id="node9" href="$Raptor_8cpp.html" title="Raptor class implementation." alt="" coords="361,259,475,285"/>
+<area shape="rect" id="node7" href="$Application_8cpp.html" title="Application class implementation." alt="" coords="124,333,269,360"/>
+<area shape="rect" id="node8" href="$main_8cpp.html" title="Entry point for the RAPTOR application." alt="" coords="293,333,399,360"/>
+</map>

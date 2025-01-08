@@ -1,0 +1,139 @@
+\hypertarget{classRoute}{}\doxysection{Route Class Reference}
+\label{classRoute}\index{Route@{Route}}
+
+
+Represents a route in the GTFS data.  
+
+
+
+
+{\ttfamily \#include $<$Route.\+h$>$}
+
+
+
+Inheritance diagram for Route\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=153pt]{classRoute__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Route\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=153pt]{classRoute__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classRoute_a316b5049ebba5b49508297d622b2bac1}{add\+Trip\+Id}} (const std\+::string \&trip\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Adds a trip ID to the route. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classRoute_afa03a0aa5de8c846a0c0e1547aa3f789}{add\+Stop\+Id}} (const std\+::string \&stop\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Adds a stop ID to the route. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classRoute_af5031445764d4ab2aaede3f0e076322c}{sort\+Trips}} (const std\+::function$<$ bool(const std\+::string \&, const std\+::string \&)$>$ \&comparator)
+\begin{DoxyCompactList}\small\item\em Sorts the trips using a custom comparator. \end{DoxyCompactList}\item 
+const std\+::vector$<$ std\+::string $>$ \& \mbox{\hyperlink{classRoute_a8544d6ada3e599b2f257fdf2ffc6b506}{get\+Trips\+Ids}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves the list of trip IDs. \end{DoxyCompactList}\item 
+const std\+::vector$<$ std\+::string $>$ \& \mbox{\hyperlink{classRoute_a20b57ca8680a1b82fe45605ea970b5de}{get\+Stops\+Ids}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves the list of stop IDs. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRoute_a0e5714cd487b076f77e6266ad3ac1b10}\label{classRoute_a0e5714cd487b076f77e6266ad3ac1b10}} 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classRoute_a0e5714cd487b076f77e6266ad3ac1b10}{trips\+\_\+ids}}
+\begin{DoxyCompactList}\small\item\em Vector of trip IDs, sorted by earliest arrival time. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classRoute_ad449b5dcc3d748021063d4c3da23a90a}\label{classRoute_ad449b5dcc3d748021063d4c3da23a90a}} 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classRoute_ad449b5dcc3d748021063d4c3da23a90a}{stops\+\_\+ids}}
+\begin{DoxyCompactList}\small\item\em Vector of stop IDs, sorted by stop sequence. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+Represents a route in the GTFS data. 
+
+This class inherits from \mbox{\hyperlink{classGTFSObject}{GTFSObject}} and manages trip and stop information for a specific route. It provides methods for adding trip and stop IDs, retrieving sorted data, and defining custom sorting mechanisms. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classRoute_afa03a0aa5de8c846a0c0e1547aa3f789}\label{classRoute_afa03a0aa5de8c846a0c0e1547aa3f789}} 
+\index{Route@{Route}!addStopId@{addStopId}}
+\index{addStopId@{addStopId}!Route@{Route}}
+\doxysubsubsection{\texorpdfstring{addStopId()}{addStopId()}}
+{\footnotesize\ttfamily void Route\+::add\+Stop\+Id (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{stop\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Adds a stop ID to the route. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em stop\+\_\+id} & The ID of the stop to add. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classRoute_a316b5049ebba5b49508297d622b2bac1}\label{classRoute_a316b5049ebba5b49508297d622b2bac1}} 
+\index{Route@{Route}!addTripId@{addTripId}}
+\index{addTripId@{addTripId}!Route@{Route}}
+\doxysubsubsection{\texorpdfstring{addTripId()}{addTripId()}}
+{\footnotesize\ttfamily void Route\+::add\+Trip\+Id (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{trip\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Adds a trip ID to the route. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em trip\+\_\+id} & The ID of the trip to add. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classRoute_a20b57ca8680a1b82fe45605ea970b5de}\label{classRoute_a20b57ca8680a1b82fe45605ea970b5de}} 
+\index{Route@{Route}!getStopsIds@{getStopsIds}}
+\index{getStopsIds@{getStopsIds}!Route@{Route}}
+\doxysubsubsection{\texorpdfstring{getStopsIds()}{getStopsIds()}}
+{\footnotesize\ttfamily const std\+::vector$<$ std\+::string $>$ \& Route\+::get\+Stops\+Ids (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Retrieves the list of stop IDs. 
+
+\begin{DoxyReturn}{Returns}
+A constant reference to the vector of stop IDs. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classRoute_a8544d6ada3e599b2f257fdf2ffc6b506}\label{classRoute_a8544d6ada3e599b2f257fdf2ffc6b506}} 
+\index{Route@{Route}!getTripsIds@{getTripsIds}}
+\index{getTripsIds@{getTripsIds}!Route@{Route}}
+\doxysubsubsection{\texorpdfstring{getTripsIds()}{getTripsIds()}}
+{\footnotesize\ttfamily const std\+::vector$<$ std\+::string $>$ \& Route\+::get\+Trips\+Ids (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Retrieves the list of trip IDs. 
+
+\begin{DoxyReturn}{Returns}
+A constant reference to the vector of trip IDs. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classRoute_af5031445764d4ab2aaede3f0e076322c}\label{classRoute_af5031445764d4ab2aaede3f0e076322c}} 
+\index{Route@{Route}!sortTrips@{sortTrips}}
+\index{sortTrips@{sortTrips}!Route@{Route}}
+\doxysubsubsection{\texorpdfstring{sortTrips()}{sortTrips()}}
+{\footnotesize\ttfamily void Route\+::sort\+Trips (\begin{DoxyParamCaption}\item[{const std\+::function$<$ bool(const std\+::string \&, const std\+::string \&)$>$ \&}]{comparator }\end{DoxyParamCaption})}
+
+
+
+Sorts the trips using a custom comparator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em comparator} & A function defining the sorting criteria. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Network\+Objects/\+GTFSObjects/\mbox{\hyperlink{Route_8h}{Route.\+h}}\item 
+src/\+Network\+Objects/\+GTFSObjects/\mbox{\hyperlink{Route_8cpp}{Route.\+cpp}}\end{DoxyCompactItemize}

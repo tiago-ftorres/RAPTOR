@@ -1,0 +1,146 @@
+\hypertarget{classTrip}{}\doxysection{Trip Class Reference}
+\label{classTrip}\index{Trip@{Trip}}
+
+
+Represents a trip in the GTFS data.  
+
+
+
+
+{\ttfamily \#include $<$Trip.\+h$>$}
+
+
+
+Inheritance diagram for Trip\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=153pt]{classTrip__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Trip\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=153pt]{classTrip__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classTrip_a31c2e711f2cb2416b4e0b85907867295}{add\+Stop\+Time\+Key}} (const std\+::pair$<$ std\+::string, std\+::string $>$ \&stop\+\_\+time\+\_\+key)
+\begin{DoxyCompactList}\small\item\em Adds a stop-\/time key (trip\+\_\+id, stop\+\_\+id) to the trip. \end{DoxyCompactList}\item 
+const std\+::vector$<$ std\+::pair$<$ std\+::string, std\+::string $>$ $>$ \& \mbox{\hyperlink{classTrip_a7ab11b883ca6112bc451a5014c3d2252}{get\+Stop\+Times\+Keys}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves the list of stop-\/time keys. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTrip_a34c3ccd5674398e5957a8fbd92dcbf04}{sort\+Stop\+Times}} (const std\+::function$<$ bool(const std\+::pair$<$ std\+::string, std\+::string $>$ \&, const std\+::pair$<$ std\+::string, std\+::string $>$ \&)$>$ \&comparator)
+\begin{DoxyCompactList}\small\item\em Sorts the stop times using a custom comparator. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTrip_ae90fdd46dd8bfb83878519004508143e}{set\+Active}} (\mbox{\hyperlink{DateTime_8h_ac572d2be8b3c04018816ba1a6e75adad}{Day}} day, bool is\+\_\+active)
+\begin{DoxyCompactList}\small\item\em Sets the active status for a specific day. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classTrip_a97d831ff300c2b964a1dc445fdf39e56}{is\+Active}} (\mbox{\hyperlink{DateTime_8h_ac572d2be8b3c04018816ba1a6e75adad}{Day}} day) const
+\begin{DoxyCompactList}\small\item\em Checks if a specific day is active. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classTrip_a79503cc8cd7b1df6cd023e899348c9c5}\label{classTrip_a79503cc8cd7b1df6cd023e899348c9c5}} 
+std\+::vector$<$ std\+::pair$<$ std\+::string, std\+::string $>$ $>$ \mbox{\hyperlink{classTrip_a79503cc8cd7b1df6cd023e899348c9c5}{stop\+\_\+times\+\_\+keys}}
+\begin{DoxyCompactList}\small\item\em Vector of stop-\/time keys, sorted by stop\+Time\textquotesingle{}s sequence. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classTrip_a53ba45710929469f86aa894c587b11a3}\label{classTrip_a53ba45710929469f86aa894c587b11a3}} 
+std\+::unordered\+\_\+map$<$ \mbox{\hyperlink{DateTime_8h_ac572d2be8b3c04018816ba1a6e75adad}{Day}}, bool $>$ \mbox{\hyperlink{classTrip_a53ba45710929469f86aa894c587b11a3}{active\+\_\+days\+\_\+}}
+\begin{DoxyCompactList}\small\item\em Map of active days for the trip. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+Represents a trip in the GTFS data. 
+
+This class inherits from \mbox{\hyperlink{classGTFSObject}{GTFSObject}} and manages stop time information for a specific trip. It provides methods for adding stop time keys, retrieving sorted data, and defining custom sorting mechanisms. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classTrip_a31c2e711f2cb2416b4e0b85907867295}\label{classTrip_a31c2e711f2cb2416b4e0b85907867295}} 
+\index{Trip@{Trip}!addStopTimeKey@{addStopTimeKey}}
+\index{addStopTimeKey@{addStopTimeKey}!Trip@{Trip}}
+\doxysubsubsection{\texorpdfstring{addStopTimeKey()}{addStopTimeKey()}}
+{\footnotesize\ttfamily void Trip\+::add\+Stop\+Time\+Key (\begin{DoxyParamCaption}\item[{const std\+::pair$<$ std\+::string, std\+::string $>$ \&}]{stop\+\_\+time\+\_\+key }\end{DoxyParamCaption})}
+
+
+
+Adds a stop-\/time key (trip\+\_\+id, stop\+\_\+id) to the trip. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em stop\+\_\+time\+\_\+key} & A pair representing the stop-\/time key. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classTrip_a7ab11b883ca6112bc451a5014c3d2252}\label{classTrip_a7ab11b883ca6112bc451a5014c3d2252}} 
+\index{Trip@{Trip}!getStopTimesKeys@{getStopTimesKeys}}
+\index{getStopTimesKeys@{getStopTimesKeys}!Trip@{Trip}}
+\doxysubsubsection{\texorpdfstring{getStopTimesKeys()}{getStopTimesKeys()}}
+{\footnotesize\ttfamily const std\+::vector$<$ std\+::pair$<$ std\+::string, std\+::string $>$ $>$ \& Trip\+::get\+Stop\+Times\+Keys (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Retrieves the list of stop-\/time keys. 
+
+\begin{DoxyReturn}{Returns}
+A constant reference to the vector of stop-\/time keys. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classTrip_a97d831ff300c2b964a1dc445fdf39e56}\label{classTrip_a97d831ff300c2b964a1dc445fdf39e56}} 
+\index{Trip@{Trip}!isActive@{isActive}}
+\index{isActive@{isActive}!Trip@{Trip}}
+\doxysubsubsection{\texorpdfstring{isActive()}{isActive()}}
+{\footnotesize\ttfamily bool Trip\+::is\+Active (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{DateTime_8h_ac572d2be8b3c04018816ba1a6e75adad}{Day}}}]{day }\end{DoxyParamCaption}) const}
+
+
+
+Checks if a specific day is active. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em day} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the day is active, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classTrip_ae90fdd46dd8bfb83878519004508143e}\label{classTrip_ae90fdd46dd8bfb83878519004508143e}} 
+\index{Trip@{Trip}!setActive@{setActive}}
+\index{setActive@{setActive}!Trip@{Trip}}
+\doxysubsubsection{\texorpdfstring{setActive()}{setActive()}}
+{\footnotesize\ttfamily void Trip\+::set\+Active (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{DateTime_8h_ac572d2be8b3c04018816ba1a6e75adad}{Day}}}]{day,  }\item[{bool}]{is\+\_\+active }\end{DoxyParamCaption})}
+
+
+
+Sets the active status for a specific day. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em day} & \\
+\hline
+{\em is\+\_\+active} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classTrip_a34c3ccd5674398e5957a8fbd92dcbf04}\label{classTrip_a34c3ccd5674398e5957a8fbd92dcbf04}} 
+\index{Trip@{Trip}!sortStopTimes@{sortStopTimes}}
+\index{sortStopTimes@{sortStopTimes}!Trip@{Trip}}
+\doxysubsubsection{\texorpdfstring{sortStopTimes()}{sortStopTimes()}}
+{\footnotesize\ttfamily void Trip\+::sort\+Stop\+Times (\begin{DoxyParamCaption}\item[{const std\+::function$<$ bool(const std\+::pair$<$ std\+::string, std\+::string $>$ \&, const std\+::pair$<$ std\+::string, std\+::string $>$ \&)$>$ \&}]{comparator }\end{DoxyParamCaption})}
+
+
+
+Sorts the stop times using a custom comparator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em comparator} & A function defining the sorting criteria. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Network\+Objects/\+GTFSObjects/\mbox{\hyperlink{Trip_8h}{Trip.\+h}}\item 
+src/\+Network\+Objects/\+GTFSObjects/\mbox{\hyperlink{Trip_8cpp}{Trip.\+cpp}}\end{DoxyCompactItemize}
