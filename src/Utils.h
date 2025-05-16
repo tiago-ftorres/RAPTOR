@@ -18,6 +18,7 @@
 #include <utility> // for std::pair
 #include <vector>
 #include <cmath>
+#include <hiredis/hiredis.h>
 
 #include "DateTime.h"
 
@@ -31,6 +32,13 @@
  */
 class Utils {
 public:
+  /**
+   * @brief The average speed by foot used for calculations.
+   *
+   * This constant represents the average speed by foot, which is used
+   * for calculating durations based on distances. The value is in kilometers per hour (km/h).
+   */
+  static constexpr float average_speed = 5.0;
 
   /**
    * @brief Computes the Manhattan distance between two geographical points.
@@ -61,6 +69,14 @@ public:
    */
   static int getDuration(const std::string &string_lat1, const std::string &string_lon1,
                          const std::string &string_lat2, const std::string &string_lon2);
+
+  /**
+   * @brief Calculates the duration of the footpath given the distance.
+   *
+   * @param distance Distance of the footpath in kilometers.
+   * @return The duration in seconds.
+   */
+  static int getDuration(double distance);
 
   /**
    * @brief Converts a time in seconds to a string format (HH:MM:SS).
@@ -175,6 +191,35 @@ public:
    * @return The string representation of the specified day.
    */
   static std::string dayToString(Day day);
+
+  /**
+   * @brief Establishes a connection to the Redis server.
+   *
+   * This function attempts to connect to a Redis server running on the local machine
+   * (127.0.0.1) at port 6379. If the connection is successful, it returns a pointer to
+   * the `redisContext`. If the connection fails, it ouputs an error message and
+   * returns a `nullptr`.
+   *
+   * @return A pointer to the `redisContext` if the connection is successful, otherwise `nullptr`.
+   */
+  static redisContext* connectToRedis();
+
+  /**
+   * @brief Retrieves the footpath distance between two stops from Redis
+   *
+   * This function looks up the footpath distance between two stops (identified by stop IDs)
+   * from a Redis database. The distance is stored with keys in the format "stop1:stop2" and
+   * are bidirectional.
+   *
+   * The values in Redis are expected to be string representations of numeric distances (in kilometers),
+   * which this function converts to double
+   *
+   * @param c Pointer to an active Redis context
+   * @param stop1 the ID of the first stop
+   * @param stop2 the ID of the second stop
+   * @return The footpath distance between the two stops as a double if found, or -1 not found.
+   */
+  static double getDistance(redisContext *c, const std::string &stop1, const std::string &stop2);
 };
 
 #endif //RAPTOR_UTILS_H

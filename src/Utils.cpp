@@ -11,6 +11,8 @@
 
 #include "Utils.h"
 
+#include <iostream>
+
 double Utils::manhattan(const double &lat1, const double &lon1, const double &lat2, const double &lon2) {
   return std::abs(lat1 - lat2) + std::abs(lon1 - lon2);
 }
@@ -31,9 +33,12 @@ int Utils::getDuration(const std::string &string_lat1, const std::string &string
     throw std::runtime_error("Invalid latitude or longitude format.");
   }
 
-  double average_speed = 5.0; // km/h
   double scaling_factor = 111.0; // Approximately 111 km per degree
   double distance = Utils::manhattan(lat1, lon1, lat2, lon2) * scaling_factor;
+  return static_cast<int>(std::round((distance / average_speed) * 60 * 60)); // Seconds
+}
+
+int Utils::getDuration(const double distance) {
   return static_cast<int>(std::round((distance / average_speed) * 60 * 60)); // Seconds
 }
 
@@ -145,3 +150,41 @@ std::string Utils::dayToString(Day day) {
   return (day == Day::CurrentDay) ? "current" : "next";
 }
 
+redisContext* Utils::connectToRedis() {
+  redisContext* c = redisConnect("127.0.0.1", 6379);
+  if (c == nullptr || c->err) {
+    if (c) {
+      std::cerr << "Connection error: " << c->errstr << std::endl;
+      redisFree(c);
+    } else {
+      std::cerr << "Connection error: can't allocate redis context" << std::endl;
+    }
+    return nullptr;
+  }
+  return c;
+}
+
+double Utils::getDistance(redisContext *c, const std::string &stop1, const std::string &stop2) {
+  const std::string key1 = stop1 + ":" + stop2;
+  const std::string key2 = stop2 + ":" + stop1;
+
+  // Fetch the distance for this stop pair
+  redisReply* reply = (redisReply*)redisCommand(c, "GET %s", key1.c_str());
+  if (reply->type == REDIS_REPLY_STRING) {
+    const std::string distance = reply->str;
+    freeReplyObject(reply);
+    return std::stod(distance);
+  }
+
+  // Try in the other direction
+  reply = (redisReply*)redisCommand(c, "GET %s", key2.c_str());
+  if (reply->type == REDIS_REPLY_STRING) {
+    const std::string distance = reply->str;
+    freeReplyObject(reply);
+    return std::stod(distance);
+  }
+
+  // Cleanup
+  freeReplyObject(reply);
+  return -1;
+}

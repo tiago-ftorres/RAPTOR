@@ -9,6 +9,7 @@
  * @date 10/28/2024
  */
 #include "Raptor.h"
+#include <hiredis/hiredis.h>
 
 Raptor::Raptor(const std::unordered_map<std::string, Agency> &agencies,
                const std::unordered_map<std::string, Calendar> &calendars,
@@ -40,6 +41,13 @@ void Raptor::initializeFootpaths() {
   std::cout << "Initializing footpaths..." << std::endl;
   auto start_time = std::chrono::high_resolution_clock::now();
 
+  // Connect to Redis
+  bool redisConnected = true;
+  redisContext* c = Utils::connectToRedis();
+  if (c == nullptr) {
+    redisConnected = false;
+  }
+
   // Avoid duplicating calculations for both sides
   for (auto it1 = stops_.begin(); it1 != stops_.end(); ++it1) {
     const std::string &id1 = it1->first;
@@ -50,10 +58,21 @@ void Raptor::initializeFootpaths() {
       const std::string &id2 = it2->first; // stop_id
       Stop &stop2 = it2->second; // stop itself
 
+      // Retrieve distance from redis
+      double distance = -1;
+      if (redisConnected) {
+        distance = Utils::getDistance(c, id1, id2);
+      }
+
       // Calculate duration between the two stops
-      int duration = Utils::getDuration(
+      int duration;
+      if (distance > 0) {
+        duration = Utils::getDuration(distance);
+      } else {
+        duration = Utils::getDuration(
               stop1.getField("stop_lat"), stop1.getField("stop_lon"),
               stop2.getField("stop_lat"), stop2.getField("stop_lon"));
+      }
 
       // Add footpaths in both directions
       stop1.addFootpath(id2, duration);
@@ -67,6 +86,9 @@ void Raptor::initializeFootpaths() {
 
   std::cout << "Footpaths initialized in " << duration << " ms ("
             << duration / 1000 << " seconds)." << std::endl;
+
+  // Close Redis connection and free its memory
+  if (redisConnected) redisFree(c);
 }
 
 void Raptor::initializeAlgorithm() {

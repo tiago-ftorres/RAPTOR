@@ -1,5 +1,5 @@
-\hypertarget{classRaptor}{}\doxysection{Raptor Class Reference}
-\label{classRaptor}\index{Raptor@{Raptor}}
+\doxysection{Raptor Class Reference}
+\hypertarget{classRaptor}{}\label{classRaptor}\index{Raptor@{Raptor}}
 
 
 Implements the RAPTOR algorithm for finding Pareto-\/optimal journeys.  
@@ -19,45 +19,42 @@ Collaboration diagram for Raptor\+:
 \includegraphics[width=223pt]{classRaptor__coll__graph}
 \end{center}
 \end{figure}
-\doxysubsection*{Public Member Functions}
+\doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{classRaptor_a43fb7f2ab3bd48b7a786aa1845b365db}{Raptor}} ()=default
-\begin{DoxyCompactList}\small\item\em Default constructor for the \mbox{\hyperlink{classRaptor}{Raptor}} class. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Default constructor for the \doxylink{classRaptor}{Raptor} class. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{classRaptor_a1989d77e94ff5fa434b75d2760c4914e}{Raptor}} (const std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{classAgency}{Agency}} $>$ \&\mbox{\hyperlink{classRaptor_a6336b3d231ea80fb76b3b4f3c9101e7a}{agencies\+\_\+}}, const std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{classCalendar}{Calendar}} $>$ \&\mbox{\hyperlink{classRaptor_a71e03fbb273d1e6ab7d1e0db91fd8176}{calendars\+\_\+}}, const std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{classStop}{Stop}} $>$ \&stops, const std\+::unordered\+\_\+map$<$ std\+::pair$<$ std\+::string, std\+::string $>$, \mbox{\hyperlink{classRoute}{Route}}, \mbox{\hyperlink{structpair__hash}{pair\+\_\+hash}} $>$ \&routes, const std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{classTrip}{Trip}} $>$ \&trips, const std\+::unordered\+\_\+map$<$ std\+::pair$<$ std\+::string, std\+::string $>$, \mbox{\hyperlink{classStopTime}{Stop\+Time}}, \mbox{\hyperlink{structpair__hash}{pair\+\_\+hash}} $>$ \&stop\+\_\+times)
-\begin{DoxyCompactList}\small\item\em Parameterized constructor for \mbox{\hyperlink{classRaptor}{Raptor}}. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Parameterized constructor for \doxylink{classRaptor}{Raptor}. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classRaptor_a6159b2dd6f6db44f46da1aed81299f68}{set\+Query}} (const \mbox{\hyperlink{structQuery}{Query}} \&query)
-\begin{DoxyCompactList}\small\item\em Sets the query for the \mbox{\hyperlink{classRaptor}{Raptor}} algorithm. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Sets the query for the \doxylink{classRaptor}{Raptor} algorithm. \end{DoxyCompactList}\item 
 std\+::vector$<$ \mbox{\hyperlink{structJourney}{Journey}} $>$ \mbox{\hyperlink{classRaptor_a69e395c11f4e9a61b3b171663936cb0d}{find\+Journeys}} ()
 \begin{DoxyCompactList}\small\item\em Finds all Pareto-\/optimal journeys. \end{DoxyCompactList}\item 
 const std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{classStop}{Stop}} $>$ \& \mbox{\hyperlink{classRaptor_a458373470cc58177c038c0a95d77d843}{get\+Stops}} () const
 \begin{DoxyCompactList}\small\item\em Gets the stops in the system. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{classRaptor_a675993fafc81b89e55825fa9d73b8b45}{is\+Valid\+Journey}} (\mbox{\hyperlink{structJourney}{Journey}} journey) const
 \begin{DoxyCompactList}\small\item\em Validates if the given journey is valid. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Static Public Member Functions}
+\doxysubsubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 static void \mbox{\hyperlink{classRaptor_aae7175e9214d87eb18e0c567471b0b7e}{show\+Journey}} (const \mbox{\hyperlink{structJourney}{Journey}} \&journey)
 \begin{DoxyCompactList}\small\item\em Displays the steps of a journey. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Private Member Functions}
+\doxysubsubsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classRaptor_afe2cac287cb2ed0e991aecfa1f02ab18}\label{classRaptor_afe2cac287cb2ed0e991aecfa1f02ab18}} 
-void \mbox{\hyperlink{classRaptor_afe2cac287cb2ed0e991aecfa1f02ab18}{initialize\+Footpaths}} ()
+\Hypertarget{classRaptor_afe2cac287cb2ed0e991aecfa1f02ab18}\label{classRaptor_afe2cac287cb2ed0e991aecfa1f02ab18} 
+void {\bfseries initialize\+Footpaths} ()
 \begin{DoxyCompactList}\small\item\em Initializes the footpaths between stops. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classRaptor_a6bbed6c000d2431449ae79bca7b4c671}\label{classRaptor_a6bbed6c000d2431449ae79bca7b4c671}} 
-void \mbox{\hyperlink{classRaptor_a6bbed6c000d2431449ae79bca7b4c671}{initialize\+Algorithm}} ()
+\Hypertarget{classRaptor_a6bbed6c000d2431449ae79bca7b4c671}\label{classRaptor_a6bbed6c000d2431449ae79bca7b4c671} 
+void {\bfseries initialize\+Algorithm} ()
 \begin{DoxyCompactList}\small\item\em Initializes the algorithm by setting required parameters. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classRaptor_a039f8a31c33cdc7b530336950f2d5799}{set\+Min\+Arrival\+Time}} (const std\+::string \&stop\+\_\+id, \mbox{\hyperlink{structStopInfo}{Stop\+Info}} stop\+\_\+info)
 \begin{DoxyCompactList}\small\item\em Sets the minimum arrival time for a given stop. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classRaptor_a7183f533681e09e2d742611ed4ef403a}{fill\+Active\+Trips}} (\mbox{\hyperlink{DateTime_8h_ac572d2be8b3c04018816ba1a6e75adad}{Day}} day)
 \begin{DoxyCompactList}\small\item\em Fills the active trips for a given day. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classRaptor_a8449c089d0ac1b36bc27e8273fec43f3}\label{classRaptor_a8449c089d0ac1b36bc27e8273fec43f3}} 
-void \mbox{\hyperlink{classRaptor_a8449c089d0ac1b36bc27e8273fec43f3}{set\+Upper\+Bound}} ()
+\Hypertarget{classRaptor_a8449c089d0ac1b36bc27e8273fec43f3}\label{classRaptor_a8449c089d0ac1b36bc27e8273fec43f3} 
+void {\bfseries set\+Upper\+Bound} ()
 \begin{DoxyCompactList}\small\item\em Sets the upper bound for the search, based on previous round. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classRaptor_aba2be305f160a6b1009837f3d249f007}\label{classRaptor_aba2be305f160a6b1009837f3d249f007}} 
-void \mbox{\hyperlink{classRaptor_aba2be305f160a6b1009837f3d249f007}{reset\+Marked\+Stops}} ()
-\begin{DoxyCompactList}\small\item\em Cleans marked stops and updates previous marked stops. \end{DoxyCompactList}\item 
 std\+::unordered\+\_\+set$<$ std\+::pair$<$ std\+::pair$<$ std\+::string, std\+::string $>$, std\+::string $>$, \mbox{\hyperlink{structnested__pair__hash}{nested\+\_\+pair\+\_\+hash}} $>$ \mbox{\hyperlink{classRaptor_a06d2bae8b6bf8b8cfa814ff83bff8b42}{accumulate\+Routes\+Serving\+Stops}} ()
 \begin{DoxyCompactList}\small\item\em Accumulates routes serving each stop. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classRaptor_a6aa5162f2f31ac02ccd204a1d6885137}{traverse\+Routes}} (std\+::unordered\+\_\+set$<$ std\+::pair$<$ std\+::pair$<$ std\+::string, std\+::string $>$, std\+::string $>$, \mbox{\hyperlink{structnested__pair__hash}{nested\+\_\+pair\+\_\+hash}} $>$ routes\+\_\+stops\+\_\+set)
@@ -72,12 +69,12 @@ bool \mbox{\hyperlink{classRaptor_a8c4819ee3f5e012f3d19d197b05753d8}{improves\+A
 \begin{DoxyCompactList}\small\item\em Checks if a step improves the arrival time for a destination. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classRaptor_af0660cc96305037d7a2389a8b0474858}{mark\+Stop}} (const std\+::string \&stop\+\_\+id, int arrival, const std\+::optional$<$ std\+::string $>$ \&parent\+\_\+trip\+\_\+id, const std\+::optional$<$ std\+::string $>$ \&parent\+\_\+stop\+\_\+id)
 \begin{DoxyCompactList}\small\item\em Marks a stop with the arrival time, parent trip, and parent stop. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classRaptor_aaca79e469c80a150c1d08f9415992f2a}\label{classRaptor_aaca79e469c80a150c1d08f9415992f2a}} 
-void \mbox{\hyperlink{classRaptor_aaca79e469c80a150c1d08f9415992f2a}{handle\+Footpaths}} ()
+\Hypertarget{classRaptor_aaca79e469c80a150c1d08f9415992f2a}\label{classRaptor_aaca79e469c80a150c1d08f9415992f2a} 
+void {\bfseries handle\+Footpaths} ()
 \begin{DoxyCompactList}\small\item\em Handles footpath logic during traversal. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{structJourney}{Journey}} \mbox{\hyperlink{classRaptor_a339ac7d40ddbb73b61f23b564a87962c}{reconstruct\+Journey}} ()
 \begin{DoxyCompactList}\small\item\em Reconstructs the journey based on the current round. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Static Private Member Functions}
+\doxysubsubsection*{Static Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 static bool \mbox{\hyperlink{classRaptor_a899cef1c8e366ba14b1c8dbc66f8b456}{is\+Service\+Active}} (const \mbox{\hyperlink{classCalendar}{Calendar}} \&calendar, const \mbox{\hyperlink{structDate}{Date}} \&date)
@@ -92,51 +89,51 @@ static void \mbox{\hyperlink{classRaptor_a06b544f8e8dd27ea9d7bede360603273}{keep
 \begin{DoxyCompactList}\small\item\em Keeps the Pareto-\/optimal journeys from a list of journeys. \end{DoxyCompactList}\item 
 static bool \mbox{\hyperlink{classRaptor_aed9476854afedddfdbbc2173a1aed4e1}{dominates}} (const \mbox{\hyperlink{structJourney}{Journey}} \&journey1, const \mbox{\hyperlink{structJourney}{Journey}} \&journey2)
 \begin{DoxyCompactList}\small\item\em Compares two journeys to check if one dominates the other. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Private Attributes}
+\doxysubsubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classRaptor_a6336b3d231ea80fb76b3b4f3c9101e7a}\label{classRaptor_a6336b3d231ea80fb76b3b4f3c9101e7a}} 
-std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{classAgency}{Agency}} $>$ \mbox{\hyperlink{classRaptor_a6336b3d231ea80fb76b3b4f3c9101e7a}{agencies\+\_\+}}
-\begin{DoxyCompactList}\small\item\em Map of agency IDs to \mbox{\hyperlink{classAgency}{Agency}} objects. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classRaptor_a71e03fbb273d1e6ab7d1e0db91fd8176}\label{classRaptor_a71e03fbb273d1e6ab7d1e0db91fd8176}} 
-std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{classCalendar}{Calendar}} $>$ \mbox{\hyperlink{classRaptor_a71e03fbb273d1e6ab7d1e0db91fd8176}{calendars\+\_\+}}
-\begin{DoxyCompactList}\small\item\em Map of service IDs to \mbox{\hyperlink{classCalendar}{Calendar}} objects. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classRaptor_af2483a75c1f77d171da563899e28a153}\label{classRaptor_af2483a75c1f77d171da563899e28a153}} 
-std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{classStop}{Stop}} $>$ \mbox{\hyperlink{classRaptor_af2483a75c1f77d171da563899e28a153}{stops\+\_\+}}
-\begin{DoxyCompactList}\small\item\em Map of stop IDs to \mbox{\hyperlink{classStop}{Stop}} objects. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classRaptor_a0726478161e7578a08f59ab72f8898f1}\label{classRaptor_a0726478161e7578a08f59ab72f8898f1}} 
-std\+::unordered\+\_\+map$<$ std\+::pair$<$ std\+::string, std\+::string $>$, \mbox{\hyperlink{classRoute}{Route}}, \mbox{\hyperlink{structpair__hash}{pair\+\_\+hash}} $>$ \mbox{\hyperlink{classRaptor_a0726478161e7578a08f59ab72f8898f1}{routes\+\_\+}}
-\begin{DoxyCompactList}\small\item\em Map of route keys to \mbox{\hyperlink{classRoute}{Route}} objects. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classRaptor_a6a9f4c4184061bcd90b05c2cd9cf6601}\label{classRaptor_a6a9f4c4184061bcd90b05c2cd9cf6601}} 
-std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{classTrip}{Trip}} $>$ \mbox{\hyperlink{classRaptor_a6a9f4c4184061bcd90b05c2cd9cf6601}{trips\+\_\+}}
-\begin{DoxyCompactList}\small\item\em Map of trip IDs to \mbox{\hyperlink{classTrip}{Trip}} objects. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classRaptor_a8409fbc71335a64a55ec1c36e1c0c9c1}\label{classRaptor_a8409fbc71335a64a55ec1c36e1c0c9c1}} 
-std\+::unordered\+\_\+map$<$ std\+::pair$<$ std\+::string, std\+::string $>$, \mbox{\hyperlink{classStopTime}{Stop\+Time}}, \mbox{\hyperlink{structpair__hash}{pair\+\_\+hash}} $>$ \mbox{\hyperlink{classRaptor_a8409fbc71335a64a55ec1c36e1c0c9c1}{stop\+\_\+times\+\_\+}}
-\begin{DoxyCompactList}\small\item\em Map of stop time keys to \mbox{\hyperlink{classStopTime}{Stop\+Time}} objects. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classRaptor_a8c6b2cf6c9bd4c8aab08ced9f041e125}\label{classRaptor_a8c6b2cf6c9bd4c8aab08ced9f041e125}} 
-\mbox{\hyperlink{structQuery}{Query}} \mbox{\hyperlink{classRaptor_a8c6b2cf6c9bd4c8aab08ced9f041e125}{query\+\_\+}}
+\Hypertarget{classRaptor_a6336b3d231ea80fb76b3b4f3c9101e7a}\label{classRaptor_a6336b3d231ea80fb76b3b4f3c9101e7a} 
+std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{classAgency}{Agency}} $>$ {\bfseries agencies\+\_\+}
+\begin{DoxyCompactList}\small\item\em Map of agency IDs to \doxylink{classAgency}{Agency} objects. \end{DoxyCompactList}\item 
+\Hypertarget{classRaptor_a71e03fbb273d1e6ab7d1e0db91fd8176}\label{classRaptor_a71e03fbb273d1e6ab7d1e0db91fd8176} 
+std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{classCalendar}{Calendar}} $>$ {\bfseries calendars\+\_\+}
+\begin{DoxyCompactList}\small\item\em Map of service IDs to \doxylink{classCalendar}{Calendar} objects. \end{DoxyCompactList}\item 
+\Hypertarget{classRaptor_af2483a75c1f77d171da563899e28a153}\label{classRaptor_af2483a75c1f77d171da563899e28a153} 
+std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{classStop}{Stop}} $>$ {\bfseries stops\+\_\+}
+\begin{DoxyCompactList}\small\item\em Map of stop IDs to \doxylink{classStop}{Stop} objects. \end{DoxyCompactList}\item 
+\Hypertarget{classRaptor_a0726478161e7578a08f59ab72f8898f1}\label{classRaptor_a0726478161e7578a08f59ab72f8898f1} 
+std\+::unordered\+\_\+map$<$ std\+::pair$<$ std\+::string, std\+::string $>$, \mbox{\hyperlink{classRoute}{Route}}, \mbox{\hyperlink{structpair__hash}{pair\+\_\+hash}} $>$ {\bfseries routes\+\_\+}
+\begin{DoxyCompactList}\small\item\em Map of route keys to \doxylink{classRoute}{Route} objects. \end{DoxyCompactList}\item 
+\Hypertarget{classRaptor_a6a9f4c4184061bcd90b05c2cd9cf6601}\label{classRaptor_a6a9f4c4184061bcd90b05c2cd9cf6601} 
+std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{classTrip}{Trip}} $>$ {\bfseries trips\+\_\+}
+\begin{DoxyCompactList}\small\item\em Map of trip IDs to \doxylink{classTrip}{Trip} objects. \end{DoxyCompactList}\item 
+\Hypertarget{classRaptor_a8409fbc71335a64a55ec1c36e1c0c9c1}\label{classRaptor_a8409fbc71335a64a55ec1c36e1c0c9c1} 
+std\+::unordered\+\_\+map$<$ std\+::pair$<$ std\+::string, std\+::string $>$, \mbox{\hyperlink{classStopTime}{Stop\+Time}}, \mbox{\hyperlink{structpair__hash}{pair\+\_\+hash}} $>$ {\bfseries stop\+\_\+times\+\_\+}
+\begin{DoxyCompactList}\small\item\em Map of stop time keys to \doxylink{classStopTime}{Stop\+Time} objects. \end{DoxyCompactList}\item 
+\Hypertarget{classRaptor_a8c6b2cf6c9bd4c8aab08ced9f041e125}\label{classRaptor_a8c6b2cf6c9bd4c8aab08ced9f041e125} 
+\mbox{\hyperlink{structQuery}{Query}} {\bfseries query\+\_\+}
 \begin{DoxyCompactList}\small\item\em The current query for the RAPTOR algorithm. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classRaptor_a62ceb0c71652da24478eaf98b43d1a7b}\label{classRaptor_a62ceb0c71652da24478eaf98b43d1a7b}} 
-std\+::unordered\+\_\+map$<$ std\+::string, std\+::vector$<$ \mbox{\hyperlink{structStopInfo}{Stop\+Info}} $>$ $>$ \mbox{\hyperlink{classRaptor_a62ceb0c71652da24478eaf98b43d1a7b}{arrivals\+\_\+}}
-\begin{DoxyCompactList}\small\item\em Map of stop IDs to vectors of \mbox{\hyperlink{structStopInfo}{Stop\+Info}} for each k. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classRaptor_a2021ad49e97be2ffef10c45cb261b3c2}\label{classRaptor_a2021ad49e97be2ffef10c45cb261b3c2}} 
-std\+::unordered\+\_\+set$<$ std\+::string $>$ \mbox{\hyperlink{classRaptor_a2021ad49e97be2ffef10c45cb261b3c2}{prev\+\_\+marked\+\_\+stops}}
+\Hypertarget{classRaptor_a62ceb0c71652da24478eaf98b43d1a7b}\label{classRaptor_a62ceb0c71652da24478eaf98b43d1a7b} 
+std\+::unordered\+\_\+map$<$ std\+::string, std\+::vector$<$ \mbox{\hyperlink{structStopInfo}{Stop\+Info}} $>$ $>$ {\bfseries arrivals\+\_\+}
+\begin{DoxyCompactList}\small\item\em Map of stop IDs to vectors of \doxylink{structStopInfo}{Stop\+Info} for each k. \end{DoxyCompactList}\item 
+\Hypertarget{classRaptor_a2021ad49e97be2ffef10c45cb261b3c2}\label{classRaptor_a2021ad49e97be2ffef10c45cb261b3c2} 
+std\+::unordered\+\_\+set$<$ std\+::string $>$ {\bfseries prev\+\_\+marked\+\_\+stops}
 \begin{DoxyCompactList}\small\item\em Set of previously marked stops. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classRaptor_a624fc440483608a7a3c76188405b5cef}\label{classRaptor_a624fc440483608a7a3c76188405b5cef}} 
-std\+::unordered\+\_\+set$<$ std\+::string $>$ \mbox{\hyperlink{classRaptor_a624fc440483608a7a3c76188405b5cef}{marked\+\_\+stops}}
+\Hypertarget{classRaptor_a624fc440483608a7a3c76188405b5cef}\label{classRaptor_a624fc440483608a7a3c76188405b5cef} 
+std\+::unordered\+\_\+set$<$ std\+::string $>$ {\bfseries marked\+\_\+stops}
 \begin{DoxyCompactList}\small\item\em Set of currently marked stops. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classRaptor_a49a29df417b4d33af83bee763e16bafe}\label{classRaptor_a49a29df417b4d33af83bee763e16bafe}} 
-int \mbox{\hyperlink{classRaptor_a49a29df417b4d33af83bee763e16bafe}{k}} \{\}
+\Hypertarget{classRaptor_a49a29df417b4d33af83bee763e16bafe}\label{classRaptor_a49a29df417b4d33af83bee763e16bafe} 
+int {\bfseries k} \{\}
 \begin{DoxyCompactList}\small\item\em The current round of the algorithm. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
 Implements the RAPTOR algorithm for finding Pareto-\/optimal journeys. 
 
-The \mbox{\hyperlink{classRaptor}{Raptor}} class provides methods to set a query, find Pareto-\/optimal journeys, and print journey steps. It uses various data structures to store information about agencies, calendars, stops, routes, trips, and stop times. 
+The \doxylink{classRaptor}{Raptor} class provides methods to set a query, find Pareto-\/optimal journeys, and print journey steps. It uses various data structures to store information about agencies, calendars, stops, routes, trips, and stop times. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classRaptor_a43fb7f2ab3bd48b7a786aa1845b365db}\label{classRaptor_a43fb7f2ab3bd48b7a786aa1845b365db}} 
+\Hypertarget{classRaptor_a43fb7f2ab3bd48b7a786aa1845b365db}\label{classRaptor_a43fb7f2ab3bd48b7a786aa1845b365db} 
 \index{Raptor@{Raptor}!Raptor@{Raptor}}
 \index{Raptor@{Raptor}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{Raptor()}{Raptor()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
@@ -144,9 +141,9 @@ The \mbox{\hyperlink{classRaptor}{Raptor}} class provides methods to set a query
 
 
 
-Default constructor for the \mbox{\hyperlink{classRaptor}{Raptor}} class. 
+Default constructor for the \doxylink{classRaptor}{Raptor} class. 
 
-Initializes the \mbox{\hyperlink{classRaptor}{Raptor}} object with empty data structures. \mbox{\Hypertarget{classRaptor_a1989d77e94ff5fa434b75d2760c4914e}\label{classRaptor_a1989d77e94ff5fa434b75d2760c4914e}} 
+Initializes the \doxylink{classRaptor}{Raptor} object with empty data structures. \Hypertarget{classRaptor_a1989d77e94ff5fa434b75d2760c4914e}\label{classRaptor_a1989d77e94ff5fa434b75d2760c4914e} 
 \index{Raptor@{Raptor}!Raptor@{Raptor}}
 \index{Raptor@{Raptor}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{Raptor()}{Raptor()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
@@ -154,29 +151,29 @@ Initializes the \mbox{\hyperlink{classRaptor}{Raptor}} object with empty data st
 
 
 
-Parameterized constructor for \mbox{\hyperlink{classRaptor}{Raptor}}. 
+Parameterized constructor for \doxylink{classRaptor}{Raptor}. 
 
-Initializes the \mbox{\hyperlink{classRaptor}{Raptor}} object with provided agency, calendar, stop, route, trip, and stop time data.
+Initializes the \doxylink{classRaptor}{Raptor} object with provided agency, calendar, stop, route, trip, and stop time data.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em agencies\+\_\+} & A map of agency IDs to \mbox{\hyperlink{classAgency}{Agency}} objects. \\
+\mbox{\texttt{ in}}  & {\em agencies\+\_\+} & A map of agency IDs to \doxylink{classAgency}{Agency} objects. \\
 \hline
-\mbox{\texttt{ in}}  & {\em calendars\+\_\+} & A map of calendar IDs to \mbox{\hyperlink{classCalendar}{Calendar}} objects. \\
+\mbox{\texttt{ in}}  & {\em calendars\+\_\+} & A map of calendar IDs to \doxylink{classCalendar}{Calendar} objects. \\
 \hline
-\mbox{\texttt{ in}}  & {\em stops} & A map of stop IDs to \mbox{\hyperlink{classStop}{Stop}} objects. \\
+\mbox{\texttt{ in}}  & {\em stops} & A map of stop IDs to \doxylink{classStop}{Stop} objects. \\
 \hline
-\mbox{\texttt{ in}}  & {\em routes} & A map of pairs of route IDs and direction IDs to \mbox{\hyperlink{classRoute}{Route}} objects. \\
+\mbox{\texttt{ in}}  & {\em routes} & A map of pairs of route IDs and direction IDs to \doxylink{classRoute}{Route} objects. \\
 \hline
-\mbox{\texttt{ in}}  & {\em trips} & A map of trip IDs to \mbox{\hyperlink{classTrip}{Trip}} objects. \\
+\mbox{\texttt{ in}}  & {\em trips} & A map of trip IDs to \doxylink{classTrip}{Trip} objects. \\
 \hline
-\mbox{\texttt{ in}}  & {\em stop\+\_\+times} & A map of pairs of trip IDs and stop IDs to \mbox{\hyperlink{classStopTime}{Stop\+Time}} objects. \\
+\mbox{\texttt{ in}}  & {\em stop\+\_\+times} & A map of pairs of trip IDs and stop IDs to \doxylink{classStopTime}{Stop\+Time} objects. \\
 \hline
 \end{DoxyParams}
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classRaptor_a06d2bae8b6bf8b8cfa814ff83bff8b42}\label{classRaptor_a06d2bae8b6bf8b8cfa814ff83bff8b42}} 
+\Hypertarget{classRaptor_a06d2bae8b6bf8b8cfa814ff83bff8b42}\label{classRaptor_a06d2bae8b6bf8b8cfa814ff83bff8b42} 
 \index{Raptor@{Raptor}!accumulateRoutesServingStops@{accumulateRoutesServingStops}}
 \index{accumulateRoutesServingStops@{accumulateRoutesServingStops}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{accumulateRoutesServingStops()}{accumulateRoutesServingStops()}}
@@ -189,7 +186,7 @@ Accumulates routes serving each stop.
 \begin{DoxyReturn}{Returns}
 A set of routes that serve stops. 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classRaptor_aed9476854afedddfdbbc2173a1aed4e1}\label{classRaptor_aed9476854afedddfdbbc2173a1aed4e1}} 
+\Hypertarget{classRaptor_aed9476854afedddfdbbc2173a1aed4e1}\label{classRaptor_aed9476854afedddfdbbc2173a1aed4e1} 
 \index{Raptor@{Raptor}!dominates@{dominates}}
 \index{dominates@{dominates}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{dominates()}{dominates()}}
@@ -209,7 +206,7 @@ Compares two journeys to check if one dominates the other.
 \begin{DoxyReturn}{Returns}
 True if the first journey dominates the second, false otherwise. 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classRaptor_affd0c7bcc1f89533cdeaa71c4f50a59a}\label{classRaptor_affd0c7bcc1f89533cdeaa71c4f50a59a}} 
+\Hypertarget{classRaptor_affd0c7bcc1f89533cdeaa71c4f50a59a}\label{classRaptor_affd0c7bcc1f89533cdeaa71c4f50a59a} 
 \index{Raptor@{Raptor}!earlier@{earlier}}
 \index{earlier@{earlier}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{earlier()}{earlier()}}
@@ -229,7 +226,7 @@ Compares two arrival times to determine which is earlier.
 \begin{DoxyReturn}{Returns}
 True if the first arrival time is earlier, false otherwise. 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classRaptor_a7183f533681e09e2d742611ed4ef403a}\label{classRaptor_a7183f533681e09e2d742611ed4ef403a}} 
+\Hypertarget{classRaptor_a7183f533681e09e2d742611ed4ef403a}\label{classRaptor_a7183f533681e09e2d742611ed4ef403a} 
 \index{Raptor@{Raptor}!fillActiveTrips@{fillActiveTrips}}
 \index{fillActiveTrips@{fillActiveTrips}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{fillActiveTrips()}{fillActiveTrips()}}
@@ -244,7 +241,7 @@ Fills the active trips for a given day.
 \mbox{\texttt{ in}}  & {\em day} & The day for which trips are being filled. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classRaptor_abf5459b05fce8c08340c3f5f7b4db3e6}\label{classRaptor_abf5459b05fce8c08340c3f5f7b4db3e6}} 
+\Hypertarget{classRaptor_abf5459b05fce8c08340c3f5f7b4db3e6}\label{classRaptor_abf5459b05fce8c08340c3f5f7b4db3e6} 
 \index{Raptor@{Raptor}!findEarliestTrip@{findEarliestTrip}}
 \index{findEarliestTrip@{findEarliestTrip}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{findEarliestTrip()}{findEarliestTrip()}}
@@ -264,7 +261,7 @@ Finds the earliest trip for a given stop and route.
 \begin{DoxyReturn}{Returns}
 An optional pair of trip ID and day if found. 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classRaptor_a69e395c11f4e9a61b3b171663936cb0d}\label{classRaptor_a69e395c11f4e9a61b3b171663936cb0d}} 
+\Hypertarget{classRaptor_a69e395c11f4e9a61b3b171663936cb0d}\label{classRaptor_a69e395c11f4e9a61b3b171663936cb0d} 
 \index{Raptor@{Raptor}!findJourneys@{findJourneys}}
 \index{findJourneys@{findJourneys}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{findJourneys()}{findJourneys()}}
@@ -277,9 +274,9 @@ Finds all Pareto-\/optimal journeys.
 This function uses the RAPTOR algorithm to compute all optimal journeys based on the provided query.
 
 \begin{DoxyReturn}{Returns}
-A vector of \mbox{\hyperlink{structJourney}{Journey}} objects representing the Pareto-\/optimal journeys. 
+A vector of \doxylink{structJourney}{Journey} objects representing the Pareto-\/optimal journeys. 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classRaptor_a458373470cc58177c038c0a95d77d843}\label{classRaptor_a458373470cc58177c038c0a95d77d843}} 
+\Hypertarget{classRaptor_a458373470cc58177c038c0a95d77d843}\label{classRaptor_a458373470cc58177c038c0a95d77d843} 
 \index{Raptor@{Raptor}!getStops@{getStops}}
 \index{getStops@{getStops}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{getStops()}{getStops()}}
@@ -290,9 +287,9 @@ A vector of \mbox{\hyperlink{structJourney}{Journey}} objects representing the P
 Gets the stops in the system. 
 
 \begin{DoxyReturn}{Returns}
-A reference to the map of stop IDs to \mbox{\hyperlink{classStop}{Stop}} objects. 
+A reference to the map of stop IDs to \doxylink{classStop}{Stop} objects. 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classRaptor_a8c4819ee3f5e012f3d19d197b05753d8}\label{classRaptor_a8c4819ee3f5e012f3d19d197b05753d8}} 
+\Hypertarget{classRaptor_a8c4819ee3f5e012f3d19d197b05753d8}\label{classRaptor_a8c4819ee3f5e012f3d19d197b05753d8} 
 \index{Raptor@{Raptor}!improvesArrivalTime@{improvesArrivalTime}}
 \index{improvesArrivalTime@{improvesArrivalTime}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{improvesArrivalTime()}{improvesArrivalTime()}}
@@ -312,7 +309,7 @@ Checks if a step improves the arrival time for a destination.
 \begin{DoxyReturn}{Returns}
 True if the arrival time improves, false otherwise. 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classRaptor_a2091fe56ff6fd420944b62744554eaa6}\label{classRaptor_a2091fe56ff6fd420944b62744554eaa6}} 
+\Hypertarget{classRaptor_a2091fe56ff6fd420944b62744554eaa6}\label{classRaptor_a2091fe56ff6fd420944b62744554eaa6} 
 \index{Raptor@{Raptor}!isDominatedByAny@{isDominatedByAny}}
 \index{isDominatedByAny@{isDominatedByAny}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{isDominatedByAny()}{isDominatedByAny()}}
@@ -330,7 +327,7 @@ Checks if a given journey is dominated by any other journey in the list.
 \begin{DoxyReturn}{Returns}
 True if the journey is dominated, otherwise false. 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classRaptor_ab7b11c5bce52499ef9186c6014a4088a}\label{classRaptor_ab7b11c5bce52499ef9186c6014a4088a}} 
+\Hypertarget{classRaptor_ab7b11c5bce52499ef9186c6014a4088a}\label{classRaptor_ab7b11c5bce52499ef9186c6014a4088a} 
 \index{Raptor@{Raptor}!isFootpath@{isFootpath}}
 \index{isFootpath@{isFootpath}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{isFootpath()}{isFootpath()}}
@@ -348,7 +345,7 @@ Checks if the given stop info represents a footpath.
 \begin{DoxyReturn}{Returns}
 True if the stop is a footpath, false otherwise. 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classRaptor_a899cef1c8e366ba14b1c8dbc66f8b456}\label{classRaptor_a899cef1c8e366ba14b1c8dbc66f8b456}} 
+\Hypertarget{classRaptor_a899cef1c8e366ba14b1c8dbc66f8b456}\label{classRaptor_a899cef1c8e366ba14b1c8dbc66f8b456} 
 \index{Raptor@{Raptor}!isServiceActive@{isServiceActive}}
 \index{isServiceActive@{isServiceActive}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{isServiceActive()}{isServiceActive()}}
@@ -368,7 +365,7 @@ Checks if the service is active based on the calendar and date.
 \begin{DoxyReturn}{Returns}
 True if the service is active on the given date, false otherwise. 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classRaptor_a675993fafc81b89e55825fa9d73b8b45}\label{classRaptor_a675993fafc81b89e55825fa9d73b8b45}} 
+\Hypertarget{classRaptor_a675993fafc81b89e55825fa9d73b8b45}\label{classRaptor_a675993fafc81b89e55825fa9d73b8b45} 
 \index{Raptor@{Raptor}!isValidJourney@{isValidJourney}}
 \index{isValidJourney@{isValidJourney}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{isValidJourney()}{isValidJourney()}}
@@ -382,13 +379,13 @@ Checks whether the given journey meets the required criteria.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em journey} & The \mbox{\hyperlink{structJourney}{Journey}} object to be validated. \\
+\mbox{\texttt{ in}}  & {\em journey} & The \doxylink{structJourney}{Journey} object to be validated. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 True if the journey is valid, false otherwise. 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classRaptor_a5139ce0e89daf879a3e8567253ac2352}\label{classRaptor_a5139ce0e89daf879a3e8567253ac2352}} 
+\Hypertarget{classRaptor_a5139ce0e89daf879a3e8567253ac2352}\label{classRaptor_a5139ce0e89daf879a3e8567253ac2352} 
 \index{Raptor@{Raptor}!isValidTrip@{isValidTrip}}
 \index{isValidTrip@{isValidTrip}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{isValidTrip()}{isValidTrip()}}
@@ -410,7 +407,7 @@ Checks if a trip is valid based on the route and stop time.
 \begin{DoxyReturn}{Returns}
 True if the trip is valid, false otherwise. 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classRaptor_a06b544f8e8dd27ea9d7bede360603273}\label{classRaptor_a06b544f8e8dd27ea9d7bede360603273}} 
+\Hypertarget{classRaptor_a06b544f8e8dd27ea9d7bede360603273}\label{classRaptor_a06b544f8e8dd27ea9d7bede360603273} 
 \index{Raptor@{Raptor}!keepParetoOptimal@{keepParetoOptimal}}
 \index{keepParetoOptimal@{keepParetoOptimal}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{keepParetoOptimal()}{keepParetoOptimal()}}
@@ -428,7 +425,7 @@ Keeps the Pareto-\/optimal journeys from a list of journeys.
 \begin{DoxyReturn}{Returns}
 A list of Pareto-\/optimal journeys. 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classRaptor_af0660cc96305037d7a2389a8b0474858}\label{classRaptor_af0660cc96305037d7a2389a8b0474858}} 
+\Hypertarget{classRaptor_af0660cc96305037d7a2389a8b0474858}\label{classRaptor_af0660cc96305037d7a2389a8b0474858} 
 \index{Raptor@{Raptor}!markStop@{markStop}}
 \index{markStop@{markStop}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{markStop()}{markStop()}}
@@ -449,7 +446,7 @@ Marks a stop with the arrival time, parent trip, and parent stop.
 \mbox{\texttt{ in}}  & {\em parent\+\_\+stop\+\_\+id} & The ID of the parent stop. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classRaptor_a339ac7d40ddbb73b61f23b564a87962c}\label{classRaptor_a339ac7d40ddbb73b61f23b564a87962c}} 
+\Hypertarget{classRaptor_a339ac7d40ddbb73b61f23b564a87962c}\label{classRaptor_a339ac7d40ddbb73b61f23b564a87962c} 
 \index{Raptor@{Raptor}!reconstructJourney@{reconstructJourney}}
 \index{reconstructJourney@{reconstructJourney}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{reconstructJourney()}{reconstructJourney()}}
@@ -460,9 +457,9 @@ Marks a stop with the arrival time, parent trip, and parent stop.
 Reconstructs the journey based on the current round. 
 
 \begin{DoxyReturn}{Returns}
-A \mbox{\hyperlink{structJourney}{Journey}} object representing the reconstructed journey. 
+A \doxylink{structJourney}{Journey} object representing the reconstructed journey. 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classRaptor_a039f8a31c33cdc7b530336950f2d5799}\label{classRaptor_a039f8a31c33cdc7b530336950f2d5799}} 
+\Hypertarget{classRaptor_a039f8a31c33cdc7b530336950f2d5799}\label{classRaptor_a039f8a31c33cdc7b530336950f2d5799} 
 \index{Raptor@{Raptor}!setMinArrivalTime@{setMinArrivalTime}}
 \index{setMinArrivalTime@{setMinArrivalTime}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{setMinArrivalTime()}{setMinArrivalTime()}}
@@ -479,7 +476,7 @@ Sets the minimum arrival time for a given stop.
 \mbox{\texttt{ in}}  & {\em stop\+\_\+info} & The stop info containing the arrival time, parent trip ID, and parent stop ID. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classRaptor_a6159b2dd6f6db44f46da1aed81299f68}\label{classRaptor_a6159b2dd6f6db44f46da1aed81299f68}} 
+\Hypertarget{classRaptor_a6159b2dd6f6db44f46da1aed81299f68}\label{classRaptor_a6159b2dd6f6db44f46da1aed81299f68} 
 \index{Raptor@{Raptor}!setQuery@{setQuery}}
 \index{setQuery@{setQuery}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{setQuery()}{setQuery()}}
@@ -487,14 +484,14 @@ Sets the minimum arrival time for a given stop.
 
 
 
-Sets the query for the \mbox{\hyperlink{classRaptor}{Raptor}} algorithm. 
+Sets the query for the \doxylink{classRaptor}{Raptor} algorithm. 
 
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em query} & The query containing the parameters for journey search. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classRaptor_aae7175e9214d87eb18e0c567471b0b7e}\label{classRaptor_aae7175e9214d87eb18e0c567471b0b7e}} 
+\Hypertarget{classRaptor_aae7175e9214d87eb18e0c567471b0b7e}\label{classRaptor_aae7175e9214d87eb18e0c567471b0b7e} 
 \index{Raptor@{Raptor}!showJourney@{showJourney}}
 \index{showJourney@{showJourney}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{showJourney()}{showJourney()}}
@@ -508,10 +505,10 @@ Prints each step of the given journey to the console.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em journey} & The \mbox{\hyperlink{structJourney}{Journey}} object to be displayed. \\
+\mbox{\texttt{ in}}  & {\em journey} & The \doxylink{structJourney}{Journey} object to be displayed. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classRaptor_a6aa5162f2f31ac02ccd204a1d6885137}\label{classRaptor_a6aa5162f2f31ac02ccd204a1d6885137}} 
+\Hypertarget{classRaptor_a6aa5162f2f31ac02ccd204a1d6885137}\label{classRaptor_a6aa5162f2f31ac02ccd204a1d6885137} 
 \index{Raptor@{Raptor}!traverseRoutes@{traverseRoutes}}
 \index{traverseRoutes@{traverseRoutes}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{traverseRoutes()}{traverseRoutes()}}
@@ -526,7 +523,7 @@ Traverses the routes serving each stop.
 \mbox{\texttt{ in}}  & {\em routes\+\_\+stops\+\_\+set} & The set of routes and stops to be traversed. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classRaptor_a325a5ce3f8f4b5cd6f357675eb2e81fb}\label{classRaptor_a325a5ce3f8f4b5cd6f357675eb2e81fb}} 
+\Hypertarget{classRaptor_a325a5ce3f8f4b5cd6f357675eb2e81fb}\label{classRaptor_a325a5ce3f8f4b5cd6f357675eb2e81fb} 
 \index{Raptor@{Raptor}!traverseTrip@{traverseTrip}}
 \index{traverseTrip@{traverseTrip}!Raptor@{Raptor}}
 \doxysubsubsection{\texorpdfstring{traverseTrip()}{traverseTrip()}}
